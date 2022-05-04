@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  <div class="preloader">
+    <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+    </div>
+  </div>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="container-lg">
+            <h2>Cadastro <b>Leitor</b></h2>
+            <h4>Insira os dados do leitor</h4>
+            <form action="<?= DOMINIO ?>leitor/cadastro" method="POST">
+            <div class="personal-image">
+                <label class="label">
+                  <input type="file" class="imagem" id="avatarLeitor" name="avatarLeitor" onchange="previewImagem()"/>
+                  <figure class="personal-figure">
+                    <img id="upload-img" src="https://img.icons8.com/officel/344/administrator-male.png" class="personal-avatar" alt="avatar">
+                    <figcaption class="personal-figcaption">
+                      <img  src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
+                    </figcaption>
+                  </figure>
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="nomeLeitor">Nome:</label>
+                <input type="text" class="form-control" id="nomeLeitor" name="nomeLeitor" placeholder="Insira um nome...">
+              </div>
+              <div class="form-group">
+                <label for="emailLeitor">E-mail:</label>
+                <input type="email" class="form-control" id="emailLeitor" name="emailLeitor" placeholder="Insira um E-mail...">
+              </div>
+              <div class="form-row">
+                <div class="col-6">
+                  <label for="loginLeitor">Login:</label>
+                  <input type="text" class="form-control" id="loginLeitor" name="loginLeitor" placeholder="Coloque uma descrição...">
+                </div>
+                <div class="col-6">
+                  <label for="senhaLeitor">Senha:</label>
+                  <input type="text" class="form-control" id="senhaLeitor" name="senhaLeitor" placeholder="Coloque uma descrição...">
+                </div>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" checked name="statusLeitor" value="ativo">Ativo
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="statusLeitor" value="inativo">Inativo
+                </label>
+              </div>
+              <div class="btn-cadastrar">
+                <button type="submit" class="btn btn-info">Cadastrar</button>
+                <button type="button" class="btn ml-1 bg-light">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Wrapper -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- All Jquery -->
+  <!-- ============================================================== -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap tether Core JavaScript -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/extra-libs/sparkline/sparkline.js"></script>
+  <!--Wave Effects -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/waves.js"></script>
+  <!--Menu sidebar -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/sidebarmenu.js"></script>
+  <!--Custom JavaScript -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/custom.min.js"></script>
+  <!--This page JavaScript -->
+  <!-- <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/dashboards/dashboard1.js"></script> -->
+  <!-- Charts js Files -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/excanvas.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.pie.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.time.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.stack.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.crosshair.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/chart/chart-page-init.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/js/all-script.js"></script>
+
+  <script>
+ 
+  </script>
+</body>
+
+</html>

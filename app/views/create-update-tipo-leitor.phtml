@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  <div class="preloader">
+    <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+    </div>
+  </div>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="container-lg">
+            <h2>Cadastro <b>Tipo de Leitor</b></h2>
+            <h4>Insira os dados do leitor</h4>
+            <form action="<?= DOMINIO ?>tipoleitor/cadastro" method="POST">
+              <div class="form-group">
+                <label for="descricaoTipo">Tipo de Leitor</label>
+                <input type="text" class="form-control" id="descricaoTipo" name="descricaoTipo" placeholder="Coloque uma descrição...">
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" checked name="statusTipo" value="ativo">Ativo
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="statusTipo" value="inativo">Inativo
+                </label>
+              </div>
+              <div class="btn-cadastrar">
+                <button type="submit" class="btn btn-info">Cadastrar</button>
+                <button type="button" class="btn ml-1 bg-light">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Wrapper -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- All Jquery -->
+  <!-- ============================================================== -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap tether Core JavaScript -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/extra-libs/sparkline/sparkline.js"></script>
+  <!--Wave Effects -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/waves.js"></script>
+  <!--Menu sidebar -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/sidebarmenu.js"></script>
+  <!--Custom JavaScript -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/custom.min.js"></script>
+  <!--This page JavaScript -->
+  <!-- <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/dashboards/dashboard1.js"></script> -->
+  <!-- Charts js Files -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/excanvas.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.pie.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.time.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.stack.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.crosshair.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/chart/chart-page-init.js"></script>
+
+  <script>
+  
+  </script>
+</body>
+
+</html>

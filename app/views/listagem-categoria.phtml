@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  <div class="preloader">
+    <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+    </div>
+  </div>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="container-lg">
+              <div class="table-responsive">
+                <div class="table-wrapper">
+                  <div class="table-title">
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <h2>Listagem de<b> Categoria</b></h2>
+                      </div>
+                      <div class="col-sm-4">
+                        <a href="<?=DOMINIO ?>categoria" class="btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
+                        <a href="<?=DOMINIO ?>#" class="btn btn-secondary add-new"><i class="mdi mdi-printer"></i> Imprimir</a>
+                      </div>
+                    </div>
+                  </div>
+                  <table class="table table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Data</th>
+                        <th>Imagem</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>John Doe</td>
+                        <td>Administration</td>
+                        <td>(171) 555-2222</td>
+                        <td>(313) 555-5735</td>
+                        <td>
+                          <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                          <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                          <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Peter Parker</td>
+                        <td>Customer Service</td>
+                        <td>(313) 555-5735</td>
+                        <td>(313) 555-5735</td>
+                        <td>
+                          <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                          <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                          <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Fran Wilson</td>
+                        <td>Human Resources</td>
+                        <td>(503) 555-9931</td>
+                        <td>(313) 555-5735</td>
+                        <td>
+                          <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                          <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                          <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Wrapper -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- All Jquery -->
+  <!-- ============================================================== -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap tether Core JavaScript -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/extra-libs/sparkline/sparkline.js"></script>
+  <!--Wave Effects -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/waves.js"></script>
+  <!--Menu sidebar -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/sidebarmenu.js"></script>
+  <!--Custom JavaScript -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/custom.min.js"></script>
+  <!--This page JavaScript -->
+  <!-- <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/dashboards/dashboard1.js"></script> -->
+  <!-- Charts js Files -->
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/excanvas.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.pie.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.time.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.stack.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.crosshair.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/chart/chart-page-init.js"></script>
+
+  <script>
+
+</script>
+</body>
+
+</html>
