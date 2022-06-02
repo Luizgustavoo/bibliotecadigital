@@ -17,7 +17,7 @@ class Model {
     private $charset = 'utf8';
     private $username = 'root';
     private $passwd = '724018';
-    private $dbname = 'bd_cidade';
+    private $dbname = 'bibliotecadigital';
     private $port = '3306';
     public $_tabela;
     

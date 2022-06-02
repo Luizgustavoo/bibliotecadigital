@@ -2,7 +2,7 @@
   <!-- Sidebar scroll-->
   <div class="scroll-sidebar">
     <!-- Sidebar navigation-->
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" >
       <ul id="sidebarnav" class="pt-4">
         <li class="sidebar-item">
           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>home" aria-expanded="false"><i class="mdi mdi-home"></i><span class="hide-menu">Início</span></a>
