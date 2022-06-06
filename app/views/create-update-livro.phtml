@@ -39,24 +39,25 @@
                     </div>
                     <div class="form-group">
                       <label for="dataLancamento">Data de Lançamento:</label>
-                      <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['dataLancamento'] : ""; ?>" class="form-control" id="dataLancamento" name="dataLancamento" onkeyup="mascara_data(this, this.value)" maxlength="10" placeholder="Coloque uma data...">
+                      <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? date('d/m/Y', strtotime($view_update[0]['dataLancamento'])) : ""; ?>" class="form-control" id="dataLancamento" name="dataLancamento" onkeyup="mascara_data(this, this.value)" maxlength="10" placeholder="Coloque uma data...">
                     </div>
                     <div class="form-group">
                       <label for="totalPaginas">Total de Páginas:</label>
                       <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['totalPaginas'] : ""; ?>" class="form-control" id="totalPaginas" name="totalPaginas" placeholder="Coloque uma quantidade...">
                     </div>
                     <label for="idEditora">Editora:</label>
-                <select class=" form-select" id="idEditora" name="idEditora" aria-label="Default select example">
-                  <?php
-                  if(isset($view_editora) && count ($view_editora) > 0){
-                    foreach($view_editora as $editora){
-                      echo '<option value="'.$editora["idEditora"].'">'.$editora["descricaoEditora"].'</option>';
-                    }
-                  }else{
-                    echo '<option value = "">Nenhuma editora cadastrada</option>';
-                  }
-                  ?>
-                  </select>
+                    <select class=" form-select" id="idEditora" name="idEditora" aria-label="Default select example">
+                      <?php
+                      if (isset($view_editora) && count($view_editora) > 0) {
+                        foreach ($view_editora as $editora) {
+                          $selected = $view_update[0]['idEditora'] == $editora['idEditora'] ? "selected" : "";
+                          echo '<option value="' . $editora["idEditora"] . '" ' . $selected . '>' . $editora["descricaoEditora"] . '</option>';
+                        }
+                      } else {
+                        echo '<option value = "">Nenhuma editora cadastrada</option>';
+                      }
+                      ?>
+                    </select>
                     <div class="form-group">
                       <label for="pdfLivro">Selecione o PDF do Livro:</label>
                       <input type="file" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['pdfLivro'] : ""; ?>" class="inputstl" id="pdfLivro" name="pdfLivro" accept=".pdf">
@@ -65,8 +66,8 @@
                       <input type="hidden" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro">
                     </div>
                     <div class="btn-cadastrar">
-                      <button type="submit" class="btn btn-info">Cadastrar</button>
-                      <button type="button" class="btn ml-1 bg-light">Cancelar</button>
+                      <button type="submit" class="btn btn-info"><?= $view_tipo_operacao == 'inserir' ? "Cadastrar" : "Alterar" ?></button>
+                      <a href="<?= DOMINIO ?>livro/listagem" class=" btn ml-1 bg-light">Cancelar</a>
                     </div>
                 </div>
                 <div class="col col-md-6">
@@ -103,9 +104,6 @@
                     </div>
                   </div>
                   </form>
-                  <?php
-                  require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";
-                  ?>
                 </div>
               </div>
             </div>
@@ -117,6 +115,8 @@
   <!-- ============================================================== -->
   <!-- SCRIPTS -->
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php"; ?>
+
 
   <script>
     function mascara_data(campo, valor) {
@@ -131,6 +131,9 @@
         campo.value = mydata;
       }
     }
+
+
+
     $(function() {
       $("#cadastroLivro").on('submit', function() {
         var erros = "";

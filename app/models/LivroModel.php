@@ -16,6 +16,7 @@ class LivroModel extends Model
     private $imagemCapa;
     private $imagemThumb;
     private $tamanho_upload = 1024 * 1024 * 5; //5MB
+    private $uploadOk = false;
 
     public function getIdLivro()
     {
@@ -63,14 +64,14 @@ class LivroModel extends Model
 
     public function getObservacoesLivro()
     {
-    return $this->observacoesLivro;
+        return $this->observacoesLivro;
     }
-    
-    
+
+
     public function setObservacoesLivro($observacoesLivro)
     {
-    $this->observacoesLivro = $observacoesLivro;
-    return $this;
+        $this->observacoesLivro = $observacoesLivro;
+        return $this;
     }
 
     public function getDataLancamento()
@@ -149,8 +150,10 @@ class LivroModel extends Model
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
             //inserindo dados no autor
-            if ($this->getImagemCapa()['size'] <= $this->tamanho_upload &&
-            $this->getImagemThumb()['size'] <= $this->tamanho_upload)  {
+            if (
+                $this->getImagemCapa()['size'] <= $this->tamanho_upload &&
+                $this->getImagemThumb()['size'] <= $this->tamanho_upload
+            ) {
 
                 $arquivo_tmp = $this->getImagemCapa()['tmp_name'];
                 $arquivo_tmp2 = $this->getImagemThumb()['tmp_name'];
@@ -171,21 +174,24 @@ class LivroModel extends Model
 
 
 
-                    if ($this->compressImage($arquivo_tmp, $destino, 50)&& $this->compressImage($arquivo_tmp2, $destino2, 50)) {
+                    if ($this->compressImage($arquivo_tmp, $destino, 50) && $this->compressImage($arquivo_tmp2, $destino2, 50)) {
+                        $upload = $this->uploadPdf($this->getPdfLivro());
+                        if($this->uploadOk){
+                            $dados_livro = [
+                                "idEditora" => ($this->getIdEditora()),
+                                "tituloLivro" => ($this->getTituloLivro()),
+                                "observacoesLivro" => ($this->getObservacoesLivro()),
+                                "sinopseLivro" => ($this->getSinopseLivro()),
+                                "dataLancamento" => ($this->getDataLancamento()),
+                                "dataCadastro" => ($this->getDataCadastro()),
+                                "totalPaginas" => ($this->getTotalPaginas()),
+                                "pdfLivro" => ($upload),
+                                "imagemThumb" => $novoNome2,
+                                "imagemCapa" => $novoNome,
+                            ];
+                            $this->set_transaction($this->insert($dados_livro, 'livro'));
+                        }
 
-                        $dados_livro = [
-                            "idEditora" => ($this->getIdEditora()),
-                            "tituloLivro" => ($this->getTituloLivro()),
-                            "observacoesLivro" => ($this->getObservacoesLivro()),
-                            "sinopseLivro" => ($this->getSinopseLivro()),
-                            "dataLancamento" => ($this->getDataLancamento()),
-                            "dataCadastro" => ($this->getDataCadastro()),
-                            "totalPaginas" => ($this->getTotalPaginas()),
-                            "pdfLivro" => ($this->getPdfLivro()),
-                            "imagemThumb" => $novoNome2,
-                            "imagemCapa" => $novoNome,
-                        ];
-                        $this->set_transaction($this->insert($dados_livro, 'livro'));
                     } else {
                         $erros .= "Falha ao cadastrar o livro, comunique o administrador!<br>";
                     }
@@ -197,9 +203,8 @@ class LivroModel extends Model
                 } else {
                     $retorno = 'Extensão inválida!';
                 }
-                
             }
-        }else {
+        } else {
             $retorno = $valida;
         }
         return $retorno;
@@ -220,7 +225,7 @@ class LivroModel extends Model
     {
 
         //COLUNAS DA TABELA
-        $places = ['livro.*', 'editora.descricaoEditora' ];
+        $places = ['livro.*', 'editora.descricaoEditora'];
 
         //inner join, outer join, todos as ligações que quiser fazer
         $innerjoin = 'inner join editora on livro.idEditora = editora.idEditora';
@@ -255,34 +260,50 @@ class LivroModel extends Model
         $erros = "";
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
-            //inserindo dados no cafe dos alunos
-            if ($this->getImagemCapa()['size'] <= $this->tamanho_upload) {
+            //inserindo dados no autor
+            if (
+                $this->getImagemCapa()['size'] <= $this->tamanho_upload &&
+                $this->getImagemThumb()['size'] <= $this->tamanho_upload
+            ) {
 
                 $arquivo_tmp = $this->getImagemCapa()['tmp_name'];
+                $arquivo_tmp2 = $this->getImagemThumb()['tmp_name'];
                 $nome = $this->getImagemCapa()['name'];
+                $nome2 = $this->getImagemThumb()['name'];
                 $extensao = strrchr($nome, '.');
+                $extensao2 = strrchr($nome2, '.');
                 $extensao = strtolower($extensao);
-                if (strstr('.jpg;.jpeg;.gif;.png', $extensao)) {
+                $extensao2 = strtolower($extensao2);
+                if (strstr('.jpg;.jpeg;.gif;.png', $extensao) && strstr('.jpg;.jpeg;.gif;.png', $extensao2)) {
 
                     //                            $novoNome = md5(microtime())  . $extensao;
                     $novoNome = "foto_" . md5(time())  . $extensao;
+                    $novoNome2 = "foto_" . md5(time())  . $extensao2;
 
                     $destino = './web-pages/assets/images/livro/' . $novoNome;
+                    $destino2 = './web-pages/assets/images/livro/thumb/' . $novoNome2;
 
 
 
-                    if ($this->compressImage($arquivo_tmp, $destino, 50)) {
+                    if ($this->compressImage($arquivo_tmp, $destino, 50) && $this->compressImage($arquivo_tmp2, $destino2, 50)) {
 
                         $dados_livro = [
+                            "idEditora" => ($this->getIdEditora()),
+                            "tituloLivro" => ($this->getTituloLivro()),
+                            "observacoesLivro" => ($this->getObservacoesLivro()),
+                            "sinopseLivro" => ($this->getSinopseLivro()),
+                            "dataLancamento" => ($this->getDataLancamento()),
+                            "dataCadastro" => ($this->getDataCadastro()),
+                            "totalPaginas" => ($this->getTotalPaginas()),
+                            "pdfLivro" => ($this->getPdfLivro()),
+                            "imagemThumb" => $novoNome2,
                             "imagemCapa" => $novoNome,
-                            "tituloLivro" => mb_strtoupper($this->getTituloLivro()),
-                            "dataCadastro" => mb_strtoupper($this->getDataCadastro()),
                         ];
 
                         $where = "idLivro = " . $this->getIdLivro();
                         $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
                     } else {
-                        $erros .= "Falha ao cadastrar o livro, comunique o administrador!<br>";
+                        $erros .= "Falha ao alterar o livro, comunique o administrador!<br>";
                     }
                     if (strlen($erros) <= 0) {
                         $retorno = $this->execTransaction();
@@ -295,8 +316,6 @@ class LivroModel extends Model
                 return $retorno;
             }
             $retorno = $this->execTransaction();
-        } else {
-            $retorno = $valida;
         }
         return $retorno;
     }
@@ -313,6 +332,71 @@ class LivroModel extends Model
             $erros .= "Foto inválida!<br>";
         }
         return $erros;
+    }
+
+    function extensao($arquivo)
+    {
+        $arquivo = strtolower($arquivo);
+        $explode = explode(".", $arquivo);
+        $arquivo = end($explode);
+
+        return ($arquivo);
+    }
+
+    public function uploadPdf($pdf)
+    {
+        define('KB', 1024);
+        define('MB', 1048576); // 1024 * 1024
+        define('GB', 1073741824); // 1024 * 1024 * 1024
+        define('TB', 1099511627776); // 1024 * 1024 * 1024 * 1024
+
+        $mensagem = "";
+        
+        if (isset($pdf)) {
+            // arquivo
+            $arquivo = $pdf;
+
+            // Tamanho máximo do arquivo (em Bytes)
+            $tamanhoPermitido = 1024 * 1024 * 40; // 40Mb
+
+            //Define o diretorio para onde enviaremos o arquivo
+            $diretorio = './web-pages/assets/images/livro/pdfLivro/';
+
+            // verifica se arquivo foi enviado e sem erros
+            if ($arquivo['error'] == UPLOAD_ERR_OK) {
+
+                // pego a extensão do arquivo
+                $extensao = $this->extensao($arquivo['name']);
+
+                // valida a extensão
+                if (in_array($extensao, array("pdf"))) {
+
+                    // verifica tamanho do arquivo
+                    if ($arquivo['size'] > $tamanhoPermitido) {
+                        $mensagem = "Tamanho inválido!";
+                    } else {
+
+                        // atribui novo nome ao arquivo
+                        $novo_nome  = md5(time()) . "." . $extensao;
+
+                        // faz o upload
+                        $pdfLivro = move_uploaded_file($pdf['tmp_name'], $diretorio . $novo_nome);
+
+                        if ($pdfLivro) {
+                            $mensagem = $novo_nome;
+                            $this->uploadOk = true;
+                        } else {
+                            $mensagem = "Falha ao enviar o pdf!";
+                        }
+                    }
+                } else {
+                    $mensagem = "Somente arquivos PDF são permitidos.";
+                }
+            } else {
+                $mensagem = "Você deve enviar um arquivo.";
+            }
+        }
+        return $mensagem;
     }
 
     function compressImage($source, $destination, $quality)

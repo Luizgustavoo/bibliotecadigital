@@ -4,9 +4,7 @@
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
 
 <body>
-  <!-- ============================================================== -->
-  <!-- Preloader - style you can find in spinners.css -->
-  <!-- ============================================================== -->
+
   <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
 
   <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
@@ -39,7 +37,7 @@
                       <th style="width: 12%;">Título</th>
                       <th style="width: 15%;">Sinopse</th>
                       <th style="width: 15%;">Observações</th>
-                      <th style="width: 9%;">Data de Lançamento</th>
+                      <th style="width: 10%;">Data de Lançamento</th>
                       <th style="width: 8%;">Data de Cadastro</th>
                       <th style="width: 12%;">Editora</th>
                       <th style="width: 7%;">Total de Páginas</th>
@@ -70,9 +68,8 @@
                           <td><?= $livro['descricaoEditora'] ?></td>
                           <td><?= $livro['totalPaginas'] ?></td>
                           <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="editar" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="deletar" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a class="edit editar" href="<?= DOMINIO ?>livro/index/action/update/id/<?= $livro['idLivro'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete remover" desc="<?= $livro['tituloLivro'] ?>" id="<?= $livro['idLivro'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                           </td>
                         </tr>
                     <?php

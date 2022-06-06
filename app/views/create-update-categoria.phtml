@@ -49,9 +49,6 @@
                 <button type="submit" class="btn btn-info"><?=$view_tipo_operacao=='inserir'? "Cadastrar":"Alterar"?></button>
                 <a href="<?= DOMINIO ?>categoria/listagem" class="btn ml-1 bg-light">Cancelar</a>
               </div>
-              <?php
-              require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";
-              ?>
             </form>
           </div>
         </div>
@@ -59,34 +56,9 @@
     </div>
   </div>
   <!-- ============================================================== -->
-  <!-- End Wrapper -->
-  <!-- ============================================================== -->
-  <!-- ============================================================== -->
-  <!-- All Jquery -->
-  <!-- ============================================================== -->
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/jquery/dist/jquery.min.js"></script>
-  <!-- Bootstrap tether Core JavaScript -->
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/extra-libs/sparkline/sparkline.js"></script>
-  <!--Wave Effects -->
-  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/waves.js"></script>
-  <!--Menu sidebar -->
-  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/sidebarmenu.js"></script>
-  <!--Custom JavaScript -->
-  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/custom.min.js"></script>
-  <!--This page JavaScript -->
-  <!-- <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/dashboards/dashboard1.js"></script> -->
-  <!-- Charts js Files -->
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/excanvas.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.pie.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.time.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.stack.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.crosshair.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/chart/chart-page-init.js"></script>
-  <script src="http://<?= SITE_ROOT ?>/web-pages/js/all-script.js"></script>
+  <!-- SCRIPTS -->
+  <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";?>
 
   <script>
   $(function() {

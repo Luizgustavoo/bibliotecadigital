@@ -19,7 +19,7 @@
     <!-- ============================================================== -->
     <!-- End Logo -->
     <!-- ============================================================== -->
-    <div class="navbar-collapse collapse" style="border: 2px solid red;" id="navbarSupportedContent" data-navbarbg="skin5">
+    <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
       <!-- ============================================================== -->
       <!-- toggle and nav items -->
       <!-- ============================================================== -->

@@ -17,19 +17,36 @@
       $pos5 === false &&
       $pos6 === false
     ) {
-      $classe = 'alert-success';
+      $classe = "linear-gradient(to right, #00b09b, #96c93d)";
     } else {
-      $classe = 'alert-danger';
+      $classe = "linear-gradient(to right, #800000, #8B0000)";
     }
 
-    echo '<script>setTimeout(function(){
-        $(".alert").fadeOut("slow", function(){
-          $(this).alert("close");
-        });    
-      }, 4000)
-      </script>';
-    echo  '<div class="mt-3 alert ' . $classe . ' alert-dismissible" id="resposta">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h4><i class="icon fa fa-info"></i> ' . $view_retorno . ' </h4></div>';
+    ?>
+    <script>
+      Toastify({
+        text: "<?=$view_retorno?>",
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "<?=$classe?>",
+        }
+      }).showToast();
+    </script>
+    <?php
+
+    // echo '<script>setTimeout(function(){
+    //     $(".alert").fadeOut("slow", function(){
+    //       $(this).alert("close");
+    //     });    
+    //   }, 4000)
+    //   </script>';
+    // echo  '<div class="mt-3 alert ' . $classe . ' alert-dismissible" id="resposta">
+    // <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    // <h4><i class="icon fa fa-info"></i> ' . $view_retorno . ' </h4></div>';
   }
   ?>          

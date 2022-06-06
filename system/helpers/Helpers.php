@@ -115,22 +115,6 @@ class Helpers
         $rt = mb_substr($rt, 1);
         return ($rt ? trim($rt) : "zero");
     }
-    public static function retornaDatasMes($mes, $ano)
-    {
-
-        $numero = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
-        $datas_mes = array();
-        $dia_array = array('Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado');
-        for ($dia = 1; $dia <= $numero; $dia++) {
-            $data = $ano . '-' . str_pad($mes, 2, "0", STR_PAD_LEFT) . '-' . str_pad($dia, 2, "0", STR_PAD_LEFT);
-            $dia_semana = date('w', strtotime($data));
-            $dia_nome  = $dia_array[$dia_semana];
-            if ($dia_nome != "Domingo" && $dia_nome != "Sábado") {
-                $datas_mes[] = $data;
-            }
-        }
-        return $datas_mes;
-    }
 
     public static function URL_exists(string $url): bool
     {

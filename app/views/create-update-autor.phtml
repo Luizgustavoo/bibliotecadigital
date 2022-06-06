@@ -44,9 +44,6 @@
                 <button type="submit" class="btn btn-info"><?= $view_tipo_operacao == 'inserir' ? "Cadastrar" : "Alterar" ?></button>
                 <a href="<?= DOMINIO ?>autor/listagem" class=" btn ml-1 bg-light">Cancelar</a>
               </div>
-              <?php
-              require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";
-              ?>
             </form>
           </div>
         </div>
@@ -56,6 +53,7 @@
   <!-- ============================================================== -->
   <!-- SCRIPTS -->
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";?>
 
   <script>
     $(function() {
