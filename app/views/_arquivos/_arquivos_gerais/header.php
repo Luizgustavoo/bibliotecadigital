@@ -56,7 +56,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="javascript:void(0)"><i class="mdi mdi-settings me-1 ms-1"></i> Configurações</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off me-1 ms-1"></i> Sair</a>
+            <a class="dropdown-item" href="<?=DOMINIO?>index/logout/"><i class="fa fa-power-off me-1 ms-1"></i> Sair</a>
           </ul>
         </li>
         <!-- ============================================================== -->

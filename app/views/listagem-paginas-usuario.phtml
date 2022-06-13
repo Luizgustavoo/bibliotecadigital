@@ -1,0 +1,180 @@
+<?php
+Validar::validarLogin();
+if(ValidarPagina::validarPaginaAtual('listagem_paginas_usuario') <= 0){header ("Location: " . DOMINIO. "home");}
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+?><!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<body>
+
+  <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="container-lg">
+            <div class="table-responsive">
+              <div class="table-wrapper">
+                <div class="table-title">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <h2>Listagem de<b> Páginas do Painel</b></h2>
+                    </div>
+                    <div class="col-sm-4">
+                      <a href="<?= DOMINIO ?>paginaspainel" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
+                    </div>
+                  </div>
+                </div>
+
+                  <form action="<?=DOMINIO?>paginasusuario/index" method="post">
+                      <div class="row">
+                          <div class="col-6">
+                              <div class="form-group">
+                                  <label for="descricaoAutor">Selecione um usuário:</label>
+                                  <select class="form-select" aria-label="Default select example" name="idUsuario">
+                                      <option value="">Selecione um usuário</option>
+                                      <?php
+                                      if(isset($view_usuarios) && count($view_usuarios) > 0){
+                                          foreach($view_usuarios as $usuario){
+                                              echo '<option value="'.$usuario['idUsuario'].'">'.$usuario['nomeUsuario'].'</option>';
+                                          }
+                                      }
+                                      ?>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-6">
+                              <div class="form-group">
+                                  <label for=""><br><br></label>
+                                  <button class="mt-4 btn btn-link"><i class="fa fa-search"></i> Buscar</button>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+                      <style>
+                          .big-checkbox {width: 20px; height: 20px;}
+                      </style>
+                      <?php if (isset($view_listagem) && count($view_listagem) > 0) { ?>
+
+                          <form action="<?=DOMINIO?>paginasusuario/index" method="post">
+                              <h1 class="text-center">Usuário: <?=$view_listagem[0]['usuario']?></h1>
+                              <input type="hidden" name="idUsuarioHidden" value="<?=$view_id_usuario?>">
+                              <table class="table-sm table-bordered v-middle" id="listagemPaginasPainel">
+                                  <thead class="thead-dark" style="background-color: gray; color: white">
+                                  <tr class="text-center align-middle">
+                                      <th style="width: 10%;">PÁGINA</th>
+                                      <th style="width: 10%;">#</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <?php
+
+                                  foreach ($view_listagem as $pagina) {
+                                      $checked = (int)$pagina['quantidade'] > 0 ? "checked" : "";
+                                      ?>
+                                      <tr class="text-center v-middle">
+                                          <td class="text-left"><?=$pagina['descricaoPagina']?></td>
+                                          <td class="text-left">
+                                              <input type="checkbox" <?=$checked?> class="form-group big-checkbox" name="arr_paginas[]" value="<?=$pagina['descricaoPagina']?>">
+                                          </td>
+                                      </tr>
+                                      <?php
+                                  }
+
+                                  ?>
+                                  </tbody>
+                              </table>
+                              <div class="form-group">
+                                  <label for=""><br><br></label>
+                                  <button class="mt-4 btn btn-success float-right"><i class="fa fa-edit"></i> Alterar Permissões</button>
+                              </div>
+                          </form>
+
+                      <?php }else{
+                          echo "<h1>Selecione um usuário</h1>";
+                      } ?>
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- SCRIPTS -->
+  <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";?>
+
+  <script>
+    $(document).ready(function() {
+
+      $(".page-wrapper").on('click', '#listagemPaginasPainel tbody tr td a.remover', function() {
+        var id = $(this).attr('id');
+        var descricao = $(this).attr('desc');
+        var dados = {
+          'id': id
+        };
+        bootbox.confirm({
+          message: 'Confirma a exclusão do registro "' + descricao + '" ?<br><b style="color: red">ESSA AÇÃO REMOVERÁ O ACESSO DE TODOS À ESSA PÁGINA</b>',
+          callback: function(confirmacao) {
+
+            if (confirmacao) {
+
+              $.ajax({
+                url: '<?= DOMINIO ?>paginaspainel/excluir',
+                type: 'POST',
+                data: dados,
+                success: function(retorno) {
+                  // bootbox.alert(retorno);
+                  bootbox.confirm({
+                    message: retorno,
+                    callback: function(confirma) {
+                      if (confirma) {
+                        location.reload();
+                      }
+                    },
+                    buttons: {
+                      confirm: {
+                        label: 'OK',
+                        className: 'btn-success'
+                      },
+                    }
+                  })
+                }
+              });
+            }
+          },
+          buttons: {
+            cancel: {
+              label: 'Cancelar',
+              className: 'btn-default'
+            },
+            confirm: {
+              label: 'EXCLUIR',
+              className: 'btn-danger'
+            }
+
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+
+</html>

@@ -58,7 +58,7 @@ class Livro extends Controller
     public function listagem()
     {
         $listar = new LivroModel();
-        $dados['listagem'] = $listar->listarTodas();
+        $dados['listagem'] = $listar->listarTodasPorTipo('digital');
         $this->view("listagem-livro", $dados);
     }
 

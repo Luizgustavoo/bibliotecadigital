@@ -249,6 +249,34 @@ class LivroModel extends Model
         return $this->read($this->_tabela, $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
 
+    public function listarTodasPorTipo($tipo)
+    {
+
+        //COLUNAS DA TABELA
+        $places = ['livro.*', 'editora.descricaoEditora'];
+
+        //inner join, outer join, todos as ligações que quiser fazer
+        $innerjoin = 'inner join editora on livro.idEditora = editora.idEditora';
+
+        //condição do select
+        $where = "tipoLivro = '$tipo'";
+
+        //ordenar select
+        $orderby = 'tituloLivro';
+
+        //limit = quantidade de registros para exibir
+        $limit = null;
+
+        //usado junto com o limit por exemplo começa a exibição do segundo registro e mostre mais 5 ficaria limit 5 offset 1
+        $offset = null;
+
+        //coluna na qual serão agrupados os valores
+        $groupby = null;
+
+
+        return $this->read($this->_tabela, $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
+    }
+
     public function listarPorCodigo($id)
     {
 

@@ -1,5 +1,9 @@
 <aside class="left-sidebar" data-sidebarbg="skin5">
-  <!-- Sidebar scroll-->
+    <style>
+        .text-red{
+         color: #ff2b2b !important;
+        }
+    </style>
   <div class="scroll-sidebar">
     <!-- Sidebar navigation-->
     <nav class="sidebar-nav" >
@@ -27,6 +31,19 @@
         <li class="sidebar-item">
           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>tipoleitor/listagem" aria-expanded="false"><i class="mdi mdi-book-open-page-variant"></i><span class="hide-menu">Tipo de Leitor</span></a>
         </li>
+          <li class="sidebar-item">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>emprestimo" aria-expanded="false"><i class="mdi mdi-cart-outline"></i><span class="hide-menu">Empréstimo</span></a>
+        </li>
+
+          <hr>
+
+          <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark sidebar-link text-red" href="<?= DOMINIO ?>paginaspainel/listagem" aria-expanded="false"><i class="mdi mdi-lock text-red"></i><span class="hide-menu">Páginas Painel</span></a>
+          </li>
+          <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark sidebar-link text-red" href="<?= DOMINIO ?>paginasusuario" aria-expanded="false"><i class="mdi mdi-lock-outline text-red"></i><span class="hide-menu">Página Usuário</span></a>
+          </li>
+
       </ul>
       </li>
       </ul>

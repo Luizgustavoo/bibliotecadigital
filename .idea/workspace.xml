@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="64df5491-5063-4cef-8d19-ce11375dfb42" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/IndexController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/IndexController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/LivroController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/LivroController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/LivroModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/LivroModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/_arquivos/_arquivos_gerais/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/_arquivos/_arquivos_gerais/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/_arquivos/_arquivos_gerais/navbar.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/_arquivos/_arquivos_gerais/navbar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/create-update-autor.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/create-update-autor.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/create-update-categoria.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/create-update-categoria.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/create-update-editora.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/create-update-editora.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/create-update-leitor.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/create-update-leitor.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/create-update-livro.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/create-update-livro.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/create-update-tipo-leitor.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/create-update-tipo-leitor.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/home.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/home.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/listagem-autor.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/listagem-autor.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/listagem-categoria.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/listagem-categoria.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/listagem-editora.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/listagem-editora.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/listagem-leitor.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/listagem-leitor.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/listagem-livro.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/listagem-livro.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/listagem-tipo-leitor.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/listagem-tipo-leitor.phtml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2AM8O4rwo4q2kztG7aj9oiVG8qC" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/views" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.file-colors" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\bibliotecadigitaladm\app\views" />
+      <recent name="C:\xampp\htdocs\bibliotecadigitaladm\app\controllers" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64df5491-5063-4cef-8d19-ce11375dfb42" name="Changes" comment="" />
+      <created>1654808058399</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654808058399</updated>
+      <workItem from="1654808059608" duration="15724000" />
+      <workItem from="1654894707038" duration="607000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
