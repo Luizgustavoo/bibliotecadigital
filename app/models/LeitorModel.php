@@ -399,13 +399,26 @@ class LeitorModel extends Model
         return $retorno;
     }
 
+
+
     public function validarDados()
     {
 
         $erros = "";
-
+        if (strlen($this->getIdTipo()) <= 0) {
+            $erros .= "Tipo de leitor inválido!<br>";
+        }
+        if(!Validar::validaEmail($this->getEmailLeitor())){
+            $erros .= "Email do Leitor inválido!<br/>";
+        }
         if (strlen($this->getNomeLeitor()) < 3) {
             $erros .= "Nome de Leitor inválido!<br/>";
+        }
+        if (strlen($this->getLoginLeitor()) < 3) {
+            $erros .= "Login do Leitor inválido!<br/>";
+        }
+        if (strlen($this->getSenhaLeitor()) < 8) {
+            $erros .= "Senha do Leitor inválida, minímo 8 caracteres!<br/>";
         }
         if (strlen($this->getAvatarLeitor()['tmp_name']) <= 0) {
             $erros .= "Foto inválida!<br>";

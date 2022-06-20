@@ -42,6 +42,7 @@ class Livro extends Controller
         $livro->setTituloLivro($_POST['tituloLivro']);
         $livro->setObservacoesLivro($_POST['observacoesLivro']);
         $livro->setSinopseLivro($_POST['sinopseLivro']);
+        $livro->setTipoLivro($_POST['tipoLivro']);
         $livro->setDataCadastro(date('Y-m-d H:i:s'));
         $livro->setDataLancamento(date('Y-m-d', strtotime(str_replace('/', '-', $_POST['dataLancamento']))));
         $livro->setTotalPaginas($_POST['totalPaginas']);
@@ -83,6 +84,7 @@ class Livro extends Controller
 
         if (isset($_POST)) {
             $livro = new LivroModel();
+            $livro-> setIdLivro($_POST['idLivro']);
             $editora = new EditoraModel();
             $editora->setDescricaoEditora($_POST['descricaoEditora']);
             $dados['editora'] = $editora->listarTodas();
@@ -90,6 +92,7 @@ class Livro extends Controller
             $livro->setTituloLivro($_POST['tituloLivro']);
             $livro->setObservacoesLivro($_POST['observacoesLivro']);
             $livro->setSinopseLivro($_POST['sinopseLivro']);
+            $livro->setTipoLivro($_POST['tipoLivro']);
             $livro->setDataCadastro(date('Y-m-d H:i:s'));
             $livro->setDataLancamento(date('Y-m-d', strtotime(str_replace('/', '-', $_POST['dataLancamento']))));
             $livro->setTotalPaginas($_POST['totalPaginas']);

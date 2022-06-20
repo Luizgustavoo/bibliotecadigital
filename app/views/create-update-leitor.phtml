@@ -1,9 +1,12 @@
 <?php
 Validar::validarLogin();
-if(ValidarPagina::validarPaginaAtual('create_update_leitor') <= 0){header ("Location: " . DOMINIO. "home");}
+if (ValidarPagina::validarPaginaAtual('create_update_leitor') <= 0) {
+  header("Location: " . DOMINIO . "home");
+}
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
@@ -48,17 +51,17 @@ date_default_timezone_set('America/Sao_Paulo');
                   <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['nomeLeitor'] : ""; ?>" class="form-control" id="nomeLeitor" name="nomeLeitor" placeholder="Insira um nome...">
                 </div>
                 <div class="col-4"">
-                <label for="idTipo"> <br></label>
-                <select class=" form-select" id="idTipo" name="idTipo" aria-label="Default select example">
-                  <?php
-                  if(isset($view_tipoLeitor) && count ($view_tipoLeitor) > 0){
-                    foreach($view_tipoLeitor as $tipoLeitor){
-                      echo '<option value="'.$tipoLeitor["idTipo"].'">'.$tipoLeitor["descricaoTipo"].'</option>';
+                <label for=" idTipo"> <br></label>
+                  <select class=" form-select" id="idTipo" name="idTipo" aria-label="Default select example">
+                    <?php
+                    if (isset($view_tipoLeitor) && count($view_tipoLeitor) > 0) {
+                      foreach ($view_tipoLeitor as $tipoLeitor) {
+                        echo '<option value="' . $tipoLeitor["idTipo"] . '">' . $tipoLeitor["descricaoTipo"] . '</option>';
+                      }
+                    } else {
+                      echo '<option value = "">Nenhum tipo de leitor cadastrado</option>';
                     }
-                  }else{
-                    echo '<option value = "">Nenhum tipo de leitor cadastrado</option>';
-                  }
-                  ?>
+                    ?>
                   </select>
                 </div>
               </div>
@@ -68,10 +71,10 @@ date_default_timezone_set('America/Sao_Paulo');
                   <input type="email" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['emailLeitor'] : ""; ?>" class="form-control" id="emailLeitor" name="emailLeitor" placeholder="Insira um e-mail...">
                 </div>
                 <div class="col-4"">
-                <label for="sexoLeitor"> <br></label>
-                <select class=" form-select" id="sexoLeitor" name="sexoLeitor" aria-label="Default select example">
-                  <option value="masculino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0] ["sexoLeitor"] == "masculino" ?  "selected" : ""; ?>>Masculino</option>
-                  <option value="feminino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0] ["sexoLeitor"] == "feminino" ?  "selected" : ""; ?>>Feminino</option>
+                <label for=" sexoLeitor"> <br></label>
+                  <select class=" form-select" id="sexoLeitor" name="sexoLeitor" aria-label="Default select example">
+                    <option value="masculino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["sexoLeitor"] == "masculino" ?  "selected" : ""; ?>>Masculino</option>
+                    <option value="feminino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["sexoLeitor"] == "feminino" ?  "selected" : ""; ?>>Feminino</option>
                   </select>
                 </div>
               </div>
@@ -87,14 +90,14 @@ date_default_timezone_set('America/Sao_Paulo');
               </div>
               <div class="mt-3 form-check-inline">
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input" checked name="statusLeitor" value="ativo" <?= isset($view_update) && count($view_update) == 1 && $view_update[0] ["statusLeitor"] == "ativo" ?  "checked" : ""; ?>>Ativo
+                  <input type="radio" class="form-check-input" checked name="statusLeitor" value="ativo" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["statusLeitor"] == "ativo" ?  "checked" : ""; ?>>Ativo
                 </label>
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input" name="statusLeitor" value="inativo" <?= isset($view_update) && count($view_update) == 1 && $view_update[0] ["statusLeitor"] == "inativo" ?  "checked" : ""; ?>>Inativo
+                  <input type="radio" class="form-check-input" name="statusLeitor" value="inativo" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["statusLeitor"] == "inativo" ?  "checked" : ""; ?>>Inativo
                 </label>
               </div>
               <div class="btn-cadastrar">
-                <button type="submit" class="btn btn-info"><?=$view_tipo_operacao=='inserir'? "Cadastrar":"Alterar"?></button>
+                <button type="submit" class="btn btn-info"><?= $view_tipo_operacao == 'inserir' ? "Cadastrar" : "Alterar" ?></button>
                 <a href="<?= DOMINIO ?>leitor/listagem" class="btn ml-1 bg-light">Cancelar</a>
               </div>
             </form>
@@ -106,25 +109,39 @@ date_default_timezone_set('America/Sao_Paulo');
   <!-- ============================================================== -->
   <!-- SCRIPTS -->
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
-  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";?>
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php"; ?>
 
   <script>
-  $(function() {
+
+    $(function() {
       $("#cadastroLeitor").on('submit', function() {
         var erros = "";
         var file = document.getElementById("avatarLeitor");
-        erros += $("#nomeLeitor").val().length <= 0 ? "Nome do leitor inválido!\n" : "";
-        erros += file.files.length === 0 ? "Imagem inválida!" : "";
+        erros += $("#nomeLeitor").val().length <= 3 ? "Nome do leitor inválido!<br>\n" : "";
+        erros += $("#idTipo").val().length <= 0 ? "Tipo de leitor inválido!<br>\n" : "";
+        erros += $("#loginLeitor").val().length <= 0 ? "Login do leitor inválido!<br>\n" : "";
+        erros += $("#senhaLeitor").val().length <= 7 ? "Senha do Leitor inválida, minímo 8 caracteres!<br/>\n" : "";
+        erros += $("#emailLeitor").val().length <= 0 || ValidateEmail($("#emailLeitor").val()) == false ? "Email do leitor inválido!<br>\n" : "";
+        erros += file.files.length === 0 ? "Imagem da capa inválida!<br>" : "";
         if (erros.length > 0) {
-          alert(erros);
+
+          $("#modal_retorno .modal-title").html("Erros encontrados!");
+          $("#modal_retorno").addClass('modal-danger');
+          $("#modal_retorno .modal-body p").html(erros).css({
+            'color': 'black'
+          });
+          $("#modal_retorno").modal('show');
+
+
           return false;
         } else {
           return true;
         }
         return false;
       });
-    });
+    })
   </script>
 </body>
+<?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
 
 </html>

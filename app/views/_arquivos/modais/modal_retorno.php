@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title danger">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close fechar" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -11,9 +11,16 @@
         <p>Modal body text goes here.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary"  data-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-primary fechar"  data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+  $(function(){
+    $(".fechar").on('click', function(){
+      $("#modal_retorno").modal('hide')
+    })
+  });
+</script>

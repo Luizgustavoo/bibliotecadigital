@@ -7,6 +7,7 @@ class LivroModel extends Model
     private $idLivro;
     private $idEditora;
     private $tituloLivro;
+    private $tipoLivro;
     private $sinopseLivro;
     private $observacoesLivro;
     private $dataLancamento;
@@ -17,6 +18,18 @@ class LivroModel extends Model
     private $imagemThumb;
     private $tamanho_upload = 1024 * 1024 * 5; //5MB
     private $uploadOk = false;
+
+
+    public function getTipoLivro()
+    {
+        return $this->tipoLivro;
+    }
+
+    public function setTipoLivro($tipoLivro)
+    {
+        $this->tipoLivro = $tipoLivro;
+        return $this;
+    }
 
     public function getIdLivro()
     {
@@ -176,13 +189,14 @@ class LivroModel extends Model
 
                     if ($this->compressImage($arquivo_tmp, $destino, 50) && $this->compressImage($arquivo_tmp2, $destino2, 50)) {
                         $upload = $this->uploadPdf($this->getPdfLivro());
-                        if($this->uploadOk){
+                        if ($this->uploadOk) {
                             $dados_livro = [
                                 "idEditora" => ($this->getIdEditora()),
                                 "tituloLivro" => ($this->getTituloLivro()),
                                 "observacoesLivro" => ($this->getObservacoesLivro()),
                                 "sinopseLivro" => ($this->getSinopseLivro()),
                                 "dataLancamento" => ($this->getDataLancamento()),
+                                "tipoLivro" => ($this->getTipoLivro()),
                                 "dataCadastro" => ($this->getDataCadastro()),
                                 "totalPaginas" => ($this->getTotalPaginas()),
                                 "pdfLivro" => ($upload),
@@ -191,7 +205,6 @@ class LivroModel extends Model
                             ];
                             $this->set_transaction($this->insert($dados_livro, 'livro'));
                         }
-
                     } else {
                         $erros .= "Falha ao cadastrar o livro, comunique o administrador!<br>";
                     }
@@ -314,37 +327,63 @@ class LivroModel extends Model
 
 
                     if ($this->compressImage($arquivo_tmp, $destino, 50) && $this->compressImage($arquivo_tmp2, $destino2, 50)) {
+                        if ($this->getPdfLivro()['tmp_name'] != null) {
+                            $upload = $this->uploadPdf($this->getPdfLivro());
 
-                        $dados_livro = [
-                            "idEditora" => ($this->getIdEditora()),
-                            "tituloLivro" => ($this->getTituloLivro()),
-                            "observacoesLivro" => ($this->getObservacoesLivro()),
-                            "sinopseLivro" => ($this->getSinopseLivro()),
-                            "dataLancamento" => ($this->getDataLancamento()),
-                            "dataCadastro" => ($this->getDataCadastro()),
-                            "totalPaginas" => ($this->getTotalPaginas()),
-                            "pdfLivro" => ($this->getPdfLivro()),
-                            "imagemThumb" => $novoNome2,
-                            "imagemCapa" => $novoNome,
-                        ];
+                            if ($this->uploadOk) {
 
-                        $where = "idLivro = " . $this->getIdLivro();
-                        $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
+                                $dados_livro = [
+                                    "idEditora" => ($this->getIdEditora()),
+                                    "tituloLivro" => ($this->getTituloLivro()),
+                                    "observacoesLivro" => ($this->getObservacoesLivro()),
+                                    "sinopseLivro" => ($this->getSinopseLivro()),
+                                    "dataLancamento" => ($this->getDataLancamento()),
+                                    "tipoLivro" => ($this->getTipoLivro()),
+                                    "dataCadastro" => ($this->getDataCadastro()),
+                                    "totalPaginas" => ($this->getTotalPaginas()),
+                                    "pdfLivro" => $upload,
+                                    "imagemThumb" => $novoNome2,
+                                    "imagemCapa" => $novoNome,
+                                ];
+
+                                $where = "idLivro = " . $this->getIdLivro();
+                                $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
+                            }
+                        } else {
+                            $dados_livro = [
+                                "idEditora" => ($this->getIdEditora()),
+                                "tituloLivro" => ($this->getTituloLivro()),
+                                "observacoesLivro" => ($this->getObservacoesLivro()),
+                                "sinopseLivro" => ($this->getSinopseLivro()),
+                                "dataLancamento" => ($this->getDataLancamento()),
+                                "tipoLivro" => ($this->getTipoLivro()),
+                                "dataCadastro" => ($this->getDataCadastro()),
+                                "totalPaginas" => ($this->getTotalPaginas()),
+                                "imagemThumb" => $novoNome2,
+                                "imagemCapa" => $novoNome,
+                            ];
+                            
+                            $where = "idLivro = " . $this->getIdLivro();
+                            $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
+                        }
                     } else {
                         $erros .= "Falha ao alterar o livro, comunique o administrador!<br>";
                     }
                     if (strlen($erros) <= 0) {
                         $retorno = $this->execTransaction();
+                        // die("ACOLÁ".$retorno);
                     } else {
                         $retorno = $erros;
                     }
                 } else {
                     $retorno = $valida;
                 }
+                //die("AQUI". $retorno);
                 return $retorno;
             }
             $retorno = $this->execTransaction();
         }
+        //die("HERE".$retorno);
         return $retorno;
     }
 
@@ -352,12 +391,31 @@ class LivroModel extends Model
     {
 
         $erros = "";
+        if (strlen($this->getTipoLivro()) <= 0) {
+            $erros .= "Tipo do livro inválido!<br>";
+        }else{
+            if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
+                $erros .= "Foto inválida!<br>";
+            }
+            if (strlen($this->getPdfLivro()['tmp_name']) <= 0) {
+                $erros .= "Pdf inválido!<br>";
+            }
+            if (($this->getTotalPaginas()) <= 0) {
+                $erros .= "Total de páginas inválido!<br>";
+            }
+        }
 
         if (strlen($this->getTituloLivro()) < 3) {
-            $erros .= "Nome do livro inválido!<br/>";
+            $erros .= "Nome do livro inválido!<br>";
         }
-        if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
-            $erros .= "Foto inválida!<br>";
+        if (strlen($this->getObservacoesLivro()) < 6) {
+            $erros .= "Observações do livro inválida!<br>";
+        }
+        if (strlen($this->getSinopseLivro()) < 10) {
+            $erros .= "Sinopse do livro inválida!<br>";
+        }
+        if (strlen($this->getDataLancamento()) < 10) {
+            $erros .= "Data de lançamento do livro inválida!<br>";
         }
         return $erros;
     }
@@ -379,7 +437,7 @@ class LivroModel extends Model
         define('TB', 1099511627776); // 1024 * 1024 * 1024 * 1024
 
         $mensagem = "";
-        
+
         if (isset($pdf)) {
             // arquivo
             $arquivo = $pdf;

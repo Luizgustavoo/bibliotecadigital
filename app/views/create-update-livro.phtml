@@ -1,9 +1,12 @@
 <?php
 Validar::validarLogin();
-if(ValidarPagina::validarPaginaAtual('create_update_livro') <= 0){header ("Location: " . DOMINIO. "home");}
+if (ValidarPagina::validarPaginaAtual('create_update_livro') <= 0) {
+  header("Location: " . DOMINIO . "home");
+}
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
@@ -49,6 +52,13 @@ date_default_timezone_set('America/Sao_Paulo');
                     <div class="form-group">
                       <label for="totalPaginas">Total de Páginas:</label>
                       <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['totalPaginas'] : ""; ?>" class="form-control" id="totalPaginas" name="totalPaginas" placeholder="Coloque uma quantidade...">
+                    </div>
+                    <div>
+                      <label for="tipoLivro">Tipo de Livro:</label>
+                      <select class=" form-select" id="tipoLivro" name="tipoLivro">
+                        <option value="digital" <?= $view_update[0]['tipoLivro'] == 'digital' ? 'selected' : ''; ?>>Livro Digital</option>
+                        <option value="fisico" <?= $view_update[0]['tipoLivro'] == 'fisico' ? 'selected' : ''; ?>>Livro Físico</option>
+                      </select>
                     </div>
                     <label for="idEditora">Editora:</label>
                     <select class=" form-select" id="idEditora" name="idEditora" aria-label="Default select example">
@@ -137,24 +147,37 @@ date_default_timezone_set('America/Sao_Paulo');
       }
     }
 
+    $("#cadastroLivro").on('submit', function() {
+      var erros = "";
+      var file = document.getElementById("imagemCapa");
+      var file2 = document.getElementById("imagemThumb");
+      var filepdf = document.getElementById("pdfLivro");
+      erros += $("#dataLancamento").val().length != 10 ? "Data de lançamento inválida!<br>" : "";
+      erros += $("#tituloLivro").val().length <= 3 ? "Título do livro inválido!<br>\n" : "";
+      erros += $("#observacoesLivro").val().length <= 6 ? "Observações do livro inválido!<br>\n" : "";
+      if ($("#tipoLivro").val() == 'digital') {
+        erros += filepdf.files.length === 0 ? "Pdf do livro inválido!<br>" : "";
+        erros += file.files.length === 0 ? "Imagem da capa inválida!<br>" : "";
+        erros += file2.files.length === 0 ? "Imagem da thumb inválida!<br>" : "";
+        erros += $("#totalPaginas").val().length <= 0 ? "Páginas do livro inválida!<br>\n" : "";
+      }
+      if (erros.length > 0) {
+
+        $("#modal_retorno .modal-title").html("Erros encontrados!");
+        $("#modal_retorno").addClass('modal-danger');
+        $("#modal_retorno .modal-body p").html(erros).css({
+          'color': 'black'
+        });
+        $("#modal_retorno").modal('show');
 
 
-    $(function() {
-      $("#cadastroLivro").on('submit', function() {
-        var erros = "";
-        var file = document.getElementById("imagemCapa");
-        erros += $("#tituloLivro").val().length <= 0 ? "Título do livro inválido!\n" : "";
-        erros += file.files.length === 0 ? "Imagem inválida!" : "";
-        if (erros.length > 0) {
-          alert(erros);
-          return false;
-        } else {
-          return true;
-        }
         return false;
-      });
+      } else {
+        return true;
+      }
+      return false;
     });
   </script>
 </body>
-
+<?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
 </html>
