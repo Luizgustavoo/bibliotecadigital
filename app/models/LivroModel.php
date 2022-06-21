@@ -6,6 +6,7 @@ class LivroModel extends Model
     public $_tabela = "livro";
     private $idLivro;
     private $idEditora;
+    private $idAutor;
     private $tituloLivro;
     private $tipoLivro;
     private $sinopseLivro;
@@ -16,8 +17,10 @@ class LivroModel extends Model
     private $pdfLivro;
     private $imagemCapa;
     private $imagemThumb;
+    private $verificaPdf;
     private $tamanho_upload = 1024 * 1024 * 5; //5MB
     private $uploadOk = false;
+
 
 
     public function getTipoLivro()
@@ -39,6 +42,30 @@ class LivroModel extends Model
     public function setIdLivro($idLivro)
     {
         $this->idLivro = $idLivro;
+        return $this;
+    }
+
+    public function getIdAutor()
+    {
+        return $this->idAutor;
+    }
+
+
+    public function getVerificaPdf()
+    {
+        return $this->verificaPdf;
+    }
+
+
+    public function setVerificaPdf($verificaPdf)
+    {
+        $this->verificaPdf = $verificaPdf;
+        return $this;
+    }
+
+    public function setIdAutor($idAutor)
+    {
+        $this->idAutor = $idAutor;
         return $this;
     }
 
@@ -191,6 +218,7 @@ class LivroModel extends Model
                         $upload = $this->uploadPdf($this->getPdfLivro());
                         if ($this->uploadOk) {
                             $dados_livro = [
+                                "idLivro" => ($this->getIdLivro()),
                                 "idEditora" => ($this->getIdEditora()),
                                 "tituloLivro" => ($this->getTituloLivro()),
                                 "observacoesLivro" => ($this->getObservacoesLivro()),
@@ -331,7 +359,6 @@ class LivroModel extends Model
                             $upload = $this->uploadPdf($this->getPdfLivro());
 
                             if ($this->uploadOk) {
-
                                 $dados_livro = [
                                     "idEditora" => ($this->getIdEditora()),
                                     "tituloLivro" => ($this->getTituloLivro()),
@@ -345,11 +372,13 @@ class LivroModel extends Model
                                     "imagemThumb" => $novoNome2,
                                     "imagemCapa" => $novoNome,
                                 ];
-
+                                die("ALI");
                                 $where = "idLivro = " . $this->getIdLivro();
                                 $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
+                                die("lá");
                             }
                         } else {
+                          //  die("ELSE");
                             $dados_livro = [
                                 "idEditora" => ($this->getIdEditora()),
                                 "tituloLivro" => ($this->getTituloLivro()),
@@ -362,7 +391,7 @@ class LivroModel extends Model
                                 "imagemThumb" => $novoNome2,
                                 "imagemCapa" => $novoNome,
                             ];
-                            
+
                             $where = "idLivro = " . $this->getIdLivro();
                             $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
                         }
@@ -371,19 +400,21 @@ class LivroModel extends Model
                     }
                     if (strlen($erros) <= 0) {
                         $retorno = $this->execTransaction();
-                        // die("ACOLÁ".$retorno);
+                      //  die("ACOLÁ" . $retorno);
                     } else {
                         $retorno = $erros;
                     }
                 } else {
                     $retorno = $valida;
                 }
-                //die("AQUI". $retorno);
+               // die("OI" . $retorno);
                 return $retorno;
             }
             $retorno = $this->execTransaction();
+        } else {
+            $retorno = $valida;
         }
-        //die("HERE".$retorno);
+       // die("HERE" . $retorno);
         return $retorno;
     }
 
@@ -393,16 +424,23 @@ class LivroModel extends Model
         $erros = "";
         if (strlen($this->getTipoLivro()) <= 0) {
             $erros .= "Tipo do livro inválido!<br>";
-        }else{
+        } else {
             if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
                 $erros .= "Foto inválida!<br>";
             }
-            if (strlen($this->getPdfLivro()['tmp_name']) <= 0) {
+            if (strlen($this->getPdfLivro()['tmp_name']) <= 0 && strlen($this->getVerificaPdf()) <= 0)  {
                 $erros .= "Pdf inválido!<br>";
             }
             if (($this->getTotalPaginas()) <= 0) {
                 $erros .= "Total de páginas inválido!<br>";
             }
+        }
+
+        if ($this->getIdAutor() == null || count($this->getIdAutor()) <= 0) {
+            $erros .= "Selecione o autor!<br>";
+        }
+        if (strlen($this->getIdLivro()) <= 0) {
+            $erros .= "Id do livro inválido!<br>";
         }
 
         if (strlen($this->getTituloLivro()) < 3) {

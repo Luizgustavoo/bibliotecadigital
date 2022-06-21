@@ -20,6 +20,9 @@ class Livro extends Controller
         $editora = new EditoraModel();
         $dados['editora'] = $editora->listarTodas();
 
+        $autor = new AutorModel();
+        $dados['autor'] = $autor->listarTodas();
+
 
         if (!empty($action) && $action == 'update') {
             $id = $this->getParams("id");
@@ -35,9 +38,13 @@ class Livro extends Controller
 
     public function cadastro()
     {
+        $autor = new AutorModel();
+        $dados['autor'] = $autor->listarTodas();
         $editora = new EditoraModel();
         $dados['editora'] = $editora->listarTodas();
         $livro = new LivroModel();
+        $livro->setIdLivro($_POST['idLivro']);
+        $livro->setIdAutor($_POST['idAutor']);
         $livro->setIdEditora($_POST['idEditora']);
         $livro->setTituloLivro($_POST['tituloLivro']);
         $livro->setObservacoesLivro($_POST['observacoesLivro']);
@@ -84,10 +91,13 @@ class Livro extends Controller
 
         if (isset($_POST)) {
             $livro = new LivroModel();
-            $livro-> setIdLivro($_POST['idLivro']);
+            $livro->setIdLivro($_POST['idLivro']);
+            $autor = new AutorModel();
+            $dados['autor'] = $autor->listarTodas();
             $editora = new EditoraModel();
             $editora->setDescricaoEditora($_POST['descricaoEditora']);
             $dados['editora'] = $editora->listarTodas();
+            $livro->setIdAutor($_POST['idAutor']);
             $livro->setIdEditora($_POST['idEditora']);
             $livro->setTituloLivro($_POST['tituloLivro']);
             $livro->setObservacoesLivro($_POST['observacoesLivro']);
@@ -97,6 +107,7 @@ class Livro extends Controller
             $livro->setDataLancamento(date('Y-m-d', strtotime(str_replace('/', '-', $_POST['dataLancamento']))));
             $livro->setTotalPaginas($_POST['totalPaginas']);
             $livro->setPdfLivro($_FILES['pdfLivro']);
+            $livro->setVerificaPdf($_POST['verificaPdf']);
             $livro->setImagemCapa($_FILES['imagemCapa']);
             $livro->setImagemThumb($_FILES['imagemThumb']);
 

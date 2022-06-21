@@ -36,16 +36,15 @@ date_default_timezone_set('America/Sao_Paulo');
                 <table class="table table-bordered v-middle" id="listagemLivro">
                   <thead class="thead-dark">
                     <tr class="text-center align-middle">
-                      <th style="width: 6%;">ID</th>
-                      <th style="width: 15%;">Imagem</th>
-                      <th style="width: 12%;">Título</th>
-                      <th style="width: 15%;">Sinopse</th>
-                      <th style="width: 15%;">Observações</th>
-                      <th style="width: 10%;">Data de Lançamento</th>
-                      <th style="width: 8%;">Data de Cadastro</th>
-                      <th style="width: 12%;">Editora</th>
-                      <th style="width: 7%;">Total de Páginas</th>
-                      <th style="width: 8%;"></th>
+                      <th>Código</th>
+                      <th>Imagem</th>
+                      <th>Título</th>
+                      <th style="width: 12%;">Sinopse</th>
+                      <th>Observações</th>
+                      <th>Lançamento</th>
+                      <th>Editora</th>
+                      <th style="width: 6%;">Páginas</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -68,7 +67,6 @@ date_default_timezone_set('America/Sao_Paulo');
                           <td><?= $livro['sinopseLivro'] ?></td>
                           <td><?= $livro['observacoesLivro'] ?></td>
                           <td><?= date('d/m/Y', strtotime($livro['dataLancamento'])) ?></td>
-                          <td><?= date('d/m/Y', strtotime($livro['dataCadastro'])) ?></td>
                           <td><?= $livro['descricaoEditora'] ?></td>
                           <td><?= $livro['totalPaginas'] ?></td>
                           <td>

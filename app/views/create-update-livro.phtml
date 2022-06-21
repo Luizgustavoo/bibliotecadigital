@@ -21,6 +21,8 @@ date_default_timezone_set('America/Sao_Paulo');
 
     <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
 
+    <link rel="stylesheet" href="http://<?= SITE_ROOT ?>/web-pages/js/bootstrap-multiselect.css">
+
     <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
     <div class="page-wrapper">
       <div class="container-fluid">
@@ -33,11 +35,36 @@ date_default_timezone_set('America/Sao_Paulo');
               <div class="row">
                 <div class="col col-md-6" style="border-right: 2px solid #EEEEEE;">
                   <form action="<?= $view_tipo_operacao == 'inserir' ? DOMINIO . "livro/cadastro" : DOMINIO . "livro/alterar" ?>" method="POST" enctype="multipart/form-data" id="cadastroLivro">
+                    <div class="row">
+                      <div class="col-11">
+                        <div class="form-group">
+                          <label for="idLivro">Código Livro:</label>
+                          <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro" placeholder="Clique para gerar um código...">
+                        </div>
+                      </div>
+                      <div class="col-1">
+                        <br>
+                        <a id="botao" class="mt-2 btn btn-success"><i class="fas fa-key text-white"></i></a>
+                      </div>
+                    </div>
                     <div class="form-group">
                       <label for="tituloLivro">Título:</label>
                       <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['tituloLivro'] : ""; ?>" class="form-control" id="tituloLivro" name="tituloLivro" placeholder="Coloque um título...">
                     </div>
-                    <div class="form-group">
+                    <label for="idAutor">Autor(es):</label>
+                    <select id="idAutor" class="js-example-basic-single" name="idAutor[]" multiple>
+                      <?php
+                      if (isset($view_autor) && count($view_autor) > 0) {
+                        foreach ($view_autor as $autor) {
+                          $selected = $view_update[0]['idAutor'] == $autor['idAutor'] ? "selected" : "";
+                          echo '<option value="' . $autor["idAutor"] . '" ' . $selected . '>' . $autor["descricaoAutor"] . '</option>';
+                        }
+                      } else {
+                        echo '<option value = "">Nenhuma editora cadastrada</option>';
+                      }
+                      ?>
+                    </select>
+                    <div class="mt-3 form-group">
                       <label for="observacoesLivro">Observações:</label>
                       <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['observacoesLivro'] : ""; ?>" class="form-control" id="observacoesLivro" name="observacoesLivro" placeholder="Coloque uma descrição...">
                     </div>
@@ -77,9 +104,7 @@ date_default_timezone_set('America/Sao_Paulo');
                       <label for="pdfLivro">Selecione o PDF do Livro:</label>
                       <input type="file" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['pdfLivro'] : ""; ?>" class="inputstl" id="pdfLivro" name="pdfLivro" accept=".pdf">
                     </div>
-                    <div class="form-group">
-                      <input type="hidden" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro">
-                    </div>
+                    <input type="hidden" name="verificaPdf" id="verificaPdf" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['pdfLivro'] : ""; ?>">
                     <div class="btn-cadastrar">
                       <button type="submit" class="btn btn-info"><?= $view_tipo_operacao == 'inserir' ? "Cadastrar" : "Alterar" ?></button>
                       <a href="<?= DOMINIO ?>livro/listagem" class=" btn ml-1 bg-light">Cancelar</a>
@@ -88,8 +113,8 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col col-md-6">
                   <div class="row">
                     <div class="col col-md-12">
-                      <h4 class="mt-3 text-center">Selecione a imagem da capa:</h4>
-                      <div class="personal-image2">
+                      <h4 class="mt-5 text-center">Selecione a imagem da capa:</h4>
+                      <div class="mt-1 personal-image2">
                         <label class="label">
                           <input type="file" class="imagemCapa" id="imagemCapa" name="imagemCapa" />
                           <figure class="personal-figure2">
@@ -102,10 +127,10 @@ date_default_timezone_set('America/Sao_Paulo');
                       </div>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="mt-5 row">
                     <div class="col col-md-12">
-                      <h4 class="mt-2 text-center">Selecione a imagem da thumb:</h4>
-                      <div class="personal-image2">
+                      <h4 class="mt-5 text-center">Selecione a imagem da thumb:</h4>
+                      <div class="mt-1 personal-image2">
                         <label class="label">
                           <input type="file" class="imagemThumb" id="imagemThumb" name="imagemThumb" />
                           <figure class="personal-figure2">
@@ -132,8 +157,10 @@ date_default_timezone_set('America/Sao_Paulo');
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
   <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php"; ?>
 
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-  <script>
+  <script type="text/javascript">
     function mascara_data(campo, valor) {
       var mydata = '';
       mydata = mydata + valor;
@@ -147,6 +174,23 @@ date_default_timezone_set('America/Sao_Paulo');
       }
     }
 
+    $(document).ready(function() {
+      let botao = document.querySelector('#botao');
+      let idLivro = document.querySelector('#idLivro');
+      botao.addEventListener('click', function() {
+        var dateNow = Date.now();
+        idLivro.value = dateNow;
+      });
+    });
+
+    $(document).ready(function() {
+      $('.js-example-basic-single').select2({
+        width: '100%',
+        placeholder: 'Selecione um autor',
+        allowClear: true
+      });
+    });
+
     $("#cadastroLivro").on('submit', function() {
       var erros = "";
       var file = document.getElementById("imagemCapa");
@@ -154,9 +198,10 @@ date_default_timezone_set('America/Sao_Paulo');
       var filepdf = document.getElementById("pdfLivro");
       erros += $("#dataLancamento").val().length != 10 ? "Data de lançamento inválida!<br>" : "";
       erros += $("#tituloLivro").val().length <= 3 ? "Título do livro inválido!<br>\n" : "";
+      erros += $("#idLivro").val().length <= 0 ? "Id do livro inválido!<br>\n" : "";
       erros += $("#observacoesLivro").val().length <= 6 ? "Observações do livro inválido!<br>\n" : "";
       if ($("#tipoLivro").val() == 'digital') {
-        erros += filepdf.files.length === 0 ? "Pdf do livro inválido!<br>" : "";
+        erros += filepdf.files.length === 0 && $('#verificaPdf').val().length <= 0 ? "Pdf do livro inválido!<br>" : "";
         erros += file.files.length === 0 ? "Imagem da capa inválida!<br>" : "";
         erros += file2.files.length === 0 ? "Imagem da thumb inválida!<br>" : "";
         erros += $("#totalPaginas").val().length <= 0 ? "Páginas do livro inválida!<br>\n" : "";
@@ -180,4 +225,5 @@ date_default_timezone_set('America/Sao_Paulo');
   </script>
 </body>
 <?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
+
 </html>

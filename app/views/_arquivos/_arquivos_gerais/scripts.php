@@ -30,7 +30,9 @@
   <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot/jquery.flot.crosshair.js"></script>
   <script src="http://<?= SITE_ROOT ?>/web-pages/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
   <script src="http://<?= SITE_ROOT ?>/web-pages/dist/js/pages/chart/chart-page-init.js"></script>
+  <script src="http://<?= SITE_ROOT ?>/web-pages/js/bootstrap-multiselect.js"></script>
   <script src="http://<?= SITE_ROOT ?>/web-pages/js/all-script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.14/js/bootstrap-multiselect.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
