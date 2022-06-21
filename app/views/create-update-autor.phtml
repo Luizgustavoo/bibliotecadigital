@@ -66,10 +66,17 @@ date_default_timezone_set('America/Sao_Paulo');
       $("#cadastroAutor").on('submit', function() {
         var erros = "";
         var file = document.getElementById("imagemAutor");
-        erros += $("#descricaoAutor").val().length <= 0 ? "Nome do autor inválido!\n" : "";
+        erros += $("#descricaoAutor").val().length <= 0 ? "Nome do autor inválido!<br>" : "";
         erros += file.files.length === 0 ? "Imagem inválida!" : "";
         if (erros.length > 0) {
-          alert(erros);
+          $("#modal_retorno .modal-title").html("Erros encontrados!");
+          $("#modal_retorno").addClass('modal-danger');
+          $("#modal_retorno .modal-body p").html(erros).css({
+            'color': 'black'
+          });
+          $("#modal_retorno").modal('show');
+
+
           return false;
         } else {
           return true;
@@ -79,5 +86,5 @@ date_default_timezone_set('America/Sao_Paulo');
     });
   </script>
 </body>
-
+<?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
 </html>

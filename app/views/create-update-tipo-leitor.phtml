@@ -67,7 +67,14 @@ date_default_timezone_set('America/Sao_Paulo');
         var erros = "";
         erros += $("#descricaoTipo").val().length <= 0 ? "Tipo de leitor inválido!\n" : "";
         if (erros.length > 0) {
-          alert(erros);
+          $("#modal_retorno .modal-title").html("Erros encontrados!");
+          $("#modal_retorno").addClass('modal-danger');
+          $("#modal_retorno .modal-body p").html(erros).css({
+            'color': 'black'
+          });
+          $("#modal_retorno").modal('show');
+
+
           return false;
         } else {
           return true;
@@ -77,5 +84,5 @@ date_default_timezone_set('America/Sao_Paulo');
     });
   </script>
 </body>
-
+<?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
 </html>

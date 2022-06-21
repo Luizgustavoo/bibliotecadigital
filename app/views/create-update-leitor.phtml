@@ -119,8 +119,9 @@ date_default_timezone_set('America/Sao_Paulo');
         var file = document.getElementById("avatarLeitor");
         erros += $("#nomeLeitor").val().length <= 3 ? "Nome do leitor inválido!<br>\n" : "";
         erros += $("#idTipo").val().length <= 0 ? "Tipo de leitor inválido!<br>\n" : "";
-        erros += $("#loginLeitor").val().length <= 0 ? "Login do leitor inválido!<br>\n" : "";
-        erros += $("#senhaLeitor").val().length <= 7 ? "Senha do Leitor inválida, minímo 8 caracteres!<br/>\n" : "";
+        erros += $("#sexoLeitor").val().length <= 0 ? "Sexo do leitor inválido!<br>\n" : "";
+        erros += $("#loginLeitor").val().length <= 0 ? "Login do leitor inválido!<br>" : "";
+        erros += $("#senhaLeitor").val().length <= 7 ? "Senha do Leitor inválida, minímo 8 caracteres!<br/>" : "";
         erros += $("#emailLeitor").val().length <= 0 || ValidateEmail($("#emailLeitor").val()) == false ? "Email do leitor inválido!<br>\n" : "";
         erros += file.files.length === 0 ? "Imagem da capa inválida!<br>" : "";
         if (erros.length > 0) {

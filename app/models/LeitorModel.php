@@ -408,6 +408,9 @@ class LeitorModel extends Model
         if (strlen($this->getIdTipo()) <= 0) {
             $erros .= "Tipo de leitor inválido!<br>";
         }
+        if (strlen($this->getSexoLeitor()) <= 0) {
+            $erros .= "Sexo do leitor inválido!<br>";
+        }
         if(!Validar::validaEmail($this->getEmailLeitor())){
             $erros .= "Email do Leitor inválido!<br/>";
         }
