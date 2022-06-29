@@ -23,12 +23,18 @@ class Livro extends Controller
         $autor = new AutorModel();
         $dados['autor'] = $autor->listarTodas();
 
+        $categoria = new CategoriaModel();
+        $dados['categoria'] = $categoria->listarTodas();
+
+
 
         if (!empty($action) && $action == 'update') {
             $id = $this->getParams("id");
             $livro = new LivroModel();
             $dados['tipo_operacao'] = "alterar";
             $dados['update'] = $livro->listarPorCodigo($id);
+            $dados['autorlivro'] = $autor->listarPorLivro($id);
+            $dados['categorialivro'] = $categoria->listarPorLivro($id);
         } else {
             $dados['tipo_operacao'] = "inserir";
         }
@@ -38,10 +44,19 @@ class Livro extends Controller
 
     public function cadastro()
     {
+
+//        echo "<pre>";
+//        print_r($_POST);
+//        die;
+
         $autor = new AutorModel();
         $dados['autor'] = $autor->listarTodas();
         $editora = new EditoraModel();
         $dados['editora'] = $editora->listarTodas();
+
+        $categoria = new CategoriaModel();
+        $dados['categoria'] = $categoria->listarTodas();
+
         $livro = new LivroModel();
         $livro->setIdLivro($_POST['idLivro']);
         $livro->setIdAutor($_POST['idAutor']);
@@ -56,6 +71,9 @@ class Livro extends Controller
         $livro->setPdfLivro($_FILES['pdfLivro']);
         $livro->setImagemCapa($_FILES['imagemCapa']);
         $livro->setImagemThumb($_FILES['imagemThumb']);
+        $livro->setTipoOperacao($_POST['tipoOperacao']);
+        $livro->setQuantidadeLivros($_POST['quantidadeLivros']);
+        $livro->setIdCategoria($_POST['idCategoria']);
 
         $dados['retorno'] = $livro->inserir();
         $dados['tipo_operacao'] = "inserir";
@@ -65,6 +83,10 @@ class Livro extends Controller
 
     public function listagem()
     {
+
+        $dados['msg'] = $this->getParams("msg");
+        $dados['retorno'] = $this->getParams("return");
+
         $listar = new LivroModel();
         $dados['listagem'] = $listar->listarTodasPorTipo('digital');
         $this->view("listagem-livro", $dados);
@@ -90,6 +112,12 @@ class Livro extends Controller
         session_start();
 
         if (isset($_POST)) {
+//            echo "<pre>";
+//            print_r($_POST);
+//            die;
+            $categoria = new CategoriaModel();
+            $categoria->setDescricaoCategoria($_POST['descricaoCategoria']);
+            $dados['categoria'] = $categoria->listarTodas();
             $livro = new LivroModel();
             $livro->setIdLivro($_POST['idLivro']);
             $autor = new AutorModel();
@@ -110,6 +138,11 @@ class Livro extends Controller
             $livro->setVerificaPdf($_POST['verificaPdf']);
             $livro->setImagemCapa($_FILES['imagemCapa']);
             $livro->setImagemThumb($_FILES['imagemThumb']);
+            $livro->setTipoOperacao($_POST['tipoOperacao']);
+            $livro->setQuantidadeLivros($_POST['quantidadeLivros']);
+            $livro->setIdCategoria($_POST['idCategoria']);
+
+
 
             $dados['retorno_update'] = $livro->alterar();
             $dados['tipo_operacao'] = "alterar";

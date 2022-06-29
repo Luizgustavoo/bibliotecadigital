@@ -33,5 +33,4 @@ Class IndexModel extends Model{
 
 
     
-   
 }

@@ -276,7 +276,7 @@ class LeitorModel extends Model
                             "emailLeitor" => ($this->getEmailLeitor()),
                             "sexoLeitor" => ($this->getSexoLeitor()),
                             "loginLeitor" => ($this->getLoginLeitor()),
-                            "senhaLeitor" => md5(($this->getSenhaLeitor())),
+                            "senhaLeitor" => md5(md5($this->getSenhaLeitor())),
                             "avatarLeitor" => $novoNome,
                             "statusLeitor" => ($this->getStatusLeitor()),
                         ];
@@ -372,7 +372,7 @@ class LeitorModel extends Model
                             "emailLeitor" => ($this->getEmailLeitor()),
                             "sexoLeitor" => ($this->getSexoLeitor()),
                             "loginLeitor" => ($this->getLoginLeitor()),
-                            "senhaLeitor" => md5(($this->getSenhaLeitor())),
+                            "senhaLeitor" => md5(md5($this->getSenhaLeitor())),
                             "avatarLeitor" => $novoNome,
                             "statusLeitor" => ($this->getStatusLeitor()),
                         ];

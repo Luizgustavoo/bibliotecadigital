@@ -155,7 +155,7 @@ class AutorModel extends Model
         $places = ['*'];
 
         //inner join, outer join, todos as ligações que quiser fazer
-        $innerjoin = null;
+        $innerjoin = '';
 
         //condição do select
         $where = null;
@@ -176,11 +176,40 @@ class AutorModel extends Model
         return $this->read($this->_tabela, $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
 
+    public function listarPorLivro($idLivro)
+    {
+
+        //COLUNAS DA TABELA
+        $places = ['autorlivro.*', 'autorlivro.idAutor'];
+
+        //inner join, outer join, todos as ligações que quiser fazer
+        $innerjoin = 'inner join autor on autorlivro.idAutor = autor.idAutor';
+
+        //condição do select
+        $where = "autorlivro.idLivro = '$idLivro'";
+
+        //ordenar select
+        $orderby = '';
+
+        //limit = quantidade de registros para exibir
+        $limit = null;
+
+        //usado junto com o limit por exemplo começa a exibição do segundo registro e mostre mais 5 ficaria limit 5 offset 1
+        $offset = null;
+
+        //coluna na qual serão agrupados os valores
+        $groupby = null;
+
+
+        return $this->read('autorlivro', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
+    }
+
     public function listarPorCodigo($id)
     {
 
         return $this->read($this->_tabela, "idAutor = $id", null, null, null, null, null, null);
     }
+
 
     public function alterar()
     {

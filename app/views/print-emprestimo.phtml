@@ -1,0 +1,343 @@
+<?php
+Validar::validarLogin();
+if(ValidarPagina::validarPaginaAtual('listagem_emprestimo') <= 0){header ("Location: " . DOMINIO. "home");}
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+?><!DOCTYPE html>
+<html>
+<head>
+    <title>Impressão custo diário</title>
+    <meta charset='UTF-8'>
+</head>
+
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, Helvetica, sans-serif; }
+    html{margin: 0;padding: 0;}
+
+    body{
+
+        margin: 0;
+        font-size: 10pt;
+
+    }
+
+    @media print {
+        @page  {
+            size: A4;
+            margin: 0;
+        }
+        td.bold{
+            font-weight: bold;
+        }
+
+    }
+    table tbody tr td{ padding: 3px;}
+    table{margin-left: .6cm}
+
+    table.table_contrato{
+        width: 95%; margin-top: 2.7cm;font-size: 10pt;border-collapse: collapse;
+        padding: 0;
+        border: 5px solid transparent !important;
+
+    }
+    .table_contrato > td {
+        border: none !important;
+    }
+
+    table#table_dados_aluno{
+        width: 95%; margin-top: .2cm;font-size: 10pt;border-collapse: collapse;
+
+    }
+    table#composicao{
+        width: 95%; margin-top: .2cm;font-size: 10pt;border-collapse: collapse;
+
+    }
+    table#renda {
+        width: 95%; margin-top: .2cm;font-size: 10pt;border-collapse: collapse;
+
+    }
+    table.questionario {
+        width: 95%; margin-top: .2cm;font-size: 10pt;border-collapse: collapse;
+        border: 1px solid black;
+    }
+    table.com_borda td, th{
+
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    table#table_assinatura{
+        width: 95%; margin-top: 0cm; font-size: 10pt;border-collapse: collapse;
+        border: 3px solid transparent !important;
+
+    }
+
+    table#table_data{
+        width: 95%; margin-top: .3cm;margin-bottom: 0; font-size: 10pt;border-collapse: collapse;border:2px solid transparent;
+    }
+    table#table_rodape{
+        width: 90%; margin-top: .8cm; font-size: 6pt;border-collapse: collapse;border: 1px solid gray;
+    }
+    div.bg{
+        border: 1px solid white;
+        padding: 0;
+        margin: 0;
+        background: url('http://<?=SITE_ROOT?>/web-pages/assets/images/bg_impressoes.jpg');
+        background-size: 100%;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: auto;
+    }
+    tr.bold td{
+        font-weight: bold;
+    }
+</style>
+
+<body  onLoad="window.print();"  bgproperties="fixed">
+
+
+<div class="bg">
+
+    <table class="table_contrato">
+
+        <tr>
+
+            <td colspan="3" ALIGN="center">
+
+                <?php
+                setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+                $meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                $semana = ['Domingo', 'Segunda-feira', 'Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+
+                $dia_da_semana = $semana[date('w', strtotime($view_emprestimo[0]['dataEmprestimo']))];
+                $dia_do_mes = date('d', strtotime($view_emprestimo[0]['dataEmprestimo']));
+                $mes = $meses[date('m', strtotime($view_emprestimo[0]['dataEmprestimo'])) - 1];
+                $ano = date('Y', strtotime($view_emprestimo[0]['dataEmprestimo']));
+
+                ?>
+
+                <h2>[<?=$view_emprestimo[0]['idEmprestimo']?>] - Ficha de empréstimo de livro(s) <span style="font-size: 8pt; font-weight: lighter;">(via do leitor)</span></h2><br>
+
+
+
+            </td>
+
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <h4>
+                    Leitor: <?=strtoupper($view_emprestimo[0]['nomeLeitor'] )?><br>
+                    Data do empréstimo: <?= mb_strtoupper($dia_da_semana.", " . $dia_do_mes . " de " . $mes . " de " . $ano, ENCODING)?></h4>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <table id="table_dados_aluno" class="com_borda" style="" >
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Livro</th>
+            <th>Editora</th>
+            <th>Devolução prevista</th>
+            <th>Status</th>
+
+        </tr>
+
+        <?php
+        if(isset($view_livros) && count($view_livros) > 0){
+
+            foreach($view_livros as $listagem){
+
+                ?>
+                <tr>
+                    <td><?= $listagem['idLivro'] ?></td>
+                    <td><?= $listagem['tituloLivro'] ?></td>
+                    <td><?= $listagem['descricaoEditora'] ?></td>
+
+                    <td><?= date('d/m/Y', strtotime($listagem['dataDevolucao'])) ?></td>
+                    <td><?= $listagem['dataDevolvido'] != null ? "<span class='btn-sm btn-success'>devolvido: ".date('d/m/Y', strtotime($listagem['dataDevolvido']))."</span>" : "<span class='btn-sm btn-danger'>a devolver</span>" ?></td>
+
+
+                </tr>
+                <?php
+            }
+
+
+
+        }
+        ?>
+
+        </tbody>
+    </table>
+
+    <BR><BR>
+
+
+
+    <br>
+    <table style="width: 100%;">
+
+        <tr>
+            <td>
+                <center>
+                    ___________________________ <br>
+                    Leitor: <?=$view_emprestimo[0]['nomeLeitor']?>
+                </center>
+            </td>
+            <td>
+                <center>
+                    ___________________________ <br>
+                    Casa do Bom Menino de Arapongas
+                </center>
+            </td>
+        </tr>
+    </table>
+    <div id="rodape" style="margin-top: .5cm">
+
+
+        <table id="table_data">
+            <tbody>
+
+            <tr>
+                <td colspan="6" align="center">
+                    <?=utf8_encode(Validar::cidadeMesAno());?>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+<br>
+<center>
+    ------------------------------recorte aqui------------------------------
+</center>
+<br>
+
+
+<div class="bg">
+
+    <table class="table_contrato">
+
+        <tr>
+
+            <td colspan="3" ALIGN="center">
+
+                <?php
+                setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+                $meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                $semana = ['Domingo', 'Segunda-feira', 'Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+
+                $dia_da_semana = $semana[date('w', strtotime($view_emprestimo[0]['dataEmprestimo']))];
+                $dia_do_mes = date('d', strtotime($view_emprestimo[0]['dataEmprestimo']));
+                $mes = $meses[date('m', strtotime($view_emprestimo[0]['dataEmprestimo'])) - 1];
+                $ano = date('Y', strtotime($view_emprestimo[0]['dataEmprestimo']));
+
+                ?>
+
+                <h2>[<?=$view_emprestimo[0]['idEmprestimo']?>] - Ficha de empréstimo de livro(s) <span style="font-size: 8pt; font-weight: lighter;">(via do Projeto Crescer)</span></h2><br>
+
+
+
+            </td>
+
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <h4>
+                    Leitor: <?=strtoupper($view_emprestimo[0]['nomeLeitor'] )?><br>
+                    Data do empréstimo: <?= mb_strtoupper($dia_da_semana.", " . $dia_do_mes . " de " . $mes . " de " . $ano, ENCODING)?></h4>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <table id="table_dados_aluno" class="com_borda" style="" >
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Livro</th>
+            <th>Editora</th>
+            <th>Devolução prevista</th>
+            <th>Status</th>
+
+        </tr>
+
+        <?php
+        if(isset($view_livros) && count($view_livros) > 0){
+
+            foreach($view_livros as $listagem){
+
+                ?>
+                <tr>
+                    <td><?= $listagem['idLivro'] ?></td>
+                    <td><?= $listagem['tituloLivro'] ?></td>
+                    <td><?= $listagem['descricaoEditora'] ?></td>
+
+                    <td><?= date('d/m/Y', strtotime($listagem['dataDevolucao'])) ?></td>
+                    <td><?= $listagem['dataDevolvido'] != null ? "<span class='btn-sm btn-success'>devolvido: ".date('d/m/Y', strtotime($listagem['dataDevolvido']))."</span>" : "<span class='btn-sm btn-danger'>a devolver</span>" ?></td>
+
+
+                </tr>
+                <?php
+            }
+
+
+
+        }
+        ?>
+
+        </tbody>
+    </table>
+
+    <BR><BR>
+
+
+
+    <br>
+    <table style="width: 100%;">
+
+        <tr>
+            <td>
+                <center>
+                    ___________________________ <br>
+                    Leitor: <?=$view_emprestimo[0]['nomeLeitor']?>
+                </center>
+            </td>
+            <td>
+                <center>
+                    ___________________________ <br>
+                    Casa do Bom Menino de Arapongas
+                </center>
+            </td>
+        </tr>
+    </table>
+    <div id="rodape" style="margin-top: .5cm">
+
+
+        <table id="table_data">
+            <tbody>
+
+            <tr>
+                <td colspan="6" align="center">
+                    <?=utf8_encode(Validar::cidadeMesAno());?>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>
