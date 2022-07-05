@@ -9,7 +9,10 @@
     <nav class="sidebar-nav" >
       <ul id="sidebarnav" class="pt-4">
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>home" aria-expanded="false"><i class="mdi mdi-home"></i><span class="hide-menu">Início</span></a>
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>home" aria-expanded="false"><i class="mdi mdi-home"></i><span class="hide-menu">Home</span></a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>usuario/listagem" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Usuário</span></a>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>autor/listagem" aria-expanded="false"><i class="mdi mdi-account-edit"></i><span class="hide-menu">Autor</span></a>

@@ -18,14 +18,17 @@ class Leitor extends Controller
         $dados['return'] = $this->getParams("return");
 
         $tipoleitor = new TipoLeitorModel();
-        $dados['tipoLeitor'] = $tipoleitor->listarTodas(); 
+        $dados['tipoLeitor'] = $tipoleitor->listarTodas();
+
 
 
         if(!empty($action) && $action == 'update'){
             $id = $this->getParams("id");
+
             $leitor = new LeitorModel();
             $dados['tipo_operacao'] = "alterar";
             $dados['update'] = $leitor ->listarPorCodigo($id);
+
         }else{
             $dados['tipo_operacao'] = "inserir";
         }

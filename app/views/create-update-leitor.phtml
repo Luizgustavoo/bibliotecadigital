@@ -123,7 +123,7 @@ date_default_timezone_set('America/Sao_Paulo');
         erros += $("#loginLeitor").val().length <= 0 ? "Login do leitor inválido!<br>" : "";
         erros += $("#senhaLeitor").val().length <= 7 ? "Senha do Leitor inválida, minímo 8 caracteres!<br/>" : "";
         erros += $("#emailLeitor").val().length <= 0 || ValidateEmail($("#emailLeitor").val()) == false ? "Email do leitor inválido!<br>\n" : "";
-        erros += file.files.length === 0 ? "Imagem da capa inválida!<br>" : "";
+        erros += file.files.length === 0 ? "Imagem do leitor inválida!<br>" : "";
         if (erros.length > 0) {
 
           $("#modal_retorno .modal-title").html("Erros encontrados!");

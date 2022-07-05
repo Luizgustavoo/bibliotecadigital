@@ -1,0 +1,212 @@
+<?php
+Validar::validarLogin();
+if(ValidarPagina::validarPaginaAtual('listagem_emprestimo') <= 0){header ("Location: " . DOMINIO. "home");}
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+?><!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<style>
+    .eye{
+        color: #0a58ca;
+    }
+</style>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row"">
+            <div class=" container-lg">
+          <div class="table-responsive">
+            <div class="table-wrapper">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <h2>Listagem <b>Empréstimos</b></h2>
+                  </div>
+                  <div class="col-sm-4">
+                    <a href="<?= DOMINIO ?>emprestimo" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
+                  </div>
+                </div>
+              </div>
+              <table class="table v-middle" id="listagemEmprestimo">
+                <thead class="thead-dark">
+                  <tr class="text-center align-middle">
+                      <th style="width: 10%;"></th>
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 20%;">Leitor</th>
+                    <th style="width: 15%;">Data Empréstimo</th>
+                    <th style="width: 15%;">Data Devolução</th>
+                    <th style="width: 15%;">Status</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  if (isset($view_listagem) && count($view_listagem) > 0) {
+
+                       foreach ($view_listagem as $listagem) {
+                           ?>
+                           <tr class="text-center v-middle">
+
+                               <td>
+                                   <div class="dropdown">
+                                       <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+                                           <i class="fa fa-cogs"></i>
+                                           <span class="caret"></span></button>
+                                       <ul class="dropdown-menu bg-inverse border-1">
+                                           <?php
+                                           if(strtolower($listagem['statusEmprestimo']) == "aberto"){
+                                               ?>
+                                               <li><a class="text-success"
+                                                      href="<?= DOMINIO ?>emprestimo/index/action/update/id/<?= $listagem['idEmprestimo'] ?>"
+                                                      data-toggle="tooltip"><i class="fa fa-edit"></i> Alterar</a></li>
+
+                                               <li><a class="text-danger remover"
+                                                      data-desc="<?= "Id: ".$listagem['idEmprestimo']." - Leitor: ". $listagem['nomeLeitor'] ?>"
+                                                      data-id-emprestimo="<?= $listagem['idEmprestimo'] ?>"
+                                                      data-toggle="tooltip"><i class="fa fa-remove"></i> Excluir</a></li>
+                                               <?php
+                                           }
+                                           ?>
+
+                                           <li><a class="text-primary"
+                                                  id="<?= $listagem['idEmprestimo'] ?>"
+                                                  target="_blank"
+                                                  href="<?= DOMINIO ?>emprestimo/veremprestimo/id/<?= $listagem['idEmprestimo'] ?>"
+                                                  data-toggle="tooltip"><i class="fa fa-eye"></i> Visualizar</a></li>
+                                       </ul>
+                                   </div>
+
+
+                               </td>
+
+                               <td><?= $listagem['idEmprestimo'] ?></td>
+                               <td><?= $listagem['nomeLeitor'] ?></td>
+                               <td><?= date('d/m/Y', strtotime($listagem['dataEmprestimo'])) ?></td>
+                               <td><?= date('d/m/Y', strtotime($listagem['dataDevolucao'])) ?></td>
+                               <td><?php
+                                   switch (strtolower($listagem['statusEmprestimo'])){
+                                       case 'aberto': echo '<span class="btn-sm btn-danger">Aberto</span>';break;
+                                       case 'fechado': echo '<span class="btn-sm btn-success">Fechado</span>';break;
+                                   }
+                                   ?></td>
+
+                           </tr>
+                           <?php
+                       }
+
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- SCRIPTS -->
+  <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php";?>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('#listagemEmprestimo').DataTable({
+        'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
+        "iDisplayLength": 7,
+        "initComplete": function() {
+          $("#listagemTipoLeitor").show();
+        },
+        buttons: ['searchBuilder', 'csv', 'excel', 'pdf', 'print'],
+        "language": {
+          "lengthMenu": "",
+          "zeroRecords": "Nada encontrado",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Nenhum registro disponível",
+          "infoFiltered": "(filtrado de _MAX_ registros no total)",
+          "sSearch": "Buscar: ",
+          "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Seguinte",
+            "sPrevious": "Anterior"
+          },
+        }
+      });
+
+        $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.remover', function(e) {
+            e.preventDefault();
+
+            var descricao = $(this).attr('data-desc');
+            var emprestimo = $(this).attr('data-id-emprestimo');
+
+            var dados = {
+                'id_emprestimo': emprestimo,
+            };
+            bootbox.confirm({
+                message: 'Confirma a exclusão do empréstimo "' + descricao + '"? Todos os seu itens serão também removidos...',
+                callback: function(confirmacao) {
+
+                    if (confirmacao) {
+
+                        $.ajax({
+                            url: '<?= DOMINIO ?>emprestimo/excluiremprestimo',
+                            type: 'POST',
+                            data: dados,
+                            success: function(retorno) {
+
+                                bootbox.confirm({
+                                    message: retorno,
+                                    callback: function(confirma) {
+                                        if (confirma) {
+                                            location.reload();
+                                        }
+                                    },
+                                    buttons: {
+                                        confirm: {
+                                            label: 'OK',
+                                            className: 'btn-success'
+                                        },
+                                    }
+                                })
+                            }
+                        });
+                    }
+                },
+                buttons: {
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-default'
+                    },
+                    confirm: {
+                        label: 'EXCLUIR',
+                        className: 'btn-danger'
+                    }
+
+                }
+            });
+        });
+
+    });
+  </script>
+</body>
+
+</html>
