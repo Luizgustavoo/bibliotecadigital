@@ -37,16 +37,26 @@ date_default_timezone_set('America/Sao_Paulo');
               <div class="row">
                 <div class="col col-md-6" style="border-right: 2px solid #EEEEEE;">
                   <form action="<?= $view_tipo_operacao == 'inserir' ? DOMINIO . "livro/cadastro" : DOMINIO . "livro/alterar" ?>" method="POST" enctype="multipart/form-data" id="cadastroLivro">
+<<<<<<< HEAD
                     <input type="hidden" id="tipoOperacao" name="tipoOperacao" value="<?= $view_tipo_operacao ?>">
                     <div class="row">
                       <div class="col-11">
                         <div class="form-group">
                           <label for="idLivro">Código Livro:</label>
                           <input type="text" <?= $view_tipo_operacao == 'alterar' ? 'readonly' : '' ?> value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro" placeholder="Clique para gerar um código...">
+=======
+                      <input type="hidden" id="tipoOperacao" name="tipoOperacao" value="<?=$view_tipo_operacao?>">
+                      <div class="row">
+                      <div class="col-11">
+                        <div class="form-group">
+                          <label for="idLivro">Código Livro:</label>
+                          <input type="text" <?=$view_tipo_operacao == 'alterar' ? 'readonly':''?> value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro" placeholder="Clique para gerar um código...">
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                         </div>
                       </div>
                       <div class="col-1">
                         <br>
+<<<<<<< HEAD
                         <?php
                         if ($view_tipo_operacao == 'inserir') {
                           echo '<a id="botao" class="mt-2 btn btn-success"><i class="fas fa-key text-white"></i></a>';
@@ -89,6 +99,54 @@ date_default_timezone_set('America/Sao_Paulo');
                         <input type="number" min="1" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['quantidadeLivros'] : "1"; ?>" class="form-control" id="quantidadeLivros" name="quantidadeLivros">
                       </div>
                     </div>
+=======
+                          <?php
+                          if($view_tipo_operacao == 'inserir'){
+                             echo '<a id="botao" class="mt-2 btn btn-success"><i class="fas fa-key text-white"></i></a>';
+                          }
+                          ?>
+                      </div>
+                    </div>
+
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="form-group">
+                                  <label for="idLivro">Categoria:</label>
+                                  <select class="js-example-basic-single form-select" name="idCategoria[]" aria-label="Default select example" multiple>
+                                      <?php
+
+                                      if (isset($view_categorialivro) && count($view_categorialivro) > 0) {
+                                          foreach ($view_categoria as $categoria) {
+                                              $selected = "";
+                                              foreach ($view_categorialivro as $categorialivro) {
+                                                  $selected = $categorialivro['idCategoria'] == $categoria['idCategoria'] ? 'selected' : "";
+                                                  echo '<option value="' . $categoria["idCategoria"] . '" ' . $selected . '>' . $categoria["descricaoCategoria"] . '</option>';
+                                              }
+
+                                          }
+                                      } else {
+
+                                          if (isset($view_autor) && count($view_autor) > 0) {
+                                              foreach ($view_autor as $categoria) {
+                                                  echo '<option value="' . $categoria["idCategoria"] . '" >' . $categoria["descricaoCategoria"] . '</option>';
+                                              }
+                                          }
+
+                                      }
+
+
+                                      ?>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-12">
+                              <label for="idLivro">Quantidade:</label>
+                              <input type="number" min="1" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['quantidadeLivros'] : "1"; ?>" class="form-control" id="quantidadeLivros" name="quantidadeLivros">
+                          </div>
+                      </div>
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
 
                     <div class="form-group">
                       <label for="tituloLivro">Título:</label>
@@ -97,6 +155,7 @@ date_default_timezone_set('America/Sao_Paulo');
                     <label for="idAutor">Autor(es):</label>
                     <select id="idAutor" class="js-example-basic-single" name="idAutor[]" multiple>
                       <?php
+<<<<<<< HEAD
                       if (isset($view_autorlivro) && count($view_autorlivro) > 0) {
                         foreach ($view_autor as $autor) {
                           $selected = "";
@@ -108,10 +167,28 @@ date_default_timezone_set('America/Sao_Paulo');
                       } else {
 
                         if (isset($view_autor) && count($view_autor) > 0) {
+=======
+                      if(isset($view_autorlivro) && count($view_autorlivro) > 0){
+                        foreach ($view_autor as $autor) {
+                          $selected = "";
+                            foreach ($view_autorlivro as $autorlivro){
+                              $selected = $autorlivro['idAutor'] == $autor['idAutor'] ?   'selected' : "";
+                              echo '<option value="' . $autor["idAutor"] . '" ' . $selected . '>' . $autor["descricaoAutor"] . '</option>';
+                            }
+                    
+                        }
+                      }else{
+                    
+                        if(isset($view_autor) && count($view_autor) > 0){
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                           foreach ($view_autor as $autor) {
                             echo '<option value="' . $autor["idAutor"] . '" >' . $autor["descricaoAutor"] . '</option>';
                           }
                         }
+<<<<<<< HEAD
+=======
+                    
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                       }
                       ?>
                     </select>
@@ -171,8 +248,13 @@ date_default_timezone_set('America/Sao_Paulo');
                           <input type="file" class="imagemCapa" id="imagemCapa" name="imagemCapa" />
                           <figure class="personal-figure2">
                             <img id="upload-img-capa" src="<?= $view_tipo_operacao == 'inserir'
+<<<<<<< HEAD
                                                               ? " https://img.icons8.com/plasticine/344/image.png"
                                                               : "http://" . SITE_ROOT . "web-pages/assets/images/livro/" . $view_update[0]['imagemCapa'] ?> " class="personal-avatar2" alt="avatar">
+=======
+                                ? " https://img.icons8.com/plasticine/344/image.png"
+                                : "http://" . SITE_ROOT . "web-pages/assets/images/livro/" . $view_update[0]['imagemCapa'] ?> " class="personal-avatar2" alt="avatar">
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                             <figcaption class="personal-figcaption2">
                               <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
                             </figcaption>
@@ -188,12 +270,21 @@ date_default_timezone_set('America/Sao_Paulo');
                       <div class="mt-1 personal-image2">
                         <label class="label">
                           <input type="file" class="imagemThumb" id="imagemThumb" name="imagemThumb" value="<?= $view_tipo_operacao == 'inserir'
+<<<<<<< HEAD
                                                                                                               ? " https://img.icons8.com/plasticine/344/image.png"
                                                                                                               : "http://" . SITE_ROOT . "web-pages/assets/images/livro/thumb/" . $view_update[0]['imagemThumb'] ?>" />
                           <figure class="personal-figure2">
                             <img id="upload-img-thumb" src="<?= $view_tipo_operacao == 'inserir'
                                                               ? " https://img.icons8.com/plasticine/344/image.png"
                                                               : "http://" . SITE_ROOT . "web-pages/assets/images/livro/thumb/" . $view_update[0]['imagemThumb'] ?> " class="personal-avatar2" alt="avatar">
+=======
+                              ? " https://img.icons8.com/plasticine/344/image.png"
+                              : "http://" . SITE_ROOT . "web-pages/assets/images/livro/thumb/" . $view_update[0]['imagemThumb'] ?>" />
+                          <figure class="personal-figure2">
+                            <img id="upload-img-thumb" src="<?= $view_tipo_operacao == 'inserir'
+                                ? " https://img.icons8.com/plasticine/344/image.png"
+                                : "http://" . SITE_ROOT . "web-pages/assets/images/livro/thumb/" . $view_update[0]['imagemThumb'] ?> " class="personal-avatar2" alt="avatar">
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                             <figcaption class="personal-figcaption2">
                               <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
                             </figcaption>
@@ -246,7 +337,11 @@ date_default_timezone_set('America/Sao_Paulo');
       let idLivro = document.querySelector('#idLivro');
       let tipoOperacao = document.querySelector("#tipoOperacao");
 
+<<<<<<< HEAD
       document.getElementById("idLivro").focus();
+=======
+        document.getElementById("idLivro").focus();
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
 
       botao.addEventListener('click', function() {
         var dateNow = Date.now();

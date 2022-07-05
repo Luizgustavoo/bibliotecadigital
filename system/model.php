@@ -13,10 +13,10 @@
  */
 class Model {
     protected  $db;
-    private $host = 'localhost';
+    private $host = '192.168.25.233';
     private $charset = 'utf8';
     private $username = 'root';
-    private $passwd = '724018';
+    private $passwd = 'Cr3sc3r*2020';
     private $dbname = 'bibliotecadigital';
     private $port = '3306';
     public $_tabela;

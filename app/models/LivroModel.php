@@ -333,7 +333,10 @@ class LivroModel extends Model
             $extensao2 = strtolower($extensao2);
 
             $dados_livro = [
+<<<<<<< HEAD
                 "idLivro" => ($this->getIdLivro()),
+=======
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                 "idEditora" => ($this->getIdEditora()),
                 "tituloLivro" => ($this->getTituloLivro()),
                 "observacoesLivro" => ($this->getObservacoesLivro()),
@@ -569,6 +572,7 @@ class LivroModel extends Model
         if (strlen($this->getTipoLivro()) <= 0) {
             $erros .= "Tipo do livro inválido!<br>";
         } else {
+<<<<<<< HEAD
             if($this->getTipoLivro() == 'digital'){
                 if(trim(strtolower($this->getTipoOperacao())) == 'inserir'){
                     if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
@@ -580,6 +584,17 @@ class LivroModel extends Model
                     if (($this->getTotalPaginas()) <= 0) {
                         $erros .= "Total de páginas inválido!<br>";
                     }
+=======
+            if(trim(strtolower($this->getTipoOperacao())) == 'inserir'){
+                if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
+                    $erros .= "Foto inválida!<br>";
+                }
+                if (strlen($this->getPdfLivro()['tmp_name']) <= 0 && strlen($this->getVerificaPdf()) <= 0)  {
+                    $erros .= "Pdf inválido!<br>";
+                }
+                if (($this->getTotalPaginas()) <= 0) {
+                    $erros .= "Total de páginas inválido!<br>";
+>>>>>>> a5d2bc4845fc02b51a477d6ad8a15714ea4e5c9e
                 }
             }
 
