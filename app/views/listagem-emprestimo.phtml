@@ -129,7 +129,6 @@ date_default_timezone_set('America/Sao_Paulo');
 
   <script>
     $(document).ready(function() {
-<<<<<<< HEAD
       var dat = new Date();
       var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
       $('#listagemEmprestimo').DataTable({
@@ -231,8 +230,6 @@ date_default_timezone_set('America/Sao_Paulo');
               };
               // Inject the object in the document
               doc.content[1].layout = objLayout;
-
-
             }
           },
           {
@@ -254,31 +251,7 @@ date_default_timezone_set('America/Sao_Paulo');
             },
           }
         ],
-=======
-      $('#listagemEmprestimo').DataTable({
-        'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-        "iDisplayLength": 7,
-        "initComplete": function() {
-          $("#listagemTipoLeitor").show();
-        },
-        buttons: ['searchBuilder', 'csv', 'excel', 'pdf', 'print'],
->>>>>>> 126f79f1aafafa61d570099d414702117e2817a8
-        "language": {
-          "lengthMenu": "",
-          "zeroRecords": "Nada encontrado",
-          "info": "Mostrando página _PAGE_ de _PAGES_",
-          "infoEmpty": "Nenhum registro disponível",
-          "infoFiltered": "(filtrado de _MAX_ registros no total)",
-          "sSearch": "Buscar: ",
-          "oPaginate": {
-            "sFirst": "Primero",
-            "sLast": "Último",
-            "sNext": "Seguinte",
-            "sPrevious": "Anterior"
-          },
-        }
-      });
-
+      },
         $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.remover', function(e) {
             e.preventDefault();
 
@@ -327,11 +300,9 @@ date_default_timezone_set('America/Sao_Paulo');
                         label: 'EXCLUIR',
                         className: 'btn-danger'
                     }
-
                 }
             });
-        });
-
+        }));
     });
   </script>
 </body>
