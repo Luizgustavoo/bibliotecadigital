@@ -119,9 +119,15 @@ date_default_timezone_set('America/Sao_Paulo');
                                                 <td>
                                                     <?php
                                                     $imagem = "http://" . SITE_ROOT . "web-pages/assets/images/livro/" . $livro['imagemCapa'];
+<<<<<<< HEAD
                                                     // if (!Helpers::URL_exists($imagem)) {
                                                     //     $imagem = "http://" . SITE_ROOT . "web-pages/assets/images/avatar.png";
                                                     // }
+=======
+                                                    if (!Helpers::URL_exists($imagem)) {
+                                                        $imagem = "http://" . SITE_ROOT . "web-pages/assets/images/avatar.png";
+                                                    }
+>>>>>>> 126f79f1aafafa61d570099d414702117e2817a8
                                                     ?>
                                                     <img class="imagemList" src="<?= $imagem ?>">
                                                 </td>
@@ -282,7 +288,11 @@ date_default_timezone_set('America/Sao_Paulo');
             var newRow = $("<tr>");
             var cols = "";
 
+<<<<<<< HEAD
             cols += '<td><input type="hidden" name="arr_id_livro[]" value="'+($(this).parent().siblings("td:eq(0)").text().trim())+'">'+$(this).parent().siblings("td:eq(0)").text()+'</td>';
+=======
+            cols += '<td><input type="hidden" name="arr_id_livro[]" value="'+parseInt($(this).parent().siblings("td:eq(0)").text().trim())+'">'+$(this).parent().siblings("td:eq(0)").text()+'</td>';
+>>>>>>> 126f79f1aafafa61d570099d414702117e2817a8
             cols += '<td><center>'+$(this).parent().siblings("td:eq(1)").html()+'</center></td>';
             cols += '<td>'+$(this).parent().siblings("td:eq(2)").text()+'</td>';
             cols += '<td>'+$(this).parent().siblings("td:eq(3)").text()+'</td>';
