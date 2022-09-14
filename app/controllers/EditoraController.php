@@ -7,37 +7,40 @@ class Editora extends Controller
     {
         session_start();
 
-        
-                // $_SESSION['menu_selecionado'] = '';
-                // $_SESSION['categoria_menu'] = '';
-        
-                $action = $this->getParams("action");
-        
-                $dados['msg'] = $this->getParams("msg");
-                $dados['return'] = $this->getParams("return");
-        
-        
-                if(!empty($action) && $action == 'update'){
-                    $id = $this->getParams("id");
-                    $editora = new EditoraModel();
-                    $dados['tipo_operacao'] = "alterar";
-                    $dados['update'] = $editora ->listarPorCodigo($id);
-                }else{
-                    $dados['tipo_operacao'] = "inserir";
-                }
-        
-        
-                $this->view("create-update-editora", $dados);
-                exit();
+
+        // $_SESSION['menu_selecionado'] = '';
+        // $_SESSION['categoria_menu'] = '';
+
+        $action = $this->getParams("action");
+
+        $dados['msg'] = $this->getParams("msg");
+        $dados['return'] = $this->getParams("return");
+
+
+        if(!empty($action) && $action == 'update'){
+            $id = $this->getParams("id");
+            $editora = new EditoraModel();
+            $dados['tipo_operacao'] = "alterar";
+            $dados['update'] = $editora ->listarPorCodigo($id);
+        }else{
+            $dados['tipo_operacao'] = "inserir";
+        }
+
+
+        $this->view("create-update-editora", $dados);
+        exit();
     }
 
     public function cadastro()
     {
 
+
         $editora = new EditoraModel();
         $editora->setDescricaoEditora($_POST['descricaoEditora']);
         $editora->setImagemEditora($_FILES['imagemEditora']);
         $editora->setDataCadastro(date('Y-m-d H:i:s'));
+
+        $dados['tipo_operacao'] = "inserir";
 
         $dados['retorno'] = $editora->inserir();
 
@@ -78,11 +81,11 @@ class Editora extends Controller
             $categoria->setDataCadastro(date('Y-m-d H:i:s'));
             $categoria->setDescricaoEditora($_POST['descricaoEditora']);
             $dados['retorno_update'] = $categoria->alterar();
-            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/".$dados['retorno_update']); 
+            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/".$dados['retorno_update']);
         } else {
-            
-            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/Falha ao atualizar registro!"); 
-            
+
+            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/Falha ao atualizar registro!");
+
         }
     }
 }

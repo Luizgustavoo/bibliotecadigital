@@ -1,4 +1,4 @@
-<link href="http://<?=SITE_ROOT;?>/web-pages/bower_components/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?=HTTPS.SITE_ROOT;?>/web-pages/bower_components/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div class="modal fade" id="modal_ajuste_estoque_entrada">
           <div class="modal-dialog modal-lg">

@@ -591,7 +591,7 @@ $(function(){
 });
 </script>
 
-<script src="http://<?=SITE_ROOT;?>/web-pages/bower_components/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="<?=HTTPS.SITE_ROOT;?>/web-pages/bower_components/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script>
     
 $(function(){

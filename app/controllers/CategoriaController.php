@@ -39,7 +39,7 @@ class Categoria extends Controller
         $categoria->setDataCadastro(date('Y-m-d H:i:s'));
 
         $dados['retorno'] = $categoria->inserir();
-
+        $dados['tipo_operacao'] = "inserir";
         $this->view("create-update-categoria", $dados);
     }
 
@@ -76,6 +76,7 @@ class Categoria extends Controller
             $categoria->setImagemCategoria($_FILES['imagemCategoria']);
             $categoria->setDataCadastro(date('Y-m-d H:i:s'));
             $categoria->setDescricaoCategoria($_POST['descricaoCategoria']);
+            
             $dados['retorno_update'] = $categoria->alterar();
             header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/".$dados['retorno_update']); 
         } else {

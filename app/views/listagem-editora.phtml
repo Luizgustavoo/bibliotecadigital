@@ -1,9 +1,12 @@
 <?php
 Validar::validarLogin();
-if(ValidarPagina::validarPaginaAtual('listagem_editora') <= 0){header ("Location: " . DOMINIO. "home");}
+if (ValidarPagina::validarPaginaAtual('listagem_editora') <= 0) {
+  header("Location: " . DOMINIO . "home");
+}
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
@@ -23,61 +26,61 @@ date_default_timezone_set('America/Sao_Paulo');
     <div class="page-wrapper">
       <div class="container-fluid">
         <div class="row">
-            <div class="container-lg">
-              <div class="table-responsive">
-                <div class="table-wrapper">
-                  <div class="table-title">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <h2>Listagem de<b> Editora</b></h2>
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="<?=DOMINIO ?>editora" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
-                      </div>
+          <div class="container-lg">
+            <div class="table-responsive">
+              <div class="table-wrapper">
+                <div class="table-title">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <h2>Listagem de<b> Editora</b></h2>
+                    </div>
+                    <div class="col-sm-4">
+                      <a href="<?= DOMINIO ?>editora" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
                     </div>
                   </div>
-                  <table class="table v-middle" id="listagemEditora">
-                    <thead class="thead-dark">
-                      <tr class="text-center align-middle">
-                        <th style="width: 10%;">ID</th>
-                        <th style="width: 20%;">Descrição</th>
-                        <th style="width: 10%;">Data</th>
-                        <th style="width: 15%;">Imagem</th>
-                        <th style="width: 10%;"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                </div>
+                <table class="table v-middle table-bordered table-light responsive-table" id="listagemEditora">
+                  <thead class="thead-dark">
+                    <tr class="text-center align-middle">
+                      <th style="width: 10%;">ID</th>
+                      <th style="width: 20%;">Descrição</th>
+                      <th style="width: 10%;">Data</th>
+                      <th style="width: 15%;">Imagem</th>
+                      <th style="width: 10%;"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     <?php
                     if (isset($view_listagem) && count($view_listagem) > 0) {
                       foreach ($view_listagem as $editora) {
                     ?>
-                      <tr class="text-center v-middle">
-                        <td><?= $editora['idEditora'] ?></td>
-                        <td><?= $editora['descricaoEditora'] ?></td>
-                        <td><?= date('d/m/Y', strtotime($editora['dataCadastro'])) ?></td>
-                        <td>
-                        <?php
-                            $imagem = "http://" . SITE_ROOT . "web-pages/assets/images/editora/" . $editora['imagemEditora'];
-                            if (!Helpers::URL_exists($imagem)) {
+                        <tr class="text-center v-middle">
+                          <td><?= $editora['idEditora'] ?></td>
+                          <td><?= $editora['descricaoEditora'] ?></td>
+                          <td><?= date('d/m/Y', strtotime($editora['dataCadastro'])) ?></td>
+                          <td>
+                            <?php
+                            $imagem = "" . HTTPS . SITE_ROOT . "web-pages/assets/images/editora/" . $editora['imagemEditora'];
+                            /*if (!Helpers::URL_exists($imagem)) {
                               $imagem = "https://img.icons8.com/plasticine/344/image.png";
-                            }
+                            }*/
                             ?>
                             <img class="imagemList" src="<?= $imagem ?>">
-                        </td>
-                        <td>
-                          <a class="edit editar" href="<?= DOMINIO ?>editora/index/action/update/id/<?= $editora['idEditora'] ?>"  data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                          <a class="delete remover" desc="<?= $editora['descricaoEditora'] ?>" id="<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">delete</i></a>
-                        </td>
-                      </tr>
-                      <?php
+                          </td>
+                          <td>
+                            <a class="edit editar" href="<?= DOMINIO ?>editora/index/action/update/id/<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete remover" desc="<?= $editora['descricaoEditora'] ?>" id="<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">delete</i></a>
+                          </td>
+                        </tr>
+                    <?php
                       }
                     }
                     ?>
-                    </tbody>
-                  </table>
-                </div>
+                  </tbody>
+                </table>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -88,14 +91,131 @@ date_default_timezone_set('America/Sao_Paulo');
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
 
   <script>
- $(document).ready(function() {
+    $(document).ready(function() {
+      var dat = new Date();
+      var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
       $('#listagemEditora').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-        "iDisplayLength": 7,
+        "iDisplayLength": 20,
+        "ordering": false,
         "initComplete": function() {
           $("#listagemEditora").show();
         },
-        buttons: ['searchBuilder', 'csv', 'excel', 'pdf', 'print'],
+        buttons: [
+          'searchBuilder',
+          {
+            extend: 'excelHtml5',
+            text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
+            title: 'Editoras Cadastradas - ' + data_dia,
+            titleAttr: 'Exportar a Excel',
+            exportOptions: {
+              columns: [1, 2],
+              format: {
+                body: function(data, column, row) {
+                  if (typeof data === 'string' || data instanceof String) {
+                    data = data.replace(/<br\s*\/?>/ig, "\r\n");
+                  }
+                  return data;
+                }
+              }
+            },
+          },
+          {
+            extend: 'pdfHtml5',
+            pageSize: 'A4',
+            titleAttr: 'Baixar PDF',
+            title: 'Editoras Cadastradas - ' + data_dia,
+            text: '<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i> ',
+            exportOptions: {
+              columns: [1, 2],
+              format: {
+                body: function(data, column, row) {
+                  if (typeof data === 'string' || data instanceof String) {
+                    data = data.replace(/<br\s*\/?>/ig, "\r\n");
+                  }
+                  return data;
+                }
+              }
+            },
+            customize: function(doc) {
+
+              doc.defaultStyle.alignment = 'left';
+              doc.styles.tableHeader.alignment = 'left';
+
+              doc['footer'] = (function(page, pages) {
+                return {
+                  columns: [
+                    'Casa do Bom Menino de Arapongas',
+                    {
+                      alignment: 'right',
+                      text: [{
+                          text: page.toString(),
+                          italics: true
+                        },
+                        ' de ',
+                        {
+                          text: pages.toString(),
+                          italics: true
+                        }
+                      ]
+                    }
+                  ],
+                  margin: [10, 0]
+                }
+              });
+
+
+              // Styling the table: create style object
+              var objLayout = {};
+              // Horizontal line thickness
+              objLayout['hLineWidth'] = function(i) {
+                return .5;
+              };
+              // Vertikal line thickness
+              objLayout['vLineWidth'] = function(i) {
+                return .5;
+              };
+              // Horizontal line color
+              objLayout['hLineColor'] = function(i) {
+                return '#aaa';
+              };
+              // Vertical line color
+              objLayout['vLineColor'] = function(i) {
+                return '#aaa';
+              };
+              // Left padding of the cell
+              objLayout['paddingLeft'] = function(i) {
+                return 4;
+              };
+              // Right padding of the cell
+              objLayout['paddingRight'] = function(i) {
+                return 4;
+              };
+              // Inject the object in the document
+              doc.content[1].layout = objLayout;
+
+
+            }
+          },
+          {
+            extend: 'print',
+            pageSize: 'A4',
+            title: 'Editoras Cadastradas - ' + data_dia,
+            text: '<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button> ',
+            titleAttr: 'Imprimir',
+            exportOptions: {
+              columns: [1, 2],
+              format: {
+                body: function(data, column, row) {
+                  if (typeof data === 'string' || data instanceof String) {
+                    data = data.replace(/<br\s*\/?>/ig, "\r\n");
+                  }
+                  return data;
+                }
+              }
+            },
+          }
+        ],
         "language": {
           "lengthMenu": "",
           "zeroRecords": "Nada encontrado",
@@ -162,7 +282,7 @@ date_default_timezone_set('America/Sao_Paulo');
       });
 
     });
-</script>
+  </script>
 </body>
 
 </html>

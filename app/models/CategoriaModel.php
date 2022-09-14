@@ -122,7 +122,7 @@ return $this;
                     //                            $novoNome = md5(microtime())  . $extensao;
                     $novoNome = "foto_" . md5(time())  . $extensao;
 
-                    $destino = './web-pages/assets/images/autor/' . $novoNome;
+                    $destino = './web-pages/assets/images/categoria/' . $novoNome;
 
 
 
@@ -274,6 +274,34 @@ return $this;
         }
 
         return imagejpeg($image, $destination, 90);
+    }
+
+    public function listarPorLivro($idLivro)
+    {
+
+        //COLUNAS DA TABELA
+        $places = ['*'];
+
+        //inner join, outer join, todos as ligações que quiser fazer
+        $innerjoin = 'inner join categoria on categorialivro.idCategoria = categoria.idCategoria';
+
+        //condição do select
+        $where = "categorialivro.idLivro = '$idLivro'";
+
+        //ordenar select
+        $orderby = '';
+
+        //limit = quantidade de registros para exibir
+        $limit = null;
+
+        //usado junto com o limit por exemplo começa a exibição do segundo registro e mostre mais 5 ficaria limit 5 offset 1
+        $offset = null;
+
+        //coluna na qual serão agrupados os valores
+        $groupby = null;
+
+
+        return $this->read('categorialivro', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
 
 

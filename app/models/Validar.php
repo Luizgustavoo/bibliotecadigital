@@ -16,6 +16,24 @@ class Validar
     //put your code here
 
 
+    public static function converterSegundosEmHoras($segundos){
+
+        if($segundos > 0){
+            $seg = $segundos % 60;
+            $mins = floor($segundos / 60);
+            $min = $mins % 60;
+            $hora = floor($mins / 60);
+            $tempo = str_pad($hora,2,0,STR_PAD_LEFT) . ":" . str_pad($min, 2,0, STR_PAD_LEFT).":". str_pad($seg,2,0,STR_PAD_LEFT); // 162:07:43
+
+        }else{
+            $tempo = "00:00:00";
+        }
+
+        return $tempo;
+
+
+    }
+
     public static function find_set_mes()
     {
         $dia_atual = date('d');

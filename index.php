@@ -15,6 +15,22 @@ define("MEDIA_MINIMO", 6.0);
 
 define("TITLE", "Agenda Projeto Crescer");
 
+define('HTTPS','http://');
+
+define("LEITOR_COMUM", 0);
+define("LEITOR_COMUM_COR", '#FFFFFF');
+
+define("LEITOR_RARO", 20);
+define("LEITOR_RARO_COR", '#1E90FF');
+
+define("LEITOR_LENDARIO", 50);
+define("LEITOR_LENDARIO_COR", '#FFD700');
+
+define("LEITOR_EPICO", 80);
+define("LEITOR_EPICO_COR", '#6959CD');
+
+define("LEITOR_COLOSSAL", 130);
+define("LEITOR_COLOSSAL_COR", '#FF0000');
 
 
 define("ENCODING", mb_internal_encoding());

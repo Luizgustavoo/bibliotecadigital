@@ -5,6 +5,8 @@ if (ValidarPagina::validarPaginaAtual('create_update_livro') <= 0) {
 }
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
+
+
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
@@ -35,18 +37,63 @@ date_default_timezone_set('America/Sao_Paulo');
               <div class="row">
                 <div class="col col-md-6" style="border-right: 2px solid #EEEEEE;">
                   <form action="<?= $view_tipo_operacao == 'inserir' ? DOMINIO . "livro/cadastro" : DOMINIO . "livro/alterar" ?>" method="POST" enctype="multipart/form-data" id="cadastroLivro">
-                    <div class="row">
+                      <input type="hidden" id="tipoOperacao" name="tipoOperacao" value="<?=$view_tipo_operacao?>">
+                      <div class="row">
                       <div class="col-11">
                         <div class="form-group">
                           <label for="idLivro">Código Livro:</label>
-                          <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro" placeholder="Clique para gerar um código...">
+                          <input type="text" <?=$view_tipo_operacao == 'alterar' ? 'readonly':''?> value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLivro'] : ""; ?>" class="form-control" id="idLivro" name="idLivro" placeholder="Clique para gerar um código...">
                         </div>
                       </div>
                       <div class="col-1">
                         <br>
-                        <a id="botao" class="mt-2 btn btn-success"><i class="fas fa-key text-white"></i></a>
+                          <?php
+                          if($view_tipo_operacao == 'inserir'){
+                             echo '<a id="botao" class="mt-2 btn btn-success"><i class="fas fa-key text-white"></i></a>';
+                          }
+                          ?>
                       </div>
                     </div>
+
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="form-group">
+                                  <label for="idLivro">Categoria:</label>
+                                  <select class="js-example-basic-single form-select" name="idCategoria[]" aria-label="Default select example" multiple>
+                                      <?php
+
+                                      if (isset($view_categorialivro) && count($view_categorialivro) > 0) {
+                                          foreach ($view_categoria as $categoria) {
+                                              $selected = "";
+                                              foreach ($view_categorialivro as $categorialivro) {
+                                                  $selected = $categorialivro['idCategoria'] == $categoria['idCategoria'] ? 'selected' : "";
+                                                  echo '<option value="' . $categoria["idCategoria"] . '" ' . $selected . '>' . $categoria["descricaoCategoria"] . '</option>';
+                                              }
+
+                                          }
+                                      } else {
+
+                                          if (isset($view_categoria) && count($view_categoria) > 0) {
+                                              foreach ($view_categoria as $categoria) {
+                                                  echo '<option value="' . $categoria["idCategoria"] . '" >' . $categoria["descricaoCategoria"] . '</option>';
+                                              }
+                                          }
+
+                                      }
+
+
+                                      ?>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-12">
+                              <label for="idLivro">Quantidade Exemplares:</label>
+                              <input type="number" min="1" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['quantidadeLivros'] : "1"; ?>" class="form-control" id="quantidadeLivros" name="quantidadeLivros">
+                          </div>
+                      </div>
+
                     <div class="form-group">
                       <label for="tituloLivro">Título:</label>
                       <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['tituloLivro'] : ""; ?>" class="form-control" id="tituloLivro" name="tituloLivro" placeholder="Coloque um título...">
@@ -54,13 +101,23 @@ date_default_timezone_set('America/Sao_Paulo');
                     <label for="idAutor">Autor(es):</label>
                     <select id="idAutor" class="js-example-basic-single" name="idAutor[]" multiple>
                       <?php
-                      if (isset($view_autor) && count($view_autor) > 0) {
+                      if(isset($view_autorlivro) && count($view_autorlivro) > 0){
                         foreach ($view_autor as $autor) {
-                          $selected = $view_update[0]['idAutor'] == $autor['idAutor'] ? "selected" : "";
-                          echo '<option value="' . $autor["idAutor"] . '" ' . $selected . '>' . $autor["descricaoAutor"] . '</option>';
+                          $selected = "";
+                            foreach ($view_autorlivro as $autorlivro){
+                              $selected = $autorlivro['idAutor'] == $autor['idAutor'] ?   'selected' : "";
+                              echo '<option value="' . $autor["idAutor"] . '" ' . $selected . '>' . $autor["descricaoAutor"] . '</option>';
+                            }
+                    
                         }
-                      } else {
-                        echo '<option value = "">Nenhuma editora cadastrada</option>';
+                      }else{
+                    
+                        if(isset($view_autor) && count($view_autor) > 0){
+                          foreach ($view_autor as $autor) {
+                            echo '<option value="' . $autor["idAutor"] . '" >' . $autor["descricaoAutor"] . '</option>';
+                          }
+                        }
+                    
                       }
                       ?>
                     </select>
@@ -74,7 +131,7 @@ date_default_timezone_set('America/Sao_Paulo');
                     </div>
                     <div class="form-group">
                       <label for="dataLancamento">Data de Lançamento:</label>
-                      <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? date('d/m/Y', strtotime($view_update[0]['dataLancamento'])) : ""; ?>" class="form-control" id="dataLancamento" name="dataLancamento" onkeyup="mascara_data(this, this.value)" maxlength="10" placeholder="Coloque uma data...">
+                      <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? date('d/m/Y', strtotime($view_update[0]['dataLancamento'])) : date('d/m/Y'); ?>" class="form-control" id="dataLancamento" name="dataLancamento" onkeyup="mascara_data(this, this.value)" maxlength="10" placeholder="Coloque uma data...">
                     </div>
                     <div class="form-group">
                       <label for="totalPaginas">Total de Páginas:</label>
@@ -118,7 +175,9 @@ date_default_timezone_set('America/Sao_Paulo');
                         <label class="label">
                           <input type="file" class="imagemCapa" id="imagemCapa" name="imagemCapa" />
                           <figure class="personal-figure2">
-                            <img id="upload-img-capa" src="https://img.icons8.com/plasticine/344/image.png" class="personal-avatar2" alt="avatar">
+                            <img id="upload-img-capa" src="<?= $view_tipo_operacao == 'inserir'
+                                ? " https://img.icons8.com/plasticine/344/image.png"
+                                : "http://" . SITE_ROOT . "web-pages/assets/images/livro/" . $view_update[0]['imagemCapa'] ?> " class="personal-avatar2" alt="avatar">
                             <figcaption class="personal-figcaption2">
                               <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
                             </figcaption>
@@ -132,9 +191,13 @@ date_default_timezone_set('America/Sao_Paulo');
                       <h4 class="mt-5 text-center">Selecione a imagem da thumb:</h4>
                       <div class="mt-1 personal-image2">
                         <label class="label">
-                          <input type="file" class="imagemThumb" id="imagemThumb" name="imagemThumb" />
+                          <input type="file" class="imagemThumb" id="imagemThumb" name="imagemThumb" value="<?= $view_tipo_operacao == 'inserir'
+                              ? " https://img.icons8.com/plasticine/344/image.png"
+                              : "http://" . SITE_ROOT . "web-pages/assets/images/livro/thumb/" . $view_update[0]['imagemThumb'] ?>" />
                           <figure class="personal-figure2">
-                            <img id="upload-img-thumb" src="https://img.icons8.com/plasticine/344/image.png" class="personal-avatar2" alt="avatar">
+                            <img id="upload-img-thumb" src="<?= $view_tipo_operacao == 'inserir'
+                                ? " https://img.icons8.com/plasticine/344/image.png"
+                                : "http://" . SITE_ROOT . "web-pages/assets/images/livro/thumb/" . $view_update[0]['imagemThumb'] ?> " class="personal-avatar2" alt="avatar">
                             <figcaption class="personal-figcaption2">
                               <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
                             </figcaption>
@@ -174,38 +237,86 @@ date_default_timezone_set('America/Sao_Paulo');
       }
     }
 
+    document.addEventListener("keydown", function(e) {
+        if(e.keyCode === 13) {
+
+            e.preventDefault();
+
+        }
+    });
+
     $(document).ready(function() {
       let botao = document.querySelector('#botao');
       let idLivro = document.querySelector('#idLivro');
+      let tipoOperacao = document.querySelector("#tipoOperacao");
+
+        document.getElementById("idLivro").focus();
+
       botao.addEventListener('click', function() {
         var dateNow = Date.now();
         idLivro.value = dateNow;
       });
+
+
+        $("#idLivro").on('blur', function(){
+
+            if($(this).val().trim().length > 0){
+                var tipoOperacao = $("#tipoOperacao").val();
+
+                var dados = {'idLivro': $(this).val(),'tipoOperacao':tipoOperacao};
+
+                $.ajax({
+                    method: 'POST',
+                    url:'<?=DOMINIO?>livro/livroExiste',
+                    data:dados,
+                    dataType: 'html',
+                    success: function(retorno){
+                        if(retorno.trim().length > 0){
+                            alert(retorno);
+                        }
+
+                    }
+                });
+            }
+
+
+        });
+
+
     });
 
     $(document).ready(function() {
       $('.js-example-basic-single').select2({
         width: '100%',
-        placeholder: 'Selecione um autor',
+        placeholder: 'Selecione uma opção...',
         allowClear: true
       });
     });
 
     $("#cadastroLivro").on('submit', function() {
       var erros = "";
+
       var file = document.getElementById("imagemCapa");
       var file2 = document.getElementById("imagemThumb");
+
+      var tipo = document.getElementById('tipoOperacao');
+
       var filepdf = document.getElementById("pdfLivro");
       erros += $("#dataLancamento").val().length != 10 ? "Data de lançamento inválida!<br>" : "";
       erros += $("#tituloLivro").val().length <= 3 ? "Título do livro inválido!<br>\n" : "";
       erros += $("#idLivro").val().length <= 0 ? "Id do livro inválido!<br>\n" : "";
-      erros += $("#observacoesLivro").val().length <= 6 ? "Observações do livro inválido!<br>\n" : "";
-      if ($("#tipoLivro").val() == 'digital') {
+      erros += $("#observacoesLivro").val().length < 3 ? "Observações do livro inválido!<br>\n" : "";
+
+      if ($("#tipoLivro").val() == 'digital' && tipo.value != "alterar") {
         erros += filepdf.files.length === 0 && $('#verificaPdf').val().length <= 0 ? "Pdf do livro inválido!<br>" : "";
-        erros += file.files.length === 0 ? "Imagem da capa inválida!<br>" : "";
-        erros += file2.files.length === 0 ? "Imagem da thumb inválida!<br>" : "";
+
+        erros += file.files.length === 0 && tipoOperacao == 'inserir' ? "Imagem da capa inválida!<br>" : "";
+        erros += file2.files.length === 0 && tipoOperacao == 'inserir' ? "Imagem da thumb inválida!<br>" : "";
+
         erros += $("#totalPaginas").val().length <= 0 ? "Páginas do livro inválida!<br>\n" : "";
       }
+
+
       if (erros.length > 0) {
 
         $("#modal_retorno .modal-title").html("Erros encontrados!");

@@ -1,0 +1,220 @@
+<?php
+Validar::validarLogin();
+if(ValidarPagina::validarPaginaAtual('listagem_categoria') <= 0){header ("Location: " . DOMINIO. "home");}
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+?><!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  <div class="preloader">
+    <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+    </div>
+  </div>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="container-lg">
+            <div class="table-responsive">
+              <div class="table-wrapper">
+                <div class="table-title">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <h2>Relatório<b> Tempo de Leitura</b></h2>
+                    </div>
+                  </div>
+                </div>
+                <h4 style="font-size: 24px; text-align: center; font-weight: bold;">RELATÓRIO TEMPO LEITURA</h4>
+                <table class="table v-middle table-bordered table-light responsive-table" id="listagemCategoria">
+                  <thead class="thead-dark">
+                    <tr class="text-center align-middle responsive-table">
+                      <th style="width: 10%;">ID Leitor</th>
+                      <th style="width: 20%;">Nome Leitor</th>
+                      <th style="width: 10%;">Tempo Leitura</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    if (isset($view_listagem) && count($view_listagem) > 0) {
+                      foreach ($view_listagem as $tempoLeitura) {
+                    ?>
+                        <tr class="text-center v-middle">
+                          <td><?= $tempoLeitura['idLeitor'] ?></td>
+                          <td><?= $tempoLeitura['nomeLeitor'] ?></td>
+                          <td><?= Validar::converterSegundosEmHoras($tempoLeitura['tempoLeituraSegundos']) ?></td>
+                        </tr>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- SCRIPTS -->
+
+  <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+
+  <script>
+    $(document).ready(function() {
+      $('#listagemCategoria').DataTable({
+        'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
+        "iDisplayLength": 20,
+        "ordering" : false,
+        "initComplete": function() {
+          $("#listagemCategoria").show();
+        },
+        buttons:  [
+          'searchBuilder',
+          {
+            extend: 'excelHtml5',
+            text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
+            title: 'Total Tempo de Leitura',
+            titleAttr: 'Exportar a Excel',
+            exportOptions: {
+              columns: [1, 2],
+              format: {
+                body: function(data, column, row) {
+                  if (typeof data === 'string' || data instanceof String) {
+                    data = data.replace(/<br\s*\/?>/ig, "\r\n");
+                  }
+                  return data;
+                }
+              }
+            },
+          },
+          {
+            extend: 'pdfHtml5',
+            pageSize: 'A4',
+            titleAttr: 'Baixar PDF',
+            title: 'Total Tempo de Leitura',
+            text: '<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i> ',
+            exportOptions: {
+              columns: [1, 2],
+              format: {
+                body: function(data, column, row) {
+                  if (typeof data === 'string' || data instanceof String) {
+                    data = data.replace(/<br\s*\/?>/ig, "\r\n");
+                  }
+                  return data;
+                }
+              }
+            },
+            customize: function(doc) {
+
+              doc.defaultStyle.alignment = 'left';
+              doc.styles.tableHeader.alignment = 'left';
+
+              doc['footer'] = (function(page, pages) {
+                return {
+                  columns: [
+                    'Casa do Bom Menino de Arapongas',
+                    {
+                      alignment: 'right',
+                      text: [{
+                          text: page.toString(),
+                          italics: true
+                        },
+                        ' de ',
+                        {
+                          text: pages.toString(),
+                          italics: true
+                        }
+                      ]
+                    }
+                  ],
+                  margin: [10, 0]
+                }
+              });
+
+
+              // Styling the table: create style object
+              var objLayout = {};
+              // Horizontal line thickness
+              objLayout['hLineWidth'] = function(i) {
+                return .5;
+              };
+              // Vertikal line thickness
+              objLayout['vLineWidth'] = function(i) {
+                return .5;
+              };
+              // Horizontal line color
+              objLayout['hLineColor'] = function(i) {
+                return '#aaa';
+              };
+              // Vertical line color
+              objLayout['vLineColor'] = function(i) {
+                return '#aaa';
+              };
+              // Left padding of the cell
+              objLayout['paddingLeft'] = function(i) {
+                return 4;
+              };
+              // Right padding of the cell
+              objLayout['paddingRight'] = function(i) {
+                return 4;
+              };
+              // Inject the object in the document
+              doc.content[1].layout = objLayout;
+
+
+            }
+          },
+          {
+            extend: 'print',
+            pageSize: 'A4',
+            title: 'Total Tempo de Leitura',
+            text: '<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button> ',
+            titleAttr: 'Imprimir',
+            exportOptions: {
+              columns: [1, 2],
+              format: {
+                body: function(data, column, row) {
+                  if (typeof data === 'string' || data instanceof String) {
+                    data = data.replace(/<br\s*\/?>/ig, "\r\n");
+                  }
+                  return data;
+                }
+              }
+            },
+          }
+        ],
+        "language": {
+          "lengthMenu": "",
+          "zeroRecords": "Nada encontrado",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Nenhum registro disponível",
+          "infoFiltered": "(filtrado de _MAX_ registros no total)",
+          "sSearch": "Buscar: ",
+          "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Seguinte",
+            "sPrevious": "Anterior"
+          },
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
