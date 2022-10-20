@@ -1,12 +1,9 @@
 <?php
 Validar::validarLogin();
-if (ValidarPagina::validarPaginaAtual('listagem_editora') <= 0) {
-  header("Location: " . DOMINIO . "home");
-}
+if(ValidarPagina::validarPaginaAtual('listagem_categoria') <= 0){header ("Location: " . DOMINIO. "home");}
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
@@ -22,7 +19,6 @@ date_default_timezone_set('America/Sao_Paulo');
     <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
 
     <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
-
     <div class="page-wrapper">
       <div class="container-fluid">
         <div class="row">
@@ -32,45 +28,28 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="table-title">
                   <div class="row">
                     <div class="col-sm-8">
-                      <h2>Listagem de<b> Editora</b></h2>
-                    </div>
-                    <div class="col-sm-4">
-                      <a href="<?= DOMINIO ?>editora" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
+                      <h2>Relatório<b> Tempo de Leitura</b></h2>
                     </div>
                   </div>
                 </div>
-                <table class="table v-middle table-bordered table-light responsive-table" id="listagemEditora">
+                <h4 style="font-size: 24px; text-align: center; font-weight: bold;">RELATÓRIO TEMPO LEITURA</h4>
+                <table class="table v-middle table-bordered table-light responsive-table" id="listagemCategoria">
                   <thead class="thead-dark">
-                    <tr class="text-center align-middle">
-                      <th style="width: 10%;">ID</th>
-                      <th style="width: 20%;">Descrição</th>
-                      <th style="width: 10%;">Data</th>
-                      <th style="width: 15%;">Imagem</th>
-                      <th style="width: 10%;"></th>
+                    <tr class="text-center align-middle responsive-table">
+                      <th style="width: 10%;">ID Leitor</th>
+                      <th style="width: 20%;">Nome Leitor</th>
+                      <th style="width: 10%;">Tempo Leitura</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     if (isset($view_listagem) && count($view_listagem) > 0) {
-                      foreach ($view_listagem as $editora) {
+                      foreach ($view_listagem as $tempoLeitura) {
                     ?>
                         <tr class="text-center v-middle">
-                          <td><?= $editora['idEditora'] ?></td>
-                          <td><?= $editora['descricaoEditora'] ?></td>
-                          <td><?= date('d/m/Y', strtotime($editora['dataCadastro'])) ?></td>
-                          <td>
-                            <?php
-                            $imagem = "" . HTTPS . SITE_ROOT . "web-pages/assets/images/editora/" . $editora['imagemEditora'];
-                            /*if (!Helpers::URL_exists($imagem)) {
-                              $imagem = "https://img.icons8.com/plasticine/344/image.png";
-                             }*/
-                            ?>
-                            <img class="imagemList" src="<?= $imagem ?>">
-                          </td>
-                          <td>
-                            <a class="edit editar" href="<?= DOMINIO ?>editora/index/action/update/id/<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete remover" desc="<?= $editora['descricaoEditora'] ?>" id="<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">delete</i></a>
-                          </td>
+                          <td><?= $tempoLeitura['idLeitor'] ?></td>
+                          <td><?= $tempoLeitura['nomeLeitor'] ?></td>
+                          <td><?= Validar::converterSegundosEmHoras($tempoLeitura['tempoLeituraSegundos']) ?></td>
                         </tr>
                     <?php
                       }
@@ -92,21 +71,19 @@ date_default_timezone_set('America/Sao_Paulo');
 
   <script>
     $(document).ready(function() {
-      var dat = new Date();
-      var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
-      $('#listagemEditora').DataTable({
+      $('#listagemCategoria').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-        "iDisplayLength": 10,
-        "ordering": false,
+        "iDisplayLength": 20,
+        "ordering" : false,
         "initComplete": function() {
-          $("#listagemEditora").show();
+          $("#listagemCategoria").show();
         },
-        buttons: [
+        buttons:  [
           'searchBuilder',
           {
             extend: 'excelHtml5',
             text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
-            title: 'Editoras Cadastradas - ' + data_dia,
+            title: 'Total Tempo de Leitura',
             titleAttr: 'Exportar a Excel',
             exportOptions: {
               columns: [1, 2],
@@ -124,7 +101,7 @@ date_default_timezone_set('America/Sao_Paulo');
             extend: 'pdfHtml5',
             pageSize: 'A4',
             titleAttr: 'Baixar PDF',
-            title: 'Editoras Cadastradas - ' + data_dia,
+            title: 'Total Tempo de Leitura',
             text: '<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i> ',
             exportOptions: {
               columns: [1, 2],
@@ -200,7 +177,7 @@ date_default_timezone_set('America/Sao_Paulo');
           {
             extend: 'print',
             pageSize: 'A4',
-            title: 'Editoras Cadastradas - ' + data_dia,
+            title: 'Total Tempo de Leitura',
             text: '<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button> ',
             titleAttr: 'Imprimir',
             exportOptions: {
@@ -231,56 +208,6 @@ date_default_timezone_set('America/Sao_Paulo');
           },
         }
       });
-      $(".page-wrapper").on('click', '#listagemEditora tbody tr td a.remover', function() {
-        var id = $(this).attr('id');
-        var descricao = $(this).attr('desc');
-        var dados = {
-          'id': id
-        };
-        bootbox.confirm({
-          message: 'Confirma a exclusão do registro "' + descricao + '" ?',
-          callback: function(confirmacao) {
-
-            if (confirmacao) {
-
-              $.ajax({
-                url: '<?= DOMINIO ?>editora/excluir',
-                type: 'POST',
-                data: dados,
-                success: function(retorno) {
-                  bootbox.alert(retorno);
-                  bootbox.confirm({
-                    message: retorno,
-                    callback: function(confirma) {
-                      if (confirma) {
-                        location.reload();
-                      }
-                    },
-                    buttons: {
-                      confirm: {
-                        label: 'OK',
-                        className: 'btn-success'
-                      },
-                    }
-                  })
-                }
-              });
-            }
-          },
-          buttons: {
-            cancel: {
-              label: 'Cancelar',
-              className: 'btn-default'
-            },
-            confirm: {
-              label: 'EXCLUIR',
-              className: 'btn-danger'
-            }
-
-          }
-        });
-      });
-
     });
   </script>
 </body>

@@ -3,7 +3,7 @@
 class TipoLeitorModel extends Model
 {
 
-    public $_tabela = "tipoLeitor";
+    public $_tabela = "tipoleitor";
     private $idTipo;
     private $descricaoTipo;
     private $statusTipo;
@@ -78,26 +78,12 @@ return $this;
 
     public function listarTodas()
     {
-
-
         $places = ['*'];
-
-
         $innerjoin = null;
-
-
         $where = null;
-
-
         $orderby = 'descricaoTipo';
-
-
         $limit = null;
-
-
         $offset = null;
-
-
         $groupby = null;
 
 

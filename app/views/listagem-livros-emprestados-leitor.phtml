@@ -1,0 +1,312 @@
+<?php
+Validar::validarLogin();
+if (ValidarPagina::validarPaginaAtual('listagem_emprestimo') <= 0) {
+  header("Location: " . DOMINIO . "home");
+}
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+?>
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<style>
+  .eye {
+    color: #0a58ca;
+  }
+</style>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
+
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+    <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+    <div class="page-wrapper">
+      <div class="container-fluid">
+        <div class="row"">
+            <div class=" container-lg">
+          <div class="table-responsive">
+            <div class="table-wrapper">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-sm-8">
+
+                    Id empréstimo: <?= $view_emprestimo[0]['idEmprestimo'] ?><br>
+                    Leitor: <?= $view_emprestimo[0]['nomeLeitor'] ?><br>
+                    Data empréstimo: <?= date('d/m/Y', strtotime($view_emprestimo[0]['dataEmprestimo'])) ?><br>
+                    Data prevista devolução: <?= date('d/m/Y', strtotime($view_emprestimo[0]['dataDevolucao'])) ?><br>
+
+                  </div>
+                  <div class="col-sm-4">
+                    <a href="<?= DOMINIO ?>emprestimo/printemprestimo/id/<?= $view_emprestimo[0]['idEmprestimo'] ?>" target="_blank" class="mt-2 btn btn-primary add-new"><i class="fa fa-print"></i> Imprimir</a>
+                  </div>
+                </div>
+              </div>
+              <table class="table v-middle table-bordered table-light responsive-table" id="listagemEmprestimo">
+                <thead class="thead-dark">
+                  <tr class="text-center align-middle responsive-table">
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 15%;">Livro</th>
+                    <th style="width: 10%;">Editora</th>
+                    <th style="width: 15%;">Data Empréstimo</th>
+                    <th style="width: 15%;">Data Devolução</th>
+                    <th style="width: 15%;">Status</th>
+                    <th style="width: 9%;">#</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  if (isset($view_livros) && count($view_livros) > 0) {
+
+                    foreach ($view_livros as $listagem) {
+                  ?>
+                      <tr class="text-center align-middle responsive-table">
+
+                        <td><?= $listagem['idLivro'] ?></td>
+                        <td><?= $listagem['tituloLivro'] ?></td>
+                        <td><?= $listagem['descricaoEditora'] ?></td>
+                        <td><?= date('d/m/Y', strtotime($view_emprestimo[0]['dataEmprestimo'])) ?></td>
+                        <td><?= date('d/m/Y', strtotime($listagem['dataDevolucao'])) ?></td>
+                        <td><?= $listagem['dataDevolvido'] != null ? "<span class='btn-sm btn-success'>devolvido: " . date('d/m/Y', strtotime($listagem['dataDevolvido'])) . "</span>" : "<span class='btn-sm btn-danger'>a devolver</span>" ?>
+                      </td>
+                        <td>
+                          <?php
+                          if ($listagem['dataDevolvido'] == null) {
+                          ?>
+
+                            <a href="#" class="text-danger remover" data-desc="<?= $listagem['tituloLivro'] ?>" data-id-livro="<?= $listagem['idLivro'] ?>" data-id-emprestimo="<?= $view_emprestimo[0]['idEmprestimo'] ?>"><i class="fa fa-remove"></i></a>
+
+                            <a href="#" class="text-success devolver" data-desc="<?= $listagem['tituloLivro'] ?>" data-id-livro="<?= $listagem['idLivro'] ?>" data-id-emprestimo="<?= $view_emprestimo[0]['idEmprestimo'] ?>"><i class="fa fa-check"></i></a>
+
+                            <a href="#" class="text-success renovar" data-leitor="<?= $view_emprestimo[0]['idLeitor'] ?>" data-nomeLivro="<?= $listagem['tituloLivro'] ?>" data-id-livro="<?= $listagem['idLivro'] ?>" data-vencimento="<?= $listagem['dataDevolucao'] ?>" data-devolucao="<?= $listagem['dataRenovacao'] ?>" data-id-emprestimo="<?= $view_emprestimo[0]['idEmprestimo']?>"><i class="fa fa-refresh"></i></a>
+
+                          <?php
+                          }
+                          ?>
+
+                        </td>
+
+                      </tr>
+                  <?php
+                    }
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- SCRIPTS -->
+  <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('#listagemEmprestimo').DataTable({
+        "iDisplayLength": 100,
+        "ordering": false,
+        "initComplete": function() {
+          $("#listagemTipoLeitor").show();
+        },
+        buttons: ['searchBuilder', 'csv', 'excel', 'pdf', 'print'],
+        "language": {
+          "lengthMenu": "",
+          "zeroRecords": "Nada encontrado",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Nenhum registro disponível",
+          "infoFiltered": "(filtrado de _MAX_ registros no total)",
+          "sSearch": "Buscar: ",
+          "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Seguinte",
+            "sPrevious": "Anterior"
+          },
+        }
+      });
+      $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.devolver', function(e) {
+        e.preventDefault();
+
+        var descricao = $(this).attr('data-desc');
+        var emprestimo = $(this).attr('data-id-emprestimo');
+        var livro = $(this).attr('data-id-livro');
+        var dados = {
+          'id_emprestimo': emprestimo,
+          'id_livro': livro
+        };
+        bootbox.confirm({
+          message: 'Confirma a devolução do livro "' + descricao + '" ?',
+          callback: function(confirmacao) {
+
+            if (confirmacao) {
+
+              $.ajax({
+                url: '<?= DOMINIO ?>emprestimo/devolverlivro',
+                type: 'POST',
+                data: dados,
+                success: function(retorno) {
+
+                  bootbox.confirm({
+                    message: retorno,
+                    callback: function(confirma) {
+                      if (confirma) {
+                        location.reload();
+                      }
+                    },
+                    buttons: {
+                      confirm: {
+                        label: 'OK',
+                        className: 'btn-success'
+                      },
+                    }
+                  })
+                }
+              });
+            }
+          },
+          buttons: {
+            cancel: {
+              label: 'CANCELAR',
+              className: 'btn-default'
+            },
+            confirm: {
+              label: 'DEVOLVER',
+              className: 'btn-danger'
+            }
+
+          }
+        });
+      });
+      $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.renovar', function(e) {
+        e.preventDefault();
+
+        var livro = $(this).attr('data-id-livro');
+        var leitor = $(this).attr('data-leitor');
+        var emprestimo = $(this).attr('data-id-emprestimo');
+        var vencimento = $(this).attr('data-vencimento');
+        var nomeLivro = $(this).attr('data-nomeLivro');
+        var devolucao = $(this).attr('data-devolucao');
+        var dados = {
+          'idLivro': livro,
+          'idLeitor': leitor,
+          'emprestimo': emprestimo,
+          'dataVencimento': vencimento,
+          'dataRenovacao' : devolucao,
+        };
+        bootbox.confirm({
+          message: 'Confirma a renovação do livro "' + nomeLivro + '" ?',
+          callback: function(confirmacao) {
+
+            if (confirmacao) {
+
+              $.ajax({
+                url: '<?= DOMINIO ?>emprestimo/renovarlivro',
+                type: 'POST',
+                data: dados,
+                success: function(retorno) {
+
+                  bootbox.confirm({
+                    message: retorno,
+                    callback: function(confirma) {
+                      if (confirma) {
+                        location.reload();
+                      }
+                    },
+                    buttons: {
+                      confirm: {
+                        label: 'OK',
+                        className: 'btn-success'
+                      },
+                    }
+                  })
+                }
+              });
+            }
+          },
+          buttons: {
+            cancel: {
+              label: 'CANCELAR',
+              className: 'btn-default'
+            },
+            confirm: {
+              label: 'RENOVAR',
+              className: 'btn-success'
+            }
+
+          }
+        });
+      });
+
+      $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.remover', function(e) {
+        e.preventDefault();
+
+        var descricao = $(this).attr('data-desc');
+        var emprestimo = $(this).attr('data-id-emprestimo');
+        var livro = $(this).attr('data-id-livro');
+        var dados = {
+          'id_emprestimo': emprestimo,
+          'id_livro': livro
+        };
+        bootbox.confirm({
+          message: 'Confirma a exclusão do livro "' + descricao + '" ?',
+          callback: function(confirmacao) {
+
+            if (confirmacao) {
+
+              $.ajax({
+                url: '<?= DOMINIO ?>emprestimo/excluirlivro',
+                type: 'POST',
+                data: dados,
+                success: function(retorno) {
+
+                  bootbox.confirm({
+                    message: retorno,
+                    callback: function(confirma) {
+                      if (confirma) {
+                        location.reload();
+                      }
+                    },
+                    buttons: {
+                      confirm: {
+                        label: 'OK',
+                        className: 'btn-success'
+                      },
+                    }
+                  })
+                }
+              });
+            }
+          },
+          buttons: {
+            cancel: {
+              label: 'Cancelar',
+              className: 'btn-default'
+            },
+            confirm: {
+              label: 'EXCLUIR',
+              className: 'btn-danger'
+            }
+
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+
+</html>

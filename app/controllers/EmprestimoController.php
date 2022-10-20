@@ -18,13 +18,36 @@ class Emprestimo extends Controller
         $dados['return'] = $this->getParams("return");
 
 
+
         if(!empty($action) && $action == 'update'){
             $id = $this->getParams("id");
-            $tipoLeitor = new TipoLeitorModel();
+
+            $emprestimo = new EmprestimoModel();
             $dados['tipo_operacao'] = "alterar";
-            $dados['update'] = $tipoLeitor ->listarPorCodigo($id);
+            $dados['update'] = $emprestimo->listarPorId($id);
+            $dados['livros_leitor'] = $emprestimo->listarLivrosPorEmprestimo($id);
         }else{
             $dados['tipo_operacao'] = "inserir";
+            if(isset($_POST['arr_id_livro'],$_POST['dataEmprestimo'], $_POST['dataDevolucao'], $_POST['idLeitor']) &&
+                (int)$_POST['idLeitor'] > 0 &&
+                count($_POST['arr_id_livro']) > 0 &&
+                strlen($_POST['dataEmprestimo']) == 10 &&
+                strlen($_POST['dataDevolucao']) == 10
+            ){
+
+                $emprestimo = new EmprestimoModel();
+                $emprestimo->setIdLeitor($_POST['idLeitor']);
+                $emprestimo->setIdUsuario($_SESSION['idUsuario']);
+                $emprestimo->setDataEmprestimo(implode('-',array_reverse(explode('/',$_POST['dataEmprestimo']))));
+
+
+                $emprestimo->setIdLivro($_POST['arr_id_livro']);
+                $emprestimo->setDataDevolucao(implode('-',array_reverse(explode('/',$_POST['dataDevolucao']))));
+
+                $dados['retorno'] = $emprestimo->inserir();
+
+            }
+
         }
 
         $listar = new LivroModel();
@@ -33,38 +56,77 @@ class Emprestimo extends Controller
         $leitor = new LeitorModel();
         $dados['leitores'] = $leitor->listarTodas();
 
+
+
         $this->view("create-update-emprestimo", $dados);
         exit();
     }
 
-    public function cadastro()
+    public function update()
     {
 
-        $tipoLeitor = new TipoLeitorModel();
-        $tipoLeitor->setDescricaoTipo($_POST['descricaoTipo']);
-        $tipoLeitor->setStatusTipo($_POST['statusTipo']);
-        $dados['tipo_operacao'] = "inserir";
-        $dados['retorno'] = $tipoLeitor->inserir();
+        if(isset($_POST['arr_id_livro'],$_POST['dataEmprestimo'], $_POST['dataDevolucao'], $_POST['idLeitor']) &&
+            (int)$_POST['idLeitor']           > 0  &&
+            count($_POST['arr_id_livro'])     > 0  &&
+            strlen($_POST['dataEmprestimo']) == 10 &&
+            strlen($_POST['dataDevolucao'])  == 10
+        ){
 
-        $this->view("create-update-tipo-leitor", $dados);
+
+            session_start();
+
+            $emprestimo = new EmprestimoModel();
+            $emprestimo->setIdEmprestimo($_POST['idEmprestimo']);
+            $emprestimo->setIdLeitor($_POST['idLeitor']);
+            $emprestimo->setIdUsuario($_SESSION['idUsuario']);
+            $emprestimo->setDataEmprestimo(implode('-',array_reverse(explode('/',$_POST['dataEmprestimo']))));
+
+
+            $emprestimo->setIdLivro($_POST['arr_id_livro']);
+            $emprestimo->setDataDevolucao(implode('-',array_reverse(explode('/',$_POST['dataDevolucao']))));
+
+
+            $retorno = $emprestimo->alterar();
+
+            header('location: ' . DOMINIO . "emprestimo/listagem/return/".$retorno);
+
+        }else{
+
+            header('Location: ' . DOMINIO . "emprestimo/listagem/return/Nenhum dado vÃ¡lido passado por parÃ¢metro!");
+        }
     }
 
     public function listagem()
     {
-        $listar = new TipoLeitorModel();
+        $dados['msg'] = $this->getParams("msg");
+        $dados['retorno'] = $this->getParams("return");
+
+        $listar = new EmprestimoModel();
         $dados['listagem'] = $listar->listarTodas();
-        $this->view("listagem-tipo-leitor", $dados);
+        $this->view("listagem-emprestimo", $dados);
     }
 
-    public function excluir()
+    public function excluiremprestimo()
     {
         session_start();
 
-        if (isset($_POST['id']) && $_POST['id'] > 0) {
+        if (isset($_POST['id_emprestimo']) && (int)$_POST['id_emprestimo'] > 0) {
+            $emprestimo = new EmprestimoModel();
+            $emprestimo->setIdEmprestimo($_POST['id_emprestimo']);
+            $retorno = $emprestimo->excluirEmprestimo($_POST['id_emprestimo']);
+            echo $retorno;
+        } else {
+            echo "Falha!";
+        }
+    }
 
-            $tipoLeitor = new TipoLeitorModel();
-            $tipoLeitor->setIdTipo($_POST['id']);
-            $retorno = $tipoLeitor->excluir();
+    public function excluirlivro()
+    {
+        session_start();
+
+        if (isset($_POST['id_emprestimo'], $_POST['id_livro']) && (int)$_POST['id_emprestimo'] > 0 && strlen($_POST['id_livro']) > 0) {
+            $emprestimo = new EmprestimoModel();
+            $retorno = $emprestimo->excluirLivro($_POST['id_emprestimo'], $_POST['id_livro']);
             echo $retorno;
         } else {
             echo "Falha!";
@@ -86,6 +148,74 @@ class Emprestimo extends Controller
             
             header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/Falha ao atualizar registro!"); 
             
+        }
+    }
+
+    public function veremprestimo(){
+        session_start();
+
+        $id_emprestimo = $this->getParams("id");
+
+        if(isset($id_emprestimo) && $id_emprestimo != null && (int)$id_emprestimo > 0){
+
+            $emprestimo = new EmprestimoModel();
+            $dados['emprestimo'] = $emprestimo->listarPorId($id_emprestimo);
+            $dados['livros'] = $emprestimo->listarLivrosPorEmprestimo($id_emprestimo);
+
+            $this->view("listagem-livros-emprestados-leitor", $dados);
+            exit();
+
+        }else{
+            header("Location: " . DOMINIO . "emprestimo/listagem");
+        }
+
+
+    }
+
+    public function printemprestimo(){
+        session_start();
+
+        $id_emprestimo = $this->getParams("id");
+
+        if(isset($id_emprestimo) && $id_emprestimo != null && (int)$id_emprestimo > 0){
+
+            $emprestimo = new EmprestimoModel();
+            $dados['emprestimo'] = $emprestimo->listarPorId($id_emprestimo);
+            $dados['livros'] = $emprestimo->listarLivrosPorEmprestimo($id_emprestimo);
+
+            $this->view("print-emprestimo", $dados);
+            exit();
+
+        }else{
+            header("Location: " . DOMINIO . "emprestimo/listagem");
+        }
+
+
+    }
+
+    public function devolverlivro()
+    {
+        session_start();
+
+        if (isset($_POST['id_emprestimo'], $_POST['id_livro']) && (int)$_POST['id_emprestimo'] > 0 && strlen($_POST['id_livro']) > 0) {
+            $emprestimo = new EmprestimoModel();
+            $retorno = $emprestimo->devolverLivro($_POST['id_emprestimo'], $_POST['id_livro']);
+            echo $retorno;
+        } else {
+            echo "Falha!";
+        }
+    }
+
+    public function renovarlivro()
+    {
+        session_start();
+
+        if (isset($_POST['idLivro'], $_POST['idLeitor'], $_POST['dataVencimento'], $_POST['dataRenovacao'], $_POST['emprestimo'])) {
+            $emprestimo = new EmprestimoModel();
+            $retorno = $emprestimo->renovarlivro($_POST['idLivro'], $_POST['idLeitor'], $_POST['dataVencimento'], $_POST['dataRenovacao'], $_POST['emprestimo']);
+            echo $retorno;
+        } else {
+            echo "Falha!";
         }
     }
 }

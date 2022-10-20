@@ -1,9 +1,12 @@
 <?php
 Validar::validarLogin();
-if(ValidarPagina::validarPaginaAtual('listagem_livro') <= 0){header ("Location: " . DOMINIO. "home");}
+if (ValidarPagina::validarPaginaAtual('listagem_livro') <= 0) {
+  header("Location: " . DOMINIO . "home");
+}
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
@@ -33,16 +36,18 @@ date_default_timezone_set('America/Sao_Paulo');
                     </div>
                   </div>
                 </div>
-                <table class="table table-bordered v-middle" id="listagemLivro">
+                <table class="table-sm table-bordered responsive-table" id="listagemLivro">
                   <thead class="thead-dark">
-                    <tr class="text-center align-middle">
-                      <th>Código</th>
-                      <th>Imagem</th>
+                    <tr class="text-center align-middle responsive-table" style="background-color: #1F262D; color: white;">
+                      <th style="width: 8%;">Código</th>
+
                       <th>Título</th>
-                      <th style="width: 12%;">Sinopse</th>
-                      <th>Observações</th>
+                      <th>Categoria(s)</th>
+                      <th>Exemplares</th>
+
                       <th>Lançamento</th>
                       <th>Editora</th>
+                      <th>Tipo</th>
                       <th style="width: 6%;">Páginas</th>
                       <th></th>
                     </tr>
@@ -50,31 +55,32 @@ date_default_timezone_set('America/Sao_Paulo');
                   <tbody>
                     <?php
                     if (isset($view_listagem) && count($view_listagem) > 0) {
+                      $x = 1;
                       foreach ($view_listagem as $livro) {
                     ?>
-                        <tr class="text-center v-middle">
+                        <tr class="v-middle">
+
                           <td><?= $livro['idLivro'] ?></td>
-                          <td>
-                            <?php
-                            $imagem = "http://" . SITE_ROOT . "web-pages/assets/images/livro/" . $livro['imagemCapa'];
-                            if (!Helpers::URL_exists($imagem)) {
-                              $imagem = "https://img.icons8.com/plasticine/344/image.png";
-                            }
-                            ?>
-                            <img class="imagemList" src="<?= $imagem ?>">
-                          </td>
+
                           <td><?= $livro['tituloLivro'] ?></td>
-                          <td><?= $livro['sinopseLivro'] ?></td>
-                          <td><?= $livro['observacoesLivro'] ?></td>
+                          <td><?= $livro['categorias'] ?></td>
+                          <td><?= $livro['quantidadeLivros'] ?></td>
+
                           <td><?= date('d/m/Y', strtotime($livro['dataLancamento'])) ?></td>
                           <td><?= $livro['descricaoEditora'] ?></td>
+                          <td><?= $livro['tipoLivro'] ?></td>
                           <td><?= $livro['totalPaginas'] ?></td>
                           <td>
+
+
                             <a class="edit editar" href="<?= DOMINIO ?>livro/index/action/update/id/<?= $livro['idLivro'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete remover" desc="<?= $livro['tituloLivro'] ?>" id="<?= $livro['idLivro'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
+
                           </td>
                         </tr>
                     <?php
+                        $x++;
                       }
                     }
                     ?>
@@ -91,15 +97,110 @@ date_default_timezone_set('America/Sao_Paulo');
   <!-- SCRIPTS -->
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
 
+  <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php"; ?>
+
   <script>
     $(document).ready(function() {
+
+      var dat = new Date();
+      var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
+
       $('#listagemLivro').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-        "iDisplayLength": 7,
+        "iDisplayLength": 50,
+        "ordering": false,
         "initComplete": function() {
           $("#listagemLivro").show();
         },
-        buttons: ['searchBuilder', 'csv', 'excel', 'pdf', 'print'],
+        buttons: [{
+            extend: 'excelHtml5',
+            text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
+            title: 'Livros Cadastrados - ' + data_dia,
+            titleAttr: 'Exportar a Excel',
+          },
+          {
+            extend: 'pdfHtml5',
+            pageSize: 'A4',
+            titleAttr: 'Baixar PDF',
+            text: '<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i></button>',
+            orientation: 'landscape',
+            title: 'Livros Cadastrados - ' + data_dia,
+
+            exportOptions: {
+              columns: [0, 2, 3, 4, 5, 6, 7] //Your Colume value those you want
+            },
+            customize: function(doc) {
+
+              doc.defaultStyle.alignment = 'left';
+              doc.styles.tableHeader.alignment = 'left';
+
+              doc['footer'] = (function(page, pages) {
+                return {
+                  columns: [
+                    'Casa do Bom Menino de Arapongas',
+                    {
+                      alignment: 'right',
+                      text: [{
+                          text: page.toString(),
+                          italics: true
+                        },
+                        ' de ',
+                        {
+                          text: pages.toString(),
+                          italics: true
+                        }
+                      ]
+                    }
+                  ],
+                  margin: [10, 0]
+                }
+              });
+
+
+              // Styling the table: create style object
+              var objLayout = {};
+              // Horizontal line thickness
+              objLayout['hLineWidth'] = function(i) {
+                return .5;
+              };
+              // Vertikal line thickness
+              objLayout['vLineWidth'] = function(i) {
+                return .5;
+              };
+              // Horizontal line color
+              objLayout['hLineColor'] = function(i) {
+                return '#aaa';
+              };
+              // Vertical line color
+              objLayout['vLineColor'] = function(i) {
+                return '#aaa';
+              };
+              // Left padding of the cell
+              objLayout['paddingLeft'] = function(i) {
+                return 4;
+              };
+              // Right padding of the cell
+              objLayout['paddingRight'] = function(i) {
+                return 4;
+              };
+              // Inject the object in the document
+              doc.content[1].layout = objLayout;
+
+
+            }
+          },
+          {
+            extend: 'print',
+            text: '<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button>',
+            pageSize: 'A4',
+            titleAttr: 'Imprimir',
+            orientation: 'landscape',
+            title: 'Livros Cadastrados - ' + data_dia,
+            exportOptions: {
+              columns: [0, 2, 3, 4, 5, 6, 7] //Your Colume value those you want
+            },
+          }
+        ],
         "language": {
           "lengthMenu": "",
           "zeroRecords": "Nada encontrado",

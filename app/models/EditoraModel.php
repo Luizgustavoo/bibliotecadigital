@@ -24,7 +24,7 @@ class EditoraModel extends Model
     /**
      * Set the value of idEditora
      *
-     * @param   mixed  $idEditora  
+     * @param   mixed  $idEditora
      *
      * @return  self
      */
@@ -47,7 +47,7 @@ class EditoraModel extends Model
     /**
      * Set the value of dataCadastro
      *
-     * @param   mixed  $dataCadastro  
+     * @param   mixed  $dataCadastro
      *
      * @return  self
      */
@@ -70,7 +70,7 @@ class EditoraModel extends Model
     /**
      * Set the value of descricaoEditora
      *
-     * @param   mixed  $descricaoEditora  
+     * @param   mixed  $descricaoEditora
      *
      * @return  self
      */
@@ -93,7 +93,7 @@ class EditoraModel extends Model
     /**
      * Set the value of imagemEditora
      *
-     * @param   mixed  $imagemEditora  
+     * @param   mixed  $imagemEditora
      *
      * @return  self
      */
@@ -108,45 +108,43 @@ class EditoraModel extends Model
     {
         $erros = "";
         $valida = $this->validarDados();
+
         if (strlen($valida) <= 0) {
             //inserindo dados no cafe dos alunos
-            if ($this->getImagemEditora()['size'] <= $this->tamanho_upload) {
-
-                $arquivo_tmp = $this->getImagemEditora()['tmp_name'];
-                $nome = $this->getImagemEditora()['name'];
-                $extensao = strrchr($nome, '.');
-                $extensao = strtolower($extensao);
-                if (strstr('.jpg;.jpeg;.gif;.png', $extensao)) {
-
-                    //                            $novoNome = md5(microtime())  . $extensao;
-                    $novoNome = "foto_" . md5(time())  . $extensao;
-
-                    $destino = './web-pages/assets/images/editora/' . $novoNome;
 
 
+            $arquivo_tmp = $this->getImagemEditora()['tmp_name'];
+            $nome = $this->getImagemEditora()['name'];
+            $extensao = strrchr($nome, '.');
+            $extensao = strtolower($extensao);
 
-                    if ($this->compressImage($arquivo_tmp, $destino, 50)) {
 
-                        $dados_editora = [
-                            "descricaoEditora" => mb_strtoupper($this->getDescricaoEditora()),
-                            "imagemEditora" => $novoNome,
-                            "dataCadastro" => mb_strtoupper($this->getDataCadastro()),
-                        ];
-                        $this->set_transaction($this->insert($dados_editora, 'editora'));
-                    } else {
-                        $erros .= "Falha ao cadastrar a editora, comunique o administrador!<br>";
-                    }
-                    if (strlen($erros) <= 0) {
-                        $retorno = $this->execTransaction();
-                    } else {
-                        $retorno = $erros;
-                    }
-                } else {
-                    $retorno = $valida;
-                }
-                return $retorno;
+            //                            $novoNome = md5(microtime())  . $extensao;
+            $novoNome = "foto_" . md5(time())  . $extensao;
+
+            $destino = './web-pages/assets/images/editora/' . $novoNome;
+
+            if($this->getImagemEditora()['tmp_name'] != null){
+                $upload_imagem = $this->compressImage($arquivo_tmp, $destino, 50) ? " Upload da imagem ok." : " Imagem não cadastrada!";
+            }else{
+                $upload_imagem = " Nenhuma imagem cadastrada!";
             }
+
+
+            $dados_editora = [
+                "descricaoEditora" => mb_strtoupper($this->getDescricaoEditora()),
+                "imagemEditora" => $novoNome,
+                "dataCadastro" => mb_strtoupper($this->getDataCadastro()),
+            ];
+            $this->set_transaction($this->insert($dados_editora, 'editora'));
+
+            $retorno = $this->execTransaction();
+
+
+        }else{
+            $retorno = $valida;
         }
+        return $retorno . $upload_imagem;
     }
 
     public function excluir()
@@ -200,49 +198,42 @@ class EditoraModel extends Model
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
             //inserindo dados no cafe dos alunos
-            if ($this->getImagemEditora()['size'] <= $this->tamanho_upload) {
-
-                $arquivo_tmp = $this->getImagemEditora()['tmp_name'];
-                $nome = $this->getImagemEditora()['name'];
-                $extensao = strrchr($nome, '.');
-                $extensao = strtolower($extensao);
-                if (strstr('.jpg;.jpeg;.gif;.png', $extensao)) {
-
-                    //                            $novoNome = md5(microtime())  . $extensao;
-                    $novoNome = "foto_" . md5(time())  . $extensao;
-
-                    $destino = './web-pages/assets/images/editora/' . $novoNome;
 
 
+            $arquivo_tmp = $this->getImagemEditora()['tmp_name'];
+            $nome = $this->getImagemEditora()['name'];
+            $extensao = strrchr($nome, '.');
+            $extensao = strtolower($extensao);
 
-                    if ($this->compressImage($arquivo_tmp, $destino, 50)) {
 
-                        $dados_editora = [
-                            "imagemEditora" => $novoNome,
-                            "descricaoEditora" => mb_strtoupper($this->getDescricaoEditora()),
-                            "dataCadastro" => mb_strtoupper($this->getDataCadastro()),
-                        ];
+            //                            $novoNome = md5(microtime())  . $extensao;
+            $novoNome = "foto_" . md5(time())  . $extensao;
 
-                        $where = "idEditora = " . $this->getIdEditora();
-                        $this->set_transaction($this->update($dados_editora, $where, $this->_tabela));
-                    } else {
-                        $erros .= "Falha ao cadastrar a editora, comunique o administrador!<br>";
-                    }
-                    if (strlen($erros) <= 0) {
-                        $retorno = $this->execTransaction();
-                    } else {
-                        $retorno = $erros;
-                    }
-                } else {
-                    $retorno = $valida;
-                }
-                return $retorno;
+            $destino = './web-pages/assets/images/editora/' . $novoNome;
+
+
+            if($this->getImagemEditora()['tmp_name'] != null){
+                $upload_imagem = $this->compressImage($arquivo_tmp, $destino, 50) ? " Upload da imagem ok." : " Imagem não cadastrada!";
+            }else{
+                $upload_imagem = " Nenhuma imagem cadastrada!";
             }
+
+
+            $dados_editora = [
+                "imagemEditora" => $novoNome,
+                "descricaoEditora" => mb_strtoupper($this->getDescricaoEditora()),
+                "dataCadastro" => mb_strtoupper($this->getDataCadastro()),
+            ];
+
+            $where = "idEditora = " . $this->getIdEditora();
+            $this->set_transaction($this->update($dados_editora, $where, $this->_tabela));
+
             $retorno = $this->execTransaction();
+
         } else {
             $retorno = $valida;
         }
-        return $retorno;
+        return $retorno . $upload_imagem;
     }
 
     public function validarDados()
@@ -253,9 +244,9 @@ class EditoraModel extends Model
         if (strlen($this->getDescricaoEditora()) < 3) {
             $erros .= "Nome da categoria inválido!<br/>";
         }
-        if (strlen($this->getImagemEditora()['tmp_name']) <= 0) {
-            $erros .= "Foto inválida!<br>";
-        }
+//        if (strlen($this->getImagemEditora()['tmp_name']) <= 0) {
+//            $erros .= "Foto inválida!<br>";
+//        }
         return $erros;
     }
 

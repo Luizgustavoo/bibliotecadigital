@@ -40,6 +40,8 @@ class Autor extends Controller
         $autor->setImagemAutor($_FILES['imagemAutor']);
         $autor->setDataCadastro(date('Y-m-d H:i:s'));
 
+        $dados['tipo_operacao'] = "inserir";
+
         $dados['retorno'] = $autor->inserir();
 
         $this->view("create-update-autor", $dados);

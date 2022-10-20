@@ -6,12 +6,12 @@
       <!-- ============================================================== -->
       <a class="navbar-brand" href="<?= DOMINIO ?>home">
         <b class="logo-icon ps-1">
-          <img src="http://<?= SITE_ROOT ?>/web-pages/assets/images/logo-icon.png" alt="homepage" class="light-logo" width="40" />
+          <img src="<?=HTTPS.SITE_ROOT ?>/web-pages/assets/images/logo-icon.png" alt="homepage" class="light-logo" width="40" />
         </b>
         <span class="logo-text ms-2">
-        <img src="http://<?= SITE_ROOT ?>/web-pages/assets/images/logo-text.png" alt="homepage" class="light-logo" width="220"/>
+        <img src="<?=HTTPS.SITE_ROOT ?>/web-pages/assets/images/logo-text.png" alt="homepage" class="light-logo" width="220"/>
         </span>
-        <!-- <img src="http://<?= SITE_ROOT ?>/web-pages/assets/images/logo.png" alt="homepage" class="mt-2 light-logo" width="220"/> -->
+        <!-- <img src="<?=HTTPS.SITE_ROOT ?>/web-pages/assets/images/logo.png" alt="homepage" class="mt-2 light-logo" width="220"/> -->
       </a>
 
       <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
@@ -49,7 +49,7 @@
                     waves-effect waves-dark
                     pro-pic
                   " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="http://<?= SITE_ROOT ?>/web-pages/assets/images/user.png" alt="user" class="rounded-circle" width="30" height="30" />
+            <img src="<?=HTTPS.SITE_ROOT ?>/web-pages/assets/images/user.png" alt="user" class="rounded-circle" width="30" height="30" />
           </a>
           <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="javascript:void(0)"><i class="mdi mdi-account me-1 ms-1"></i> Meu Perfil</a>

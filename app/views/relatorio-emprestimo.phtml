@@ -1,6 +1,6 @@
 <?php
 Validar::validarLogin();
-if (ValidarPagina::validarPaginaAtual('listagem_editora') <= 0) {
+if (ValidarPagina::validarPaginaAtual('listagem_categoria') <= 0) {
   header("Location: " . DOMINIO . "home");
 }
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -16,13 +16,12 @@ date_default_timezone_set('America/Sao_Paulo');
   <!-- Preloader - style you can find in spinners.css -->
   <!-- ============================================================== -->
   <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
-
+  
   <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
 
     <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
 
     <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
-
     <div class="page-wrapper">
       <div class="container-fluid">
         <div class="row">
@@ -32,45 +31,77 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="table-title">
                   <div class="row">
                     <div class="col-sm-8">
-                      <h2>Listagem de<b> Editora</b></h2>
-                    </div>
-                    <div class="col-sm-4">
-                      <a href="<?= DOMINIO ?>editora" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
+                      <h2>Relatório<b> Empréstimo</b></h2>
                     </div>
                   </div>
                 </div>
-                <table class="table v-middle table-bordered table-light responsive-table" id="listagemEditora">
+                <table class="table v-middle table-bordered table-light responsive-table" id="listagemCategoria">
                   <thead class="thead-dark">
-                    <tr class="text-center align-middle">
-                      <th style="width: 10%;">ID</th>
-                      <th style="width: 20%;">Descrição</th>
-                      <th style="width: 10%;">Data</th>
-                      <th style="width: 15%;">Imagem</th>
-                      <th style="width: 10%;"></th>
+                    <tr class="text-center align-middle responsive-table">
+                      <th style="width: 5%;">ID</th>
+                      <th style="width: 12%;">Nome Leitor</th>
+                      <th style="width: 10%;">Código Livro</th>
+                      <th style="width: 42%;">Nome Livro</th>
+                      <th style="width: 8%;">Empréstimo</th>
+                      <th style="width: 7%;">Devolução</th>
+                      <th style="width: 4%;">Status</th>
+
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     if (isset($view_listagem) && count($view_listagem) > 0) {
-                      foreach ($view_listagem as $editora) {
+                      foreach ($view_listagem as $emprestimo) {
                     ?>
                         <tr class="text-center v-middle">
-                          <td><?= $editora['idEditora'] ?></td>
-                          <td><?= $editora['descricaoEditora'] ?></td>
-                          <td><?= date('d/m/Y', strtotime($editora['dataCadastro'])) ?></td>
-                          <td>
-                            <?php
-                            $imagem = "" . HTTPS . SITE_ROOT . "web-pages/assets/images/editora/" . $editora['imagemEditora'];
-                            /*if (!Helpers::URL_exists($imagem)) {
-                              $imagem = "https://img.icons8.com/plasticine/344/image.png";
-                             }*/
-                            ?>
-                            <img class="imagemList" src="<?= $imagem ?>">
-                          </td>
-                          <td>
-                            <a class="edit editar" href="<?= DOMINIO ?>editora/index/action/update/id/<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete remover" desc="<?= $editora['descricaoEditora'] ?>" id="<?= $editora['idEditora'] ?>" data-toggle="tooltip"><i class="material-icons">delete</i></a>
-                          </td>
+                          <td><?= $emprestimo['idLeitor'] ?></td>
+                          <td><?= $emprestimo['nomeLeitor'] ?></td>
+                          <td><?php
+                              $array = explode('|', $emprestimo['livros']);
+                              foreach ($array as $a) {
+                                $array2 = explode(';', $a);
+
+                                echo "$array2[0]" . "<br>";
+                              }
+                              ?></td>
+
+                          <td><?php
+                              $array = explode('|', $emprestimo['livros']);
+                              foreach ($array as $a) {
+                                $array2 = explode(';', $a);
+
+                                echo "$array2[1]" . "<br>";
+                              }
+                              ?></td>
+
+                          <td><?php
+                              $array = explode('|', $emprestimo['livros']);
+                              foreach ($array as $a) {
+                                $array2 = explode(';', $a);
+                                $data = $array2[2];
+                                $novaData = date('d/m/Y', strtotime($data));
+                                echo $novaData . "<br>";
+                              }
+                              ?></td>
+
+                          <td><?php
+                              $array = explode('|', $emprestimo['livros']);
+                              foreach ($array as $a) {
+                                $array2 = explode(';', $a);
+                                $data = $array2[3];
+                                $novaData = date('d/m/Y', strtotime($data));
+                                echo $novaData . "<br>";
+                              }
+                              ?></td>
+
+                          <td><?php
+                              $array = explode('|', $emprestimo['livros']);
+                              foreach ($array as $a) {
+                                $array2 = explode(';', $a);
+
+                                echo "$array2[4]" . "<br>";
+                              }
+                              ?></td>
                         </tr>
                     <?php
                       }
@@ -92,24 +123,22 @@ date_default_timezone_set('America/Sao_Paulo');
 
   <script>
     $(document).ready(function() {
-      var dat = new Date();
-      var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
-      $('#listagemEditora').DataTable({
+      $('#listagemCategoria').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
         "iDisplayLength": 10,
         "ordering": false,
         "initComplete": function() {
-          $("#listagemEditora").show();
+          $("#listagemCategoria").show();
         },
         buttons: [
           'searchBuilder',
           {
             extend: 'excelHtml5',
             text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
-            title: 'Editoras Cadastradas - ' + data_dia,
+            title: 'Todos Empréstimos',
             titleAttr: 'Exportar a Excel',
             exportOptions: {
-              columns: [1, 2],
+              columns: [1, 2, 3, 4, 5,6],
               format: {
                 body: function(data, column, row) {
                   if (typeof data === 'string' || data instanceof String) {
@@ -124,10 +153,10 @@ date_default_timezone_set('America/Sao_Paulo');
             extend: 'pdfHtml5',
             pageSize: 'A4',
             titleAttr: 'Baixar PDF',
-            title: 'Editoras Cadastradas - ' + data_dia,
+            title: 'Todos Empréstimos',
             text: '<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i> ',
             exportOptions: {
-              columns: [1, 2],
+              columns: [1, 2, 3, 4, 5,6],
               format: {
                 body: function(data, column, row) {
                   if (typeof data === 'string' || data instanceof String) {
@@ -200,11 +229,11 @@ date_default_timezone_set('America/Sao_Paulo');
           {
             extend: 'print',
             pageSize: 'A4',
-            title: 'Editoras Cadastradas - ' + data_dia,
+            title: 'Todos Empréstimos',
             text: '<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button> ',
             titleAttr: 'Imprimir',
             exportOptions: {
-              columns: [1, 2],
+              columns: [1, 2, 3, 4, 5,6],
               format: {
                 body: function(data, column, row) {
                   if (typeof data === 'string' || data instanceof String) {
@@ -231,56 +260,6 @@ date_default_timezone_set('America/Sao_Paulo');
           },
         }
       });
-      $(".page-wrapper").on('click', '#listagemEditora tbody tr td a.remover', function() {
-        var id = $(this).attr('id');
-        var descricao = $(this).attr('desc');
-        var dados = {
-          'id': id
-        };
-        bootbox.confirm({
-          message: 'Confirma a exclusão do registro "' + descricao + '" ?',
-          callback: function(confirmacao) {
-
-            if (confirmacao) {
-
-              $.ajax({
-                url: '<?= DOMINIO ?>editora/excluir',
-                type: 'POST',
-                data: dados,
-                success: function(retorno) {
-                  bootbox.alert(retorno);
-                  bootbox.confirm({
-                    message: retorno,
-                    callback: function(confirma) {
-                      if (confirma) {
-                        location.reload();
-                      }
-                    },
-                    buttons: {
-                      confirm: {
-                        label: 'OK',
-                        className: 'btn-success'
-                      },
-                    }
-                  })
-                }
-              });
-            }
-          },
-          buttons: {
-            cancel: {
-              label: 'Cancelar',
-              className: 'btn-default'
-            },
-            confirm: {
-              label: 'EXCLUIR',
-              className: 'btn-danger'
-            }
-
-          }
-        });
-      });
-
     });
   </script>
 </body>

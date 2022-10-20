@@ -1,6 +1,5 @@
 <?php
-class UsuarioModel extends Model
-{
+Class UsuarioModelBKP- extends Model{
     public $_tabela = "usuario";
 
     private $idUsuario;
@@ -8,8 +7,8 @@ class UsuarioModel extends Model
     private $loginUsuario;
     private $senhaUsuario;
     private $statusUsuario;
-    private $perfilUsuario;
 
+    private $tamanho_upload = 1024 * 1024 * 5;
 
     /**
      * @return mixed
@@ -17,29 +16,6 @@ class UsuarioModel extends Model
     public function getIdUsuario()
     {
         return $this->idUsuario;
-    }
-
-    /**
-     * Get the value of perfilUsuario
-     *
-     * @return  mixed
-     */
-    public function getPerfilUsuario()
-    {
-        return $this->perfilUsuario;
-    }
-
-    /**
-     * Set the value of perfilUsuario
-     *
-     * @param   mixed  $perfilUsuario  
-     *
-     * @return  self
-     */
-    public function setPerfilUsuario($perfilUsuario)
-    {
-        $this->perfilUsuario = $perfilUsuario;
-        return $this;
     }
 
     /**
@@ -114,22 +90,35 @@ class UsuarioModel extends Model
         $this->statusUsuario = $statusUsuario;
     }
 
-
-
-
-    public function alterar()
+    /**
+     * @return float|int
+     */
+    public function getTamanhoUpload()
     {
+        return $this->tamanho_upload;
+    }
+
+    /**
+     * @param float|int $tamanho_upload
+     */
+    public function setTamanhoUpload($tamanho_upload)
+    {
+        $this->tamanho_upload = $tamanho_upload;
+    } //2MB
+
+
+
+    public function alterar(){
         $valida = $this->validarDados();
 
-        if (strlen($valida) <= 0) {
+        if(strlen($valida) <= 0){
 
             $dados_update = [
 
                 "nomeUsuario" => $this->getNomeUsuario(),
                 "loginUsuario" => $this->getLoginUsuario(),
                 "senhaUsuario" => md5(md5($this->getSenhaUsuario())),
-                "statusUsuario" => $this->getStatusUsuario(),
-                "perfil_usuario" => $this->getPerfilUsuario(),
+                "statusUsuario" => $this->getStatusUsuario()
 
             ];
             $where = "idUsuario = " . $this->getIdUsuario();
@@ -141,101 +130,95 @@ class UsuarioModel extends Model
         }
         return $retorno;
     }
-    public function inserir()
-    {
+    public function inserir(){
         $valida = $this->validarDados();
-        if (strlen($valida) <= 0) {
-            $dados_insert = [
+        if(strlen($valida) <= 0){
+            //inserindo dados no cafe dos alunos
+
+            $dados_insert= [
                 "nomeUsuario" => $this->getNomeUsuario(),
                 "loginUsuario" => $this->getLoginUsuario(),
                 "senhaUsuario" => md5(md5($this->getSenhaUsuario())),
-                "statusUsuario" => $this->getStatusUsuario(),
-                "perfil_usuario" => $this->getPerfilUsuario(),
+                "statusUsuario" => $this->getStatusUsuario()
             ];
             $this->set_transaction($this->insert($dados_insert, $this->_tabela));
 
             $retorno = $this->execTransaction();
-        } else {
+
+        }else{
             $retorno = $valida;
         }
         return $retorno;
     }
 
-    public function excluir()
-    {
+    public function excluir(){
         // Aonde este id está puxando
         $where = "idUsuario = " . $this->getIdUsuario();
         $retorno = $this->delete($where);
         return $retorno;
     }
-    public function validarDados()
-    {
+    public function validarDados(){
 
         $erros = "";
 
-        if (strlen($this->getNomeUsuario()) < 3) {
-            $erros .= "Nome do usuário inválido!<br/>";
-        }
-        if (strlen($this->getLoginUsuario()) < 3) {
-            $erros .= "Login do usuário inválido!<br/>";
-        }
-        if (strlen($this->getSenhaUsuario()) < 8) {
-            $erros .= "Senha do usuário inválida!<br/>";
-        }
-        if (strlen($this->getStatusUsuario()) <= 0) {
-            $erros .= "Status do usuário inválido!<br/>";
-        }
+        if(strlen($this->getNomeUsuario()) < 3){$erros .= "Nome do usuário inválido!<br/>";}
+        if(strlen($this->getLoginUsuario()) < 3){$erros .= "Login do usuário inválido!<br/>";}
+        if(strlen($this->getSenhaUsuario()) < 8){$erros .= "Senha do usuário inválida!<br/>";}
+        if(strlen($this->getStatusUsuario()) <= 0){$erros .= "Status do usuário inválido!<br/>";}
 
 
         return $erros;
+
     }
-    public function listarTodas()
-    {
+    public function listarTodas(){
 
         return $this->read($this->_tabela, null, null, null, 'nomeUsuario', null, null, null);
+
     }
 
-    public function listarTodasAtivos()
-    {
+    public function listarTodasAtivos(){
 
         return $this->read($this->_tabela, "statusUsuario = 'ativo'", null, null, 'nomeUsuario', null, null, null);
+
     }
 
-    public function listarPorDescricao($descricao)
-    {
+    public function listarPorDescricao($descricao){
 
 
         return $this->read($this->_tabela, "nomeUsuario like '%$descricao%'", null, null, null, null, null, null);
+
+
     }
 
-    public function listarUsuario()
-    {
+    public function listarUsuario(){
 
-        $where = "loginUsuario = '" . $this->getLoginUsuario() . "' and senhaUsuario = '" . md5(md5($this->getSenhaUsuario())) . "' and statusUsuario = 'ativo'";
+        $where = "loginUsuario = '".$this->getLoginUsuario()."' and senhaUsuario = '".md5(md5($this->getSenhaUsuario()))."' and statusUsuario = 'ativo'";
         return $this->read($this->_tabela, $where, null, null, null, null, null, null);
+
+
     }
 
-    public function listarPorCodigo($id)
-    {
+    public function listarPorCodigo($id){
 
 
         return $this->read($this->_tabela, "idUsuario = $id", null, null, null, null, null, null);
+
+
     }
 
-    public function alterarProfile()
-    {
+    public function alterarProfile(){
         $valida = "";
 
-        if (strlen($valida) <= 0) {
+        if(strlen($valida) <= 0){
 
-           // $avatar = $this->inserirAvatar();
+            $avatar = $this->inserirAvatar();
             $dados_update = array();
 
-            if (strlen(trim($this->getNomeUsuario())) > 0) {
+            if(strlen(trim($this->getNomeUsuario())) > 0){
                 $dados_update["nomeUsuario"] = $this->getNomeUsuario();
             }
 
-            if (strlen(trim($this->getSenhaUsuario())) > 0) {
+            if(strlen(trim($this->getSenhaUsuario())) > 0){
                 $dados_update["senhaUsuario"] = md5(md5($this->getSenhaUsuario()));
             }
 
@@ -250,36 +233,38 @@ class UsuarioModel extends Model
         return $retorno;
     }
 
-    public function validarDadosProfile()
-    {
+    public function validarDadosProfile(){
 
         $erros = "";
 
 
-        if (strlen($this->getSenhaUsuario()) < 8) {
-            $erros .= "Senha do usuário deve conter no mínimo 8 caracteres!<br>";
-        }
-        if (strlen($this->getSenhaUsuario()) < 10) {
-            $erros .= "Login do usuário inválido!<br>";
-        }
+        if(strlen($this->getSenhaUsuario()) < 8){$erros .= "Senha do usuário deve conter no mínimo 8 caracteres!<br>";}
+        if(strlen($this->getSenhaUsuario()) < 10){$erros .= "Login do usuário inválido!<br>";}
 
 
         return $erros;
+
     }
 
 
-    public function listarPorLogin($login)
-    {
+    public function listarPorLogin($login){
 
-        $where = "loginUsuario = '" . $login . "' and statusUsuario = 'ativo'";
+        $where = "loginUsuario = '".$login."' and statusUsuario = 'ativo'";
         return $this->read($this->_tabela, $where, null, null, null, null, null, null);
+
+
     }
 
-    public function listarPorChave($chave)
-    {
+    public function listarPorChave($chave){
 
-        $where = "chave_usuario = '" . $chave . "' and status_chave = 'ativo'";
+        $where = "chave_usuario = '".$chave."' and status_chave = 'ativo'";
 
         return $this->read('chaveusuario', $where, null, null, null, null, null, null);
+
+
     }
+
+
+
+
 }

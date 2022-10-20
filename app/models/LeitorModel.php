@@ -276,7 +276,7 @@ class LeitorModel extends Model
                             "emailLeitor" => ($this->getEmailLeitor()),
                             "sexoLeitor" => ($this->getSexoLeitor()),
                             "loginLeitor" => ($this->getLoginLeitor()),
-                            "senhaLeitor" => md5(($this->getSenhaLeitor())),
+                            "senhaLeitor" => md5(md5($this->getSenhaLeitor())),
                             "avatarLeitor" => $novoNome,
                             "statusLeitor" => ($this->getStatusLeitor()),
                         ];
@@ -312,7 +312,7 @@ class LeitorModel extends Model
     {
 
         //COLUNAS DA TABELA
-        $places = ['*'];
+        $places = ['leitor.*',"(select count(*) from emprestimo where emprestimo.idLeitor = leitor.idLeitor and emprestimo.statusEmprestimo = 'aberto') as  emprestimoAberto"];
 
         //inner join, outer join, todos as ligações que quiser fazer
         $innerjoin = null;
@@ -372,7 +372,7 @@ class LeitorModel extends Model
                             "emailLeitor" => ($this->getEmailLeitor()),
                             "sexoLeitor" => ($this->getSexoLeitor()),
                             "loginLeitor" => ($this->getLoginLeitor()),
-                            "senhaLeitor" => md5(($this->getSenhaLeitor())),
+                            "senhaLeitor" => md5(md5($this->getSenhaLeitor())),
                             "avatarLeitor" => $novoNome,
                             "statusLeitor" => ($this->getStatusLeitor()),
                         ];

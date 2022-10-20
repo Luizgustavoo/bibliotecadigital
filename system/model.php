@@ -18,7 +18,7 @@ class Model {
     private $username = 'root';
     private $passwd = '724018';
     private $dbname = 'bibliotecadigital';
-    private $port = '3306';
+    private $port = '8443';
     public $_tabela;
     
     private $_transaction = array();
@@ -34,7 +34,7 @@ class Model {
     public function __construct() {
         if(!isset($this->db)):
         try{
-            $this->db = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->dbname};charset={$this->charset};", $this->username, $this->passwd);
+            $this->db = new PDO("mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset};", $this->username, $this->passwd);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }  catch (PDOException $ex){
             die("To aqui".$ex);
