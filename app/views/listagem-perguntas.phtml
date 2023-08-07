@@ -20,26 +20,25 @@ date_default_timezone_set('America/Sao_Paulo');
     <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
     <div class="page-wrapper">
       <div class="container-fluid">
-        <div class="row"">
+        <div class="row">
             <div class=" container-lg">
           <div class="table-responsive">
             <div class="table-wrapper">
               <div class="table-title">
                 <div class="row">
                   <div class="col-sm-8">
-                    <h2>Listagem <b>de Perguntas</b></h2>
+                    <h2>Listagem <b>Perguntas</b></h2>
                   </div>
                   <div class="col-sm-4">
                     <a href="<?= DOMINIO ?>perguntas" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
                   </div>
                 </div>
               </div>
-              <table class="table v-middle table-bordered table-light responsive-table" id="listagemTipoLeitor">
+              <table class="table v-middle table-bordered table-light responsive-table" id="listagemPerguntas">
                 <thead class="thead-dark">
                   <tr class="text-center align-middle">
                     <th style="width: 10%;">ID</th>
-                    <th style="width: 20%;">Pergunta</th>
-
+                    <th style="width: 50%;">Pergunta</th>
                     <th style="width: 10%;"></th>
                   </tr>
                 </thead>
@@ -52,8 +51,8 @@ date_default_timezone_set('America/Sao_Paulo');
                         <td><?= $perguntas['id'] ?></td>
                         <td><?= $perguntas['pergunta'] ?></td>
                         <td>
-                          <a class="edit editar" href="<?= DOMINIO ?>tipoleitor/index/action/update/id/<?= $perguntas['idTipo'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                          <a class="delete remover" desc="<?= $perguntas['descricaoTipo'] ?>" id="<?= $perguntas['idTipo'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                          <a class="edit editar" href="<?= DOMINIO ?>perguntas/index/action/update/id/<?= $perguntas['id'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                          <a class="delete remover" desc="<?= $perguntas['pergunta'] ?>" id="<?= $perguntas['id'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
                       </tr>
                   <?php
@@ -77,12 +76,12 @@ date_default_timezone_set('America/Sao_Paulo');
     $(document).ready(function() {
       var dat = new Date();
       var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
-      $('#listagemTipoLeitor').DataTable({
+      $('#listagemPerguntas').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
         "iDisplayLength": 20,
         "ordering": false,
         "initComplete": function() {
-          $("#listagemTipoLeitor").show();
+          $("#listagemPerguntas").show();
         },
         buttons: [
           'searchBuilder',
@@ -214,20 +213,20 @@ date_default_timezone_set('America/Sao_Paulo');
           },
         }
       });
-      $(".page-wrapper").on('click', '#listagemTipoLeitor tbody tr td a.remover', function() {
+      $(".page-wrapper").on('click', '#listagemPerguntas tbody tr td a.remover', function() {
         var id = $(this).attr('id');
         var descricao = $(this).attr('desc');
         var dados = {
           'id': id
         };
         bootbox.confirm({
-          message: 'Confirma a exclusão do registro "' + descricao + '" ?',
+          message: 'Confirma a exclusão da pergunta "' + descricao + '" ?',
           callback: function(confirmacao) {
 
             if (confirmacao) {
 
               $.ajax({
-                url: '<?= DOMINIO ?>tipoleitor/excluir',
+                url: '<?= DOMINIO ?>perguntas/excluir',
                 type: 'POST',
                 data: dados,
                 success: function(retorno) {

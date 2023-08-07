@@ -1,6 +1,6 @@
 <?php
 Validar::validarLogin();
-if (ValidarPagina::validarPaginaAtual('listagem_livro') <= 0) {
+if (ValidarPagina::validarPaginaAtual('listagem_resposta') <= 0) {
   header("Location: " . DOMINIO . "home");
 }
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -29,26 +29,18 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="table-title">
                   <div class="row">
                     <div class="col-sm-8">
-                      <h2>Listagem de<b> Livro</b></h2>
+                      <h2>Listagem<b> Resposta</b></h2>
                     </div>
                     <div class="col-sm-4">
-                      <a href="<?= DOMINIO ?>livro" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
+                      <a href="<?= DOMINIO ?>resposta" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
                     </div>
                   </div>
                 </div>
-                <table class="table-sm table-bordered responsive-table" id="listagemLivro">
+                <table class="table-sm table-bordered responsive-table" id="listagemResposta">
                   <thead class="thead-dark">
                     <tr class="text-center align-middle responsive-table" style="background-color: #1F262D; color: white;">
-                      <th style="width: 8%;">Código</th>
-
-                      <th>Título</th>
-                      <th>Categoria(s)</th>
-                      <th>Exemplares</th>
-
-                      <th>Lançamento</th>
-                      <th>Editora</th>
-                      <th>Tipo</th>
-                      <th style="width: 6%;">Páginas</th>
+                      <th style="width: 8%;">ID</th>
+                      <th>Resposta(s)</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -56,27 +48,16 @@ date_default_timezone_set('America/Sao_Paulo');
                     <?php
                     if (isset($view_listagem) && count($view_listagem) > 0) {
                       $x = 1;
-                      foreach ($view_listagem as $livro) {
+                      foreach ($view_listagem as $resposta) {
                     ?>
-                        <tr class="v-middle">
+                        <tr class="text-center v-middle">
 
-                          <td><?= $livro['idLivro'] ?></td>
+                          <td><?= $resposta['id'] ?></td>
 
-                          <td><?= $livro['tituloLivro'] ?></td>
-                          <td><?= $livro['categorias'] ?></td>
-                          <td><?= $livro['quantidadeLivros'] ?></td>
-
-                          <td><?= date('d/m/Y', strtotime($livro['dataLancamento'])) ?></td>
-                          <td><?= $livro['descricaoEditora'] ?></td>
-                          <td><?= $livro['tipoLivro'] ?></td>
-                          <td><?= $livro['totalPaginas'] ?></td>
+                          <td><?= $resposta['resposta'] ?></td>
                           <td>
-
-
-                            <a class="edit editar" href="<?= DOMINIO ?>livro/index/action/update/id/<?= $livro['idLivro'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete remover" desc="<?= $livro['tituloLivro'] ?>" id="<?= $livro['idLivro'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-
-
+                            <a class="edit editar" href="<?= DOMINIO ?>resposta/index/action/update/id/<?= $resposta['id'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete remover" desc="<?= $resposta['resposta'] ?>" id="<?= $livro['id'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                           </td>
                         </tr>
                     <?php
@@ -105,12 +86,12 @@ date_default_timezone_set('America/Sao_Paulo');
       var dat = new Date();
       var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
 
-      $('#listagemLivro').DataTable({
+      $('#listagemResposta').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
         "iDisplayLength": 50,
         "ordering": false,
         "initComplete": function() {
-          $("#listagemLivro").show();
+          $("#listagemResposta").show();
         },
         buttons: [{
             extend: 'excelHtml5',
@@ -216,20 +197,20 @@ date_default_timezone_set('America/Sao_Paulo');
           },
         }
       });
-      $(".page-wrapper").on('click', '#listagemLivro tbody tr td a.remover', function() {
+      $(".page-wrapper").on('click', '#listagemResposta tbody tr td a.remover', function() {
         var id = $(this).attr('id');
         var descricao = $(this).attr('desc');
         var dados = {
           'id': id
         };
         bootbox.confirm({
-          message: 'Confirma a exclusão do livro "' + descricao + '" ?',
+          message: 'Confirma a exclusão da resposta "' + descricao + '" ?',
           callback: function(confirmacao) {
 
             if (confirmacao) {
 
               $.ajax({
-                url: '<?= DOMINIO ?>livro/excluir',
+                url: '<?= DOMINIO ?>resposta/excluir',
                 type: 'POST',
                 data: dados,
                 success: function(retorno) {

@@ -9,11 +9,7 @@ date_default_timezone_set('America/Sao_Paulo');
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>Painel Administrativo</title>
   <!-- Favicon icon -->
-<<<<<<< HEAD
   <link rel="icon" type="image/png" sizes="16x16" href="https://<?=SITE_ROOT?>/web-pages/favicon/favicon.ico" />
-=======
-  <link rel="icon" type="image/png" sizes="16x16" href="http://<?=SITE_ROOT?>/web-pages/favicon/favicon.ico" />
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
   <link href="<?=HTTPS.SITE_ROOT?>/web-pages/dist/css/style.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <!-- Custom CSS -->

@@ -70,6 +70,22 @@ class PerguntasModel extends Model
         return $erros;
     }
 
+    public function excluir()
+    {
+
+        $where = "id = " . $this->getId();
+        $retorno = $this->delete($where);
+
+        return $retorno;
+    }
+
+
+    public function listarPorCodigo($id)
+    {
+
+        return $this->read($this->_tabela, "id = $id", null, null, null, null, null, null);
+    }
+
 
     public function listarTodas()
     {
@@ -105,7 +121,7 @@ class PerguntasModel extends Model
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
                         $dados_tipoleitor = [
-                            "perguntas" => ($this->getPergunta()),
+                            "pergunta" => ($this->getPergunta()),
                         ];
                         $where = "id = " . $this->getId();
                         $this->set_transaction($this->update($dados_tipoleitor, $where, $this->_tabela));

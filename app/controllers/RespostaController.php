@@ -24,7 +24,7 @@ class Resposta extends Controller
                     $id = $this->getParams("id");
                     $resposta = new RespostaModel();
                     $dados['tipo_operacao'] = "alterar";
-                    // $dados['update'] = $resposta ->listarPorCodigo($id);
+                    $dados['update'] = $resposta ->listarPorCodigo($id);
                 }else{
                     $dados['tipo_operacao'] = "inserir";
                 }
@@ -32,6 +32,13 @@ class Resposta extends Controller
         
                 $this->view("create-update-resposta", $dados);
                 exit();
+    }
+
+    public function listagem()
+    {
+        $listar = new RespostaModel();
+        $dados['listagem'] = $listar->listarTodas();
+        $this->view("listagem-resposta", $dados);
     }
 
 
@@ -48,4 +55,38 @@ class Resposta extends Controller
         header('location: '.DOMINIO.'resposta/?return='.$dados['retorno']);
     }
 
+    public function excluir()
+    {
+        session_start();
+
+        if (isset($_POST['id']) && $_POST['id'] > 0) {
+
+            $resposta = new RespostaModel();
+            $resposta->setId($_POST['id']);
+            $retorno = $resposta->excluir();
+            echo $retorno;
+        } else {
+            echo "Falha!";
+        }
+    }
+
+
+    public function alterar()
+    {
+        session_start();
+
+        if (isset($_POST)) {
+            $resposta = new RespostaModel();
+            $resposta->setId($_POST['id']);
+            $resposta->setPerguntaId($_POST['pergunta_id']);
+            $resposta->setResposta($_POST['resposta']);
+            $resposta->setClaId($_POST['cla_id']);
+            $dados['retorno_update'] = $resposta->alterar();
+            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/".$dados['retorno_update']); 
+        } else {
+            
+            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/Falha ao atualizar registro!"); 
+            
+        }
+    }
 }

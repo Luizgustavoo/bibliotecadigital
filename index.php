@@ -17,10 +17,7 @@ define("TITLE", "Agenda Projeto Crescer");
 
 define('HTTPS','http://');
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 define("LEITOR_COMUM", 0);
 define("LEITOR_COMUM_COR", '#FFFFFF');
 

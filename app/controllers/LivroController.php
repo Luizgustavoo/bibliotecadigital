@@ -157,11 +157,7 @@ class Livro extends Controller
         if(isset($_POST['idLivro']) && strlen(trim($_POST['idLivro'])) > 0 && $_POST['tipoOperacao'] == 'inserir'){
             $livro = new LivroModel();
             if(count($livro->listarPorCodigo($_POST['idLivro'])) > 0){
-<<<<<<< HEAD
                 echo "Livro já existe!";
-=======
-                echo "Livro jÃ¡ existe!";
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             }
         }
     }

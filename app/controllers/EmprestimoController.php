@@ -46,13 +46,10 @@ class Emprestimo extends Controller
 
                 $dados['retorno'] = $emprestimo->inserir();
 
-<<<<<<< HEAD
                 echo '<script>
-                window.open("'.DOMINIO.'emprestimo/printemprestimo/id/'.$_SESSION['emprestimo_print'].'","Impressão comprovante","height=200,width=200");
+                window.open("'.DOMINIO.'emprestimo/printemprestimo/id/'.$_SESSION['emprestimo_print'].'","Impressão comprovante","height=500,width=500");
                 </script>';
 
-=======
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             }
 
         }
@@ -92,24 +89,14 @@ class Emprestimo extends Controller
             $emprestimo->setIdLivro($_POST['arr_id_livro']);
             $emprestimo->setDataDevolucao(implode('-',array_reverse(explode('/',$_POST['dataDevolucao']))));
 
-<<<<<<< HEAD
 
-=======
-//            echo "<pre>";
-//            print_r($_POST['arr_id_livro']);
-//            die;
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             $retorno = $emprestimo->alterar();
 
             header('location: ' . DOMINIO . "emprestimo/listagem/return/".$retorno);
 
         }else{
 
-<<<<<<< HEAD
             header('Location: ' . DOMINIO . "emprestimo/listagem/return/Nenhum dado vÃ¡lido passado por parÃ¢metro!");
-=======
-            header('Location: ' . DOMINIO . "emprestimo/listagem/return/Nenhum dado válido passado por parâmetro!");
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         }
     }
 
@@ -222,7 +209,6 @@ class Emprestimo extends Controller
             echo "Falha!";
         }
     }
-<<<<<<< HEAD
 
     public function renovarlivro()
     {
@@ -236,6 +222,4 @@ class Emprestimo extends Controller
             echo "Falha!";
         }
     }
-=======
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 }

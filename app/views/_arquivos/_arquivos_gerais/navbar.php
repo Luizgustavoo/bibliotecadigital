@@ -3,14 +3,8 @@
     .text-red {
       color: #ff2b2b !important;
     }
-<<<<<<< HEAD
-
     .text-blue {
       color: #00FFF2 !important;
-=======
-    .text-blue {
-      color: #0737f5 !important;
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
     }
   </style>
   <div class="scroll-sidebar">
@@ -36,7 +30,6 @@
               <a href="<?= DOMINIO ?>relatorio/emprestimo" class="sidebar-link"><i class="mdi mdi-bookmark-check text-blue"></i><span class="hide-menu text-blue"> Empréstimos </span></a>
             </li>
             <li class="sidebar-item">
-<<<<<<< HEAD
               <a href="<?= DOMINIO ?>relatorio/emprestimoVencido" class="sidebar-link"><i class="mdi mdi-bookmark-check text-blue"></i><span class="hide-menu text-blue"> Empréstimos Vencidos</span></a>
             </li>
             <li class="sidebar-item">
@@ -45,10 +38,6 @@
             <li class="sidebar-item">
               <a href="<?= DOMINIO ?>relatorio/tempoLeituraDia" class="sidebar-link"><i class="mdi mdi-clock text-blue"></i><span class="hide-menu text-blue"> Tempo de Leitura (DIA)</span></a>
             </li>
-=======
-              <a href="<?= DOMINIO ?>relatorio/tempoLeitura" class="sidebar-link"><i class="mdi mdi-clock text-blue"></i><span class="hide-menu text-blue"> Tempo de Leitura </span></a>
-            </li>
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
           </ul>
         </li>
         <li class="sidebar-item">
@@ -75,22 +64,17 @@
           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>emprestimo/listagem" aria-expanded="false"><i class="mdi mdi-cart-outline"></i><span class="hide-menu">Empréstimo</span></a>
         </li>
 
-<<<<<<< HEAD
-
-
-
-
+        <hr>
         <li class="sidebar-item">
-          <a class="sidebar-link has-arrow text-blue" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu">Perguntas</span></a>
+          <a class="sidebar-link has-arrow text-blue" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu">Perguntas </span></a>
           <ul aria-expanded="false" class="collapse first-level">
-
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>perguntas/listagem" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu text-blue">Perguntas</span></a>
+              <a href="<?= DOMINIO ?>perguntas/listagem" class="sidebar-link"><i class="mdi mdi-star text-blue"></i><span class="hide-menu text-blue"> Pergunta </span></a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>resposta" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu text-blue">Respostas</span></a>
+              <a href="<?= DOMINIO ?>resposta/listagem" class="sidebar-link"><i class="mdi mdi-star text-blue"></i><span class="hide-menu text-blue"> Resposta </span></a>
             </li>
-          </ul>
+            </ul>
         </li>
 
         <hr>
@@ -102,17 +86,6 @@
           <a class="sidebar-link waves-effect waves-dark sidebar-link text-red" href="<?= DOMINIO ?>paginasusuario" aria-expanded="false"><i class="mdi mdi-lock-outline text-red"></i><span class="hide-menu">Página Usuário</span></a>
         </li>
 
-=======
-        <hr>
-
-        <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link text-red" href="<?= DOMINIO ?>paginaspainel/listagem" aria-expanded="false"><i class="mdi mdi-lock text-red"></i><span class="hide-menu">Páginas Painel</span></a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link text-red" href="<?= DOMINIO ?>paginasusuario" aria-expanded="false"><i class="mdi mdi-lock-outline text-red"></i><span class="hide-menu">Página Usuário</span></a>
-        </li>
-
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         <li class="sidebar-item">
           <a class="sidebar-link waves-effect waves-dark sidebar-link  text-red" href="<?= DOMINIO ?>usuario/listagem" aria-expanded="false"><i class="mdi mdi-account-key  text-red"></i><span class="hide-menu">Usuário</span></a>
         </li>

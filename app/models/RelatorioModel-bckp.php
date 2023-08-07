@@ -25,32 +25,10 @@ class RelatorioModel extends Model
 
         return $this->read('leitor', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
-    public function listarTempoLeituraDia($dia, $mes, $ano)
-    {
-        $places = ['leitor.idLeitor', 'leitor.nomeLeitor', '(select  sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
-        from leituralivro where leituralivro.idLeitor = leitor.idLeitor and
-        year(leituralivro.dataLeituraFim) = ' . $ano . ' and year(leituralivro.dataLeitura) = ' . $ano . '
-        and month(leituralivro.dataLeituraFim) = ' . $mes . ' and month(leituralivro.dataLeitura) = ' . $mes . '
-        and day(leituralivro.dataLeituraFim) = ' . $dia . ' and day(leituralivro.dataLeitura) = ' . $dia . '
-        ) as tempoLeituraSegundos, (((select  sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
-        from leituralivro where leituralivro.idLeitor = leitor.idLeitor and
-        year(leituralivro.dataLeituraFim) = ' . $ano . ' and year(leituralivro.dataLeitura) = ' . $ano . '
-        and month(leituralivro.dataLeituraFim) = ' . $mes . ' and month(leituralivro.dataLeitura) = ' . $mes . '
-        )/60)/60) as tempoLeituraHora'];
-        $innerjoin = null;
-        $where = null;
-        $orderby = 'tempoLeituraSegundos desc';
-        $limit = 30;
-        $offset = null;
-        $groupby = null;
-
-
-        return $this->read('leitor', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
-    }
 
     public function listarTempoLeitura()
     {
-        $places = ['leitor.idLeitor', 'leitor.nomeLeitor', '(select sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
+        $places = ['leitor.idLeitor', 'leitor.nomeLeitor', '(select  sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
         from leituralivro where leituralivro.idLeitor = leitor.idLeitor) as tempoLeituraSegundos'];
         $innerjoin = null;
         $where = null;
@@ -60,7 +38,6 @@ class RelatorioModel extends Model
         $groupby = null;
         return $this->read('leitor', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
-
 
     public function listarEmprestimo()
     {
@@ -82,22 +59,6 @@ class RelatorioModel extends Model
         // $groupby = null;
         // return $this->read('leitor', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
         return $this->readCALL('emprestimo()');
-    }
-
-
-    public function listarEmprestimoVencido()
-    {
-        $places = ['leitor.nomeLeitor', 'emprestimo.dataEmprestimo', 'emprestimo.dataDevolucao', '(select 
-        group_concat(livro.tituloLivro separator ";")
-        from livrosemprestimo inner join livro on livrosemprestimo.idLivro = livro.idLivro where livrosemprestimo.idEmprestimo = emprestimo.idEmprestimo) as livros'];
-        $innerjoin = 'inner join leitor on leitor.idLeitor = emprestimo.idLeitor';
-        $where = "emprestimo.statusEmprestimo = 'aberto' and dataDevolucao <= now()";
-        $orderby = null;
-        $limit = null;
-        $offset = null;
-        $groupby = null;
-        return $this->read('emprestimo', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
-        // return $this->readCALL('emprestimo()');
     }
 
     public function listarNivel()

@@ -21,7 +21,7 @@ class Perguntas extends Controller
                     $id = $this->getParams("id");
                     $perguntas = new PerguntasModel();
                     $dados['tipo_operacao'] = "alterar";
-                    // $dados['update'] = $perguntas ->listarPorCodigo($id);
+                    $dados['update'] = $perguntas ->listarPorCodigo($id);
                 }else{
                     $dados['tipo_operacao'] = "inserir";
                 }
@@ -38,6 +38,7 @@ class Perguntas extends Controller
         $dados['listagem'] = $listar->listarTodas();
         $this->view("listagem-perguntas", $dados);
     }
+    
 
 
     public function cadastro()
@@ -49,6 +50,21 @@ class Perguntas extends Controller
         $dados['retorno'] = $perguntas->inserir();
 
         header('location: '.DOMINIO.'perguntas/?return='.$dados['retorno']);
+    }
+
+    public function excluir()
+    {
+        session_start();
+
+        if (isset($_POST['id']) && $_POST['id'] > 0) {
+
+            $perguntas = new PerguntasModel();
+            $perguntas->setId($_POST['id']);
+            $retorno = $perguntas->excluir();
+            echo $retorno;
+        } else {
+            echo "Falha!";
+        }
     }
 
 

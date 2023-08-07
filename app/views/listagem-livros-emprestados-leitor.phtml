@@ -1,6 +1,5 @@
 <?php
 Validar::validarLogin();
-<<<<<<< HEAD
 if (ValidarPagina::validarPaginaAtual('listagem_emprestimo') <= 0) {
   header("Location: " . DOMINIO . "home");
 }
@@ -8,26 +7,14 @@ setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
 ?>
 <!DOCTYPE html>
-=======
-if(ValidarPagina::validarPaginaAtual('listagem_emprestimo') <= 0){header ("Location: " . DOMINIO. "home");}
-setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-date_default_timezone_set('America/Sao_Paulo');
-?><!DOCTYPE html>
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
 
 <style>
-<<<<<<< HEAD
   .eye {
     color: #0a58ca;
   }
-=======
-    .eye{
-        color: #0a58ca;
-    }
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 </style>
 
 <body>
@@ -50,7 +37,6 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="row">
                   <div class="col-sm-8">
 
-<<<<<<< HEAD
                     Id empréstimo: <?= $view_emprestimo[0]['idEmprestimo'] ?><br>
                     Leitor: <?= $view_emprestimo[0]['nomeLeitor'] ?><br>
                     Data empréstimo: <?= date('d/m/Y', strtotime($view_emprestimo[0]['dataEmprestimo'])) ?><br>
@@ -67,33 +53,11 @@ date_default_timezone_set('America/Sao_Paulo');
                   <tr class="text-center align-middle responsive-table">
                     <th style="width: 10%;">ID</th>
                     <th style="width: 15%;">Livro</th>
-=======
-                      Id empréstimo: <?=$view_emprestimo[0]['idEmprestimo']?><br>
-                      Leitor: <?=$view_emprestimo[0]['nomeLeitor']?><br>
-                      Data empréstimo: <?=date('d/m/Y', strtotime($view_emprestimo[0]['dataEmprestimo']))?><br>
-                      Data prevista devolução: <?=date('d/m/Y', strtotime($view_emprestimo[0]['dataDevolucao']))?><br>
-
-                  </div>
-                  <div class="col-sm-4">
-                    <a href="<?= DOMINIO ?>emprestimo/printemprestimo/id/<?=$view_emprestimo[0]['idEmprestimo']?>" target="_blank" class="mt-2 btn btn-primary add-new"><i class="fa fa-print"></i> Imprimir</a>
-                  </div>
-                </div>
-              </div>
-              <table class="table v-middle" id="listagemEmprestimo">
-                <thead class="thead-dark">
-                  <tr class="text-left align-middle">
-                      <th style="width: 10%;">ID</th>
-                    <th style="width: 10%;">Livro</th>
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                     <th style="width: 10%;">Editora</th>
                     <th style="width: 15%;">Data Empréstimo</th>
                     <th style="width: 15%;">Data Devolução</th>
                     <th style="width: 15%;">Status</th>
-<<<<<<< HEAD
                     <th style="width: 9%;">#</th>
-=======
-                    <th style="width: 15%;">#</th>
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
                   </tr>
                 </thead>
@@ -101,7 +65,6 @@ date_default_timezone_set('America/Sao_Paulo');
                   <?php
                   if (isset($view_livros) && count($view_livros) > 0) {
 
-<<<<<<< HEAD
                     foreach ($view_livros as $listagem) {
                   ?>
                       <tr class="text-center align-middle responsive-table">
@@ -133,45 +96,6 @@ date_default_timezone_set('America/Sao_Paulo');
                       </tr>
                   <?php
                     }
-=======
-                       foreach ($view_livros as $listagem) {
-                           ?>
-                           <tr class="text-left v-middle">
-
-                               <td><?= $listagem['idLivro'] ?></td>
-                               <td><?= $listagem['tituloLivro'] ?></td>
-                               <td><?= $listagem['descricaoEditora'] ?></td>
-                               <td><?= date('d/m/Y', strtotime($view_emprestimo[0]['dataEmprestimo'])) ?></td>
-                               <td><?= date('d/m/Y', strtotime($listagem['dataDevolucao'])) ?></td>
-                               <td><?= $listagem['dataDevolvido'] != null ? "<span class='btn-sm btn-success'>devolvido: ".date('d/m/Y', strtotime($listagem['dataDevolvido']))."</span>" : "<span class='btn-sm btn-danger'>a devolver</span>" ?></td>
-                                <td>
-                                    <?php
-                                    if($listagem['dataDevolvido'] == null){
-                                        ?>
-
-                                        <a href="#" class="text-danger remover"
-                                           data-desc="<?= $listagem['tituloLivro'] ?>"
-                                           data-id-livro="<?= $listagem['idLivro'] ?>"
-                                           data-id-emprestimo="<?=$view_emprestimo[0]['idEmprestimo']?>"
-                                        ><i class="fa fa-remove"></i></a>
-
-                                        <a href="#" class="text-success devolver"
-                                           data-desc="<?= $listagem['tituloLivro'] ?>"
-                                           data-id-livro="<?= $listagem['idLivro'] ?>"
-                                           data-id-emprestimo="<?=$view_emprestimo[0]['idEmprestimo']?>"
-                                        ><i class="fa fa-check"></i></a>
-
-                                        <?php
-                                    }
-                                    ?>
-
-                                </td>
-
-                           </tr>
-                           <?php
-                       }
-
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                   }
                   ?>
                 </tbody>
@@ -194,10 +118,7 @@ date_default_timezone_set('America/Sao_Paulo');
     $(document).ready(function() {
       $('#listagemEmprestimo').DataTable({
         "iDisplayLength": 100,
-<<<<<<< HEAD
         "ordering": false,
-=======
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         "initComplete": function() {
           $("#listagemTipoLeitor").show();
         },
@@ -218,11 +139,7 @@ date_default_timezone_set('America/Sao_Paulo');
         }
       });
       $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.devolver', function(e) {
-<<<<<<< HEAD
         e.preventDefault();
-=======
-          e.preventDefault();
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         var descricao = $(this).attr('data-desc');
         var emprestimo = $(this).attr('data-id-emprestimo');
@@ -263,11 +180,7 @@ date_default_timezone_set('America/Sao_Paulo');
           },
           buttons: {
             cancel: {
-<<<<<<< HEAD
               label: 'CANCELAR',
-=======
-              label: 'Cancelar',
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
               className: 'btn-default'
             },
             confirm: {
@@ -278,7 +191,6 @@ date_default_timezone_set('America/Sao_Paulo');
           }
         });
       });
-<<<<<<< HEAD
       $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.renovar', function(e) {
         e.preventDefault();
 
@@ -392,62 +304,6 @@ date_default_timezone_set('America/Sao_Paulo');
           }
         });
       });
-=======
-
-        $(".page-wrapper").on('click', '#listagemEmprestimo tbody tr td a.remover', function(e) {
-            e.preventDefault();
-
-            var descricao = $(this).attr('data-desc');
-            var emprestimo = $(this).attr('data-id-emprestimo');
-            var livro = $(this).attr('data-id-livro');
-            var dados = {
-                'id_emprestimo': emprestimo,
-                'id_livro': livro
-            };
-            bootbox.confirm({
-                message: 'Confirma a exclusão do livro "' + descricao + '" ?',
-                callback: function(confirmacao) {
-
-                    if (confirmacao) {
-
-                        $.ajax({
-                            url: '<?= DOMINIO ?>emprestimo/excluirlivro',
-                            type: 'POST',
-                            data: dados,
-                            success: function(retorno) {
-
-                                bootbox.confirm({
-                                    message: retorno,
-                                    callback: function(confirma) {
-                                        if (confirma) {
-                                            location.reload();
-                                        }
-                                    },
-                                    buttons: {
-                                        confirm: {
-                                            label: 'OK',
-                                            className: 'btn-success'
-                                        },
-                                    }
-                                })
-                            }
-                        });
-                    }
-                },
-                buttons: {
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-default'
-                    },
-                    confirm: {
-                        label: 'EXCLUIR',
-                        className: 'btn-danger'
-                    }
-
-                }
-            });
-        });
->>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
     });
   </script>
