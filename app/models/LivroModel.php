@@ -290,7 +290,11 @@ class LivroModel extends Model
                                 "imagemCapa" => $novoNome,
                             ];
                             $this->set_transaction($this->insert($dados_livro, 'livro'));
+<<<<<<< HEAD
                             foreach ($this->getIdAutor() as $autor) {
+=======
+                            foreach($this->getIdAutor() as $autor){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                                 $dados_autorLivro = [
                                     "idLivro" => ($this->getIdLivro()),
                                     "dataCadastro" => ($this->getDataCadastro()),
@@ -347,7 +351,11 @@ class LivroModel extends Model
 
 
 
+<<<<<<< HEAD
             if ($this->getImagemCapa()['tmp_name'] != null && $this->getImagemCapa()['size'] <= $this->tamanho_upload && strstr('.jpg;.jpeg;.gif;.png', $extensao)) {
+=======
+            if ($this->getImagemCapa()['tmp_name'] != null && $this->getImagemCapa()['size'] <= $this->tamanho_upload && strstr('.jpg;.jpeg;.gif;.png', $extensao)){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                 $novoNome = "foto_" . md5(time())  . $extensao;
                 $destino = './web-pages/assets/images/livro/' . $novoNome;
                 $this->compressImage($arquivo_tmp, $destino, 50);
@@ -371,7 +379,11 @@ class LivroModel extends Model
             $this->set_transaction($this->insert($dados_livro, 'livro'));
 
 
+<<<<<<< HEAD
             foreach ($this->getIdAutor() as $autor) {
+=======
+            foreach($this->getIdAutor() as $autor){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                 $dados_autorLivro = [
                     "idLivro" => ($this->getIdLivro()),
                     "dataCadastro" => ($this->getDataCadastro()),
@@ -379,7 +391,14 @@ class LivroModel extends Model
                 ];
                 $this->set_transaction(($this->insert($dados_autorLivro, 'autorlivro')));
             }
+<<<<<<< HEAD
             foreach ($this->getIdCategoria() as $cate) {
+=======
+
+
+
+            foreach($this->getIdCategoria() as $cate){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                 $dados_categoria = [
                     "idLivro" => ($this->getIdLivro()),
                     "idCategoria" => $cate,
@@ -389,6 +408,10 @@ class LivroModel extends Model
             }
 
             $retorno = $this->execTransaction();
+<<<<<<< HEAD
+=======
+
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         } else {
             $retorno = $valida;
         }
@@ -401,9 +424,15 @@ class LivroModel extends Model
 
         $where = "idLivro = " . $this->getIdLivro();
 
+<<<<<<< HEAD
         $this->set_transaction($this->deleteTransaction($where, 'autorlivro'));
         $this->set_transaction($this->deleteTransaction($where, 'categorialivro'));
         $this->set_transaction($this->deleteTransaction($where, 'livro'));
+=======
+        $this->set_transaction($this->deleteTransaction($where,'autorlivro'));
+        $this->set_transaction($this->deleteTransaction($where,'categorialivro'));
+        $this->set_transaction($this->deleteTransaction($where,'livro'));
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         $retorno = $this->execTransaction();
 
@@ -443,6 +472,7 @@ class LivroModel extends Model
     public function listarTodasPorTipo($tipo)
     {
 
+<<<<<<< HEAD
         switch ($tipo) {
             case 'digital':
                 $where = "tipoLivro = '$tipo'";
@@ -457,6 +487,16 @@ class LivroModel extends Model
 
         //COLUNAS DA TABELA
         $places = ['livro.*', 'editora.descricaoEditora', "(SELECT group_concat(categoria.descricaoCategoria separator ', ') 
+=======
+        switch($tipo){
+            case 'digital': $where = "tipoLivro = '$tipo'";break;
+            case 'fisico': $where = "tipoLivro = '$tipo'";break;
+            default: $where = null; break;
+        }
+
+        //COLUNAS DA TABELA
+        $places = ['livro.*', 'editora.descricaoEditora',"(SELECT group_concat(categoria.descricaoCategoria separator ', ') 
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 FROM bibliotecadigital.livro liv 
 inner join categorialivro on liv.idLivro = categorialivro.idLivro 
 inner join categoria on categorialivro.idCategoria = categoria.idCategoria
@@ -467,7 +507,11 @@ where liv.idLivro = livro.idLivro
         $innerjoin = 'inner join editora on livro.idEditora = editora.idEditora';
 
         //condição do select
+<<<<<<< HEAD
         // $where = "tipoLivro = '$tipo'";
+=======
+       // $where = "tipoLivro = '$tipo'";
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         //ordenar select
         $orderby = 'tituloLivro';
@@ -519,6 +563,7 @@ where liv.idLivro = livro.idLivro
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
 
+<<<<<<< HEAD
             $arquivo_tmp = $this->getImagemCapa()['tmp_name'];
             $arquivo_tmp2 = $this->getImagemThumb()['tmp_name'];
             $nome = $this->getImagemCapa()['name'];
@@ -580,6 +625,69 @@ where liv.idLivro = livro.idLivro
 
             $this->set_transaction($this->deleteTransaction($where, 'categorialivro'));
             foreach ($this->getIdCategoria() as $cate) {
+=======
+                $arquivo_tmp = $this->getImagemCapa()['tmp_name'];
+                $arquivo_tmp2 = $this->getImagemThumb()['tmp_name'];
+                $nome = $this->getImagemCapa()['name'];
+                $nome2 = $this->getImagemThumb()['name'];
+                $extensao = strrchr($nome, '.');
+                $extensao2 = strrchr($nome2, '.');
+                $extensao = strtolower($extensao);
+                $extensao2 = strtolower($extensao2);
+
+                    $dados_livro = [
+                        "idEditora" => ($this->getIdEditora()),
+                        "tituloLivro" => ($this->getTituloLivro()),
+                        "observacoesLivro" => ($this->getObservacoesLivro()),
+                        "sinopseLivro" => ($this->getSinopseLivro()),
+                        "dataLancamento" => ($this->getDataLancamento()),
+                        "tipoLivro" => ($this->getTipoLivro()),
+                        "dataCadastro" => ($this->getDataCadastro()),
+                        "totalPaginas" => ($this->getTotalPaginas()),
+                        "quantidadeLivros" => ($this->getQuantidadeLivros())
+                    ];
+
+
+                    if ($this->getImagemCapa()['tmp_name'] != null && $this->getImagemCapa()['size'] <= $this->tamanho_upload && strstr('.jpg;.jpeg;.gif;.png', $extensao)){
+                        $novoNome = "foto_" . md5(time())  . $extensao;
+                        $destino = './web-pages/assets/images/livro/' . $novoNome;
+                        $this->compressImage($arquivo_tmp, $destino, 50);
+                    $dados_livro["imagemCapa"] = $novoNome;
+                    }
+
+                    if ($this->getImagemThumb()['tmp_name'] != null && $this->getImagemThumb()['size'] <= $this->tamanho_upload && strstr('.jpg;.jpeg;.gif;.png', $extensao2)) {
+                        $novoNome2 = "foto_" . md5(time())  . $extensao2;
+                        $destino2 = './web-pages/assets/images/livro/thumb/' . $novoNome2;
+                        $this->compressImage($arquivo_tmp2, $destino2, 50);
+                        $dados_livro["imagemThumb"] = $novoNome2;
+                    }
+
+                        if ($this->getPdfLivro()['tmp_name'] != null) {
+                            $upload = $this->uploadPdf($this->getPdfLivro());
+                            if ($this->uploadOk) {
+                                $dados_livro["pdfLivro"] = $upload;
+                            }
+                        }
+
+
+            $where = "idLivro = '" . $this->getIdLivro() ."'";
+            $this->set_transaction($this->update($dados_livro, $where, $this->_tabela));
+
+            $this->set_transaction($this->deleteTransaction($where, 'autorlivro'));
+            foreach($this->getIdAutor() as $autor){
+                $dados_autorLivro = [
+                    "idLivro" => ($this->getIdLivro()),
+                    "dataCadastro" => ($this->getDataCadastro()),
+                    "idAutor" => $autor
+                ];
+                $this->set_transaction(($this->insert($dados_autorLivro, 'autorlivro')));
+            }
+
+
+
+            $this->set_transaction($this->deleteTransaction($where, 'categorialivro'));
+            foreach($this->getIdCategoria() as $cate){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                 $dados_categoria = [
                     "idLivro" => ($this->getIdLivro()),
                     "idCategoria" => $cate,
@@ -592,6 +700,7 @@ where liv.idLivro = livro.idLivro
 
 
             $retorno = $this->execTransaction();
+
         } else {
             $retorno = $valida;
         }
@@ -606,12 +715,21 @@ where liv.idLivro = livro.idLivro
         if (strlen($this->getTipoLivro()) <= 0) {
             $erros .= "Tipo do livro inválido!<br>";
         } else {
+<<<<<<< HEAD
             if ($this->getTipoLivro() == 'digital') {
                 if (trim(strtolower($this->getTipoOperacao())) == 'inserir') {
                     if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
                         $erros .= "Foto inválida!<br>";
                     }
                     if (strlen($this->getPdfLivro()['tmp_name']) <= 0 && strlen($this->getVerificaPdf()) <= 0) {
+=======
+            if($this->getTipoLivro() == 'digital'){
+                if(trim(strtolower($this->getTipoOperacao())) == 'inserir'){
+                    if (strlen($this->getImagemCapa()['tmp_name']) <= 0) {
+                        $erros .= "Foto inválida!<br>";
+                    }
+                    if (strlen($this->getPdfLivro()['tmp_name']) <= 0 && strlen($this->getVerificaPdf()) <= 0)  {
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                         $erros .= "Pdf inválido!<br>";
                     }
                     if (($this->getTotalPaginas()) <= 0) {
@@ -619,6 +737,7 @@ where liv.idLivro = livro.idLivro
                     }
                 }
             }
+
         }
 
         if ($this->getIdAutor() == null || count($this->getIdAutor()) <= 0) {

@@ -52,5 +52,20 @@ class Perguntas extends Controller
     }
 
 
-    
+    public function alterar()
+    {
+        session_start();
+
+        if (isset($_POST)) {
+            $perguntas = new PerguntasModel();
+            $perguntas->setId($_POST['id']);
+            $perguntas->setPergunta($_POST['pergunta']);
+            $dados['retorno_update'] = $perguntas->alterar();
+            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/".$dados['retorno_update']); 
+        } else {
+            
+            header("Location: ".DOMINIO. strtolower(get_class($this)) ."/listagem/return/Falha ao atualizar registro!"); 
+            
+        }
+    }
 }

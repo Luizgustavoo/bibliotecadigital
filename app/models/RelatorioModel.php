@@ -25,6 +25,7 @@ class RelatorioModel extends Model
 
         return $this->read('leitor', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
+<<<<<<< HEAD
     public function listarTempoLeituraDia($dia, $mes, $ano)
     {
         $places = ['leitor.idLeitor', 'leitor.nomeLeitor', '(select  sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
@@ -51,6 +52,12 @@ class RelatorioModel extends Model
     public function listarTempoLeitura()
     {
         $places = ['leitor.idLeitor', 'leitor.nomeLeitor', '(select sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
+=======
+
+    public function listarTempoLeitura()
+    {
+        $places = ['leitor.idLeitor', 'leitor.nomeLeitor', '(select  sum(time_to_sec(timediff(leituralivro.dataLeituraFim, leituralivro.dataLeitura))) 
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         from leituralivro where leituralivro.idLeitor = leitor.idLeitor) as tempoLeituraSegundos'];
         $innerjoin = null;
         $where = null;
@@ -61,7 +68,10 @@ class RelatorioModel extends Model
         return $this->read('leitor', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
     public function listarEmprestimo()
     {
         // $places = ['leitor.idLeitor', 'leitor.nomeLeitor', "(select 
@@ -84,6 +94,7 @@ class RelatorioModel extends Model
         return $this->readCALL('emprestimo()');
     }
 
+<<<<<<< HEAD
 
     public function listarEmprestimoVencido()
     {
@@ -100,6 +111,8 @@ class RelatorioModel extends Model
         // return $this->readCALL('emprestimo()');
     }
 
+=======
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
     public function listarNivel()
     {
         $segundosRaro = (LEITOR_RARO + 1) * 3600;
@@ -107,7 +120,11 @@ class RelatorioModel extends Model
         $segundosEpico = (LEITOR_EPICO + 1) * 3600;
         $segundosColossal = (LEITOR_COLOSSAL + 1) * 3600;
 
+<<<<<<< HEAD
         return $this->readCALL("nivel($segundosRaro, $segundosLendario,$segundosEpico,$segundosColossal)");
+=======
+        return $this->readCALL("nivel('$segundosRaro', '$segundosLendario',' $segundosEpico', '$segundosColossal')");
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
     }
 
 

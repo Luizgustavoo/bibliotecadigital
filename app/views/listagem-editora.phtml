@@ -63,7 +63,11 @@ date_default_timezone_set('America/Sao_Paulo');
                             $imagem = "" . HTTPS . SITE_ROOT . "web-pages/assets/images/editora/" . $editora['imagemEditora'];
                             /*if (!Helpers::URL_exists($imagem)) {
                               $imagem = "https://img.icons8.com/plasticine/344/image.png";
+<<<<<<< HEAD
                              }*/
+=======
+                            }*/
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                             ?>
                             <img class="imagemList" src="<?= $imagem ?>">
                           </td>
@@ -96,7 +100,11 @@ date_default_timezone_set('America/Sao_Paulo');
       var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
       $('#listagemEditora').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
+<<<<<<< HEAD
         "iDisplayLength": 10,
+=======
+        "iDisplayLength": 20,
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         "ordering": false,
         "initComplete": function() {
           $("#listagemEditora").show();

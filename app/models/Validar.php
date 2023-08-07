@@ -16,7 +16,11 @@ class Validar
     //put your code here
 
 
+<<<<<<< HEAD
 	  public static function converterSegundosEmHoras($segundos){
+=======
+    public static function converterSegundosEmHoras($segundos){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         if($segundos > 0){
             $seg = $segundos % 60;

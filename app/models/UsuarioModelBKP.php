@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD
 Class UsuarioModelBKP extends Model{
+=======
+Class UsuarioModelBKP- extends Model{
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
     public $_tabela = "usuario";
 
     private $idUsuario;

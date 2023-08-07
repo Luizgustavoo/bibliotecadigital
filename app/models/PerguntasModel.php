@@ -99,5 +99,20 @@ class PerguntasModel extends Model
         return $this->read($this->_tabela, $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
     }
 
-    
+    public function alterar()
+    {
+        $erros = "";
+        $valida = $this->validarDados();
+        if (strlen($valida) <= 0) {
+                        $dados_tipoleitor = [
+                            "perguntas" => ($this->getPergunta()),
+                        ];
+                        $where = "id = " . $this->getId();
+                        $this->set_transaction($this->update($dados_tipoleitor, $where, $this->_tabela));
+                        $retorno = $this->execTransaction();
+                    }else{
+                        $retorno = $valida;
+                    }
+                    return $retorno;
+        }     
 }

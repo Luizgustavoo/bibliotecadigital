@@ -49,9 +49,13 @@ class Relatorio extends Controller
         $dados["listagem"] = $relatorioModel->listarNivel();
 
         $dados['msg'] = $this->getParams("msg");
+<<<<<<< HEAD
 
         $dados['return'] = $this->getParams("return");
         
+=======
+        $dados['return'] = $this->getParams("return");
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         $this->view("relatorio-avanco-nivel", $dados);
         exit();
     }
@@ -69,6 +73,7 @@ class Relatorio extends Controller
         exit();
     }
 
+<<<<<<< HEAD
     public function emprestimoVencido(){
 
         session_start();
@@ -83,6 +88,8 @@ class Relatorio extends Controller
         exit();
     }
 
+=======
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
     public function tempoLeitura(){
 
         session_start();
@@ -96,6 +103,7 @@ class Relatorio extends Controller
         $this->view("relatorio-tempo-leitura", $dados);
         exit();
     }
+<<<<<<< HEAD
 
     public function tempoLeituraDia(){
 
@@ -117,4 +125,6 @@ class Relatorio extends Controller
         $this->view("relatorio-tempo-leitura-dia", $dados);
         exit();
     }
+=======
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 }

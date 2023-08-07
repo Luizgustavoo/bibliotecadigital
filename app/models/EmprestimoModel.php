@@ -151,11 +151,18 @@ class EmprestimoModel extends Model
 
 
 
+<<<<<<< HEAD
     public function inserir()
     {
 
         $retorno = "";
         $this->setIdEmprestimo(($this->proximoID('emprestimo', 'idEmprestimo')[0]['max_id']) + 1);
+=======
+    public function inserir(){
+
+        $retorno = "";
+        $this->setIdEmprestimo(($this->proximoID('emprestimo','idEmprestimo')[0]['max_id']) + 1);
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
@@ -172,7 +179,11 @@ class EmprestimoModel extends Model
             $this->set_transaction($this->insert($dados_emprestimo, 'emprestimo'));
 
 
+<<<<<<< HEAD
             foreach ($this->getIdLivro() as $livro) {
+=======
+            foreach($this->getIdLivro() as $livro){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                 $dados_livros_emprestimo = [
                     "idEmprestimo" => $this->getIdEmprestimo(),
                     "idLivro" => $livro,
@@ -183,7 +194,12 @@ class EmprestimoModel extends Model
 
 
             $retorno = $this->execTransaction();
+<<<<<<< HEAD
         } else {
+=======
+
+        }else{
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
             $retorno = $valida;
         }
@@ -191,8 +207,12 @@ class EmprestimoModel extends Model
         return $retorno;
     }
 
+<<<<<<< HEAD
     public function alterar()
     {
+=======
+    public function alterar(){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         $retorno = "";
 
@@ -210,17 +230,26 @@ class EmprestimoModel extends Model
             ];
 
 
+<<<<<<< HEAD
             $this->set_transaction($this->update($dados_emprestimo, $where, 'emprestimo'));
 
             $this->set_transaction($this->deleteTransaction("livrosemprestimo.idEmprestimo = " . $this->getIdEmprestimo(), 'livrosemprestimo'));
             //            echo "<pre>";
             foreach ($this->getIdLivro() as $livro) {
+=======
+            $this->set_transaction($this->update($dados_emprestimo,$where, 'emprestimo'));
+
+            $this->set_transaction($this->deleteTransaction("livrosemprestimo.idEmprestimo = " . $this->getIdEmprestimo(), 'livrosemprestimo'));
+//            echo "<pre>";
+            foreach($this->getIdLivro() as $livro){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                 $dados_livros_emprestimo = [
                     "idEmprestimo" => $this->getIdEmprestimo(),
                     "idLivro" => $livro,
                     "dataDevolucao" => $this->getDataDevolucao()
                 ];
                 $this->set_transaction($this->insert($dados_livros_emprestimo, 'livrosemprestimo'));
+<<<<<<< HEAD
             }
 
             $retorno = $this->execTransaction();
@@ -228,6 +257,19 @@ class EmprestimoModel extends Model
 
             $retorno = $valida;
         }
+=======
+
+
+            }
+
+            $retorno = $this->execTransaction();
+
+        }else{
+
+            $retorno = $valida;
+        }
+
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         return $retorno;
     }
 
@@ -251,22 +293,33 @@ class EmprestimoModel extends Model
         if (strlen($this->getIdUsuario()) <= 0 || (int)$this->getIdUsuario() <= 0) {
             $erros .= "Usuário inválido!<br/>";
         }
+<<<<<<< HEAD
         if ($this->getIdLivro() == null || count($this->getIdLivro()) <= 0) {
+=======
+        if($this->getIdLivro() == null || count($this->getIdLivro()) <= 0){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             $erros .= "Nenhum livro selecionado!<br/>";
         }
 
         return $erros;
     }
 
+<<<<<<< HEAD
     public function devolverLivro($emprestimo, $livro)
     {
 
         if (isset($emprestimo, $livro) && !empty($emprestimo) && !empty($livro)) {
+=======
+    public function devolverLivro($emprestimo, $livro){
+
+        if(isset($emprestimo, $livro) && !empty($emprestimo) && !empty($livro)){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
             $dados_devolver = [
                 "dataDevolvido" => date('Y-m-d')
             ];
             $where = "idEmprestimo = {$emprestimo} and idLivro = '{$livro}'";
+<<<<<<< HEAD
             $this->set_transaction($this->update($dados_devolver, $where, 'livrosemprestimo'));
             $retorno = $this->execTransaction();
 
@@ -280,12 +333,29 @@ class EmprestimoModel extends Model
                 $retorno = $this->execTransaction();
             }
         } else {
+=======
+            $this->set_transaction($this->update($dados_devolver, $where,'livrosemprestimo'));
+            $retorno = $this->execTransaction();
+
+            $quantidade = $this->read('livrosemprestimo','idEmprestimo = '.$emprestimo.' and dataDevolvido is null','','','',['count(*) as quantidade'],null,null);
+
+            if($quantidade[0]['quantidade'] <= 0){
+                $dados_emprestimo_fechado = [
+                    "statusEmprestimo" => 'fechado'
+                ];
+                $this->set_transaction($this->update($dados_emprestimo_fechado, 'idEmprestimo = '.$emprestimo,'emprestimo'));
+                $retorno = $this->execTransaction();
+            }
+
+        }else{
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             $retorno = "Falha ao realizar a operação, parâmetros inválidos!";
         }
 
         return $retorno;
     }
 
+<<<<<<< HEAD
     public function renovarlivro($idLivro, $idLeitor, $dataVencimento, $dataRenovacao, $emprestimo)
     {
 
@@ -337,12 +407,25 @@ class EmprestimoModel extends Model
             $this->set_transaction($this->deleteTransaction($where_delete_emprestimo, 'emprestimo'));
             $retorno = $this->execTransaction();
         } else {
+=======
+    public function excluirEmprestimo(){
+
+        if((int)$this->getIdEmprestimo() > 0){
+
+            $where_delete_emprestimo = "idEmprestimo = " . $this->getIdEmprestimo();
+            $this->set_transaction($this->deleteTransaction($where_delete_emprestimo. " and idLivro != ''",'livrosemprestimo'));
+            $this->set_transaction($this->deleteTransaction($where_delete_emprestimo,'emprestimo'));
+            $retorno = $this->execTransaction();
+
+        }else{
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             $retorno = "Falha ao realizar a operação, parâmetros inválidos!";
         }
 
         return $retorno;
     }
 
+<<<<<<< HEAD
     public function excluirLivro($emprestimo, $livro)
     {
 
@@ -352,17 +435,35 @@ class EmprestimoModel extends Model
             $this->set_transaction($this->deleteTransaction($where_delete_livro, 'livrosemprestimo'));
             $retorno = $this->execTransaction();
         } else {
+=======
+    public function excluirLivro($emprestimo, $livro){
+
+        if(isset($emprestimo, $livro) && !empty($emprestimo) && !empty($livro)){
+
+            $where_delete_livro = "idLivro = '$livro' and idEmprestimo = $emprestimo";
+            $this->set_transaction($this->deleteTransaction($where_delete_livro,'livrosemprestimo'));
+            $retorno = $this->execTransaction();
+
+        }else{
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
             $retorno = "Falha ao realizar a operação, parâmetros inválidos!";
         }
 
         return $retorno;
     }
 
+<<<<<<< HEAD
     public function listarTodas()
     {
 
         //COLUNAS DA TABELA
         $places = ['emprestimo.*', 'leitor.nomeLeitor', "(select group_concat(concat(dataDevolucao,',',if(livrosemprestimo.dataDevolvido is null, 'a_devolver','devolvido')) separator ';') from livrosemprestimo where livrosemprestimo.idEmprestimo = emprestimo.idEmprestimo) as datasDevolucaoLivros"];
+=======
+    public function listarTodas(){
+
+        //COLUNAS DA TABELA
+        $places = ['emprestimo.*','leitor.nomeLeitor'];
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         //inner join, outer join, todos as ligações que quiser fazer
         $innerjoin = "inner join leitor on emprestimo.idLeitor = leitor.idLeitor
@@ -385,6 +486,7 @@ inner join usuario on emprestimo.idUsuario = usuario.idUsuario";
 
 
         return $this->read($this->_tabela, $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
+<<<<<<< HEAD
     }
 
     public function listarPorId($id)
@@ -392,6 +494,15 @@ inner join usuario on emprestimo.idUsuario = usuario.idUsuario";
 
         //COLUNAS DA TABELA
         $places = ['emprestimo.*', 'leitor.nomeLeitor'];
+=======
+
+    }
+
+    public function listarPorId($id){
+
+        //COLUNAS DA TABELA
+        $places = ['emprestimo.*','leitor.nomeLeitor'];
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         //inner join, outer join, todos as ligações que quiser fazer
         $innerjoin = "inner join leitor on emprestimo.idLeitor = leitor.idLeitor
@@ -414,10 +525,17 @@ inner join usuario on emprestimo.idUsuario = usuario.idUsuario";
 
 
         return $this->read($this->_tabela, $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
+<<<<<<< HEAD
     }
 
     public function listarLivrosPorEmprestimo($id)
     {
+=======
+
+    }
+
+    public function listarLivrosPorEmprestimo($id){
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
         //COLUNAS DA TABELA
         $places = ['*'];
@@ -443,5 +561,12 @@ inner join editora on livro.idEditora = editora.idEditora";
 
 
         return $this->read('livrosemprestimo', $where, $limit, $offset, $orderby, $places, $innerjoin, $groupby);
+<<<<<<< HEAD
     }
 }
+=======
+
+    }
+
+}
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea

@@ -36,10 +36,17 @@ date_default_timezone_set('America/Sao_Paulo');
                     </div>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <table class="table-sm table-bordered responsive-table" id="listagemLivro">
                   <thead class="thead-dark">
                     <tr class="text-center align-middle responsive-table" style="background-color: #1F262D; color: white;">
                       <th style="width: 8%;">Código</th>
+=======
+                <table class="table-sm table-bordered" id="listagemLivro">
+                  <thead class="thead-dark">
+                    <tr class="align-middle" style="background-color: #1F262D; color: white;">
+                      <th style="width: 12%;">Código</th>
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
                       <th>Título</th>
                       <th>Categoria(s)</th>
@@ -55,7 +62,11 @@ date_default_timezone_set('America/Sao_Paulo');
                   <tbody>
                     <?php
                     if (isset($view_listagem) && count($view_listagem) > 0) {
+<<<<<<< HEAD
                       $x = 1;
+=======
+                        $x=1;
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                       foreach ($view_listagem as $livro) {
                     ?>
                         <tr class="v-middle">
@@ -80,7 +91,11 @@ date_default_timezone_set('America/Sao_Paulo');
                           </td>
                         </tr>
                     <?php
+<<<<<<< HEAD
                         $x++;
+=======
+                          $x++;
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
                       }
                     }
                     ?>
@@ -102,8 +117,13 @@ date_default_timezone_set('America/Sao_Paulo');
   <script>
     $(document).ready(function() {
 
+<<<<<<< HEAD
       var dat = new Date();
       var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
+=======
+        var dat = new Date();
+        var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
 
       $('#listagemLivro').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
@@ -112,6 +132,7 @@ date_default_timezone_set('America/Sao_Paulo');
         "initComplete": function() {
           $("#listagemLivro").show();
         },
+<<<<<<< HEAD
         buttons: [{
             extend: 'excelHtml5',
             text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
@@ -200,6 +221,75 @@ date_default_timezone_set('America/Sao_Paulo');
               columns: [0, 2, 3, 4, 5, 6, 7] //Your Colume value those you want
             },
           }
+=======
+        buttons: [
+            {
+                extend: 'excel',
+                text:'<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
+
+            }
+            ,
+            {
+                extend: 'pdf',
+                text:'<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i></button>',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                title: 'Livros Cadastrados - ' + data_dia,
+
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5, 6, 7] //Your Colume value those you want
+                },
+                customize: function (doc) {
+
+                    doc.defaultStyle.alignment = 'left';
+                    doc.styles.tableHeader.alignment = 'left';
+
+                    doc['footer']=(function(page, pages) {
+                        return {
+                            columns: [
+                                'Casa do Bom Menino de Arapongas',
+                                {
+                                    alignment: 'right',
+                                    text: [
+                                        { text: page.toString(), italics: true },
+                                        ' de ',
+                                        { text: pages.toString(), italics: true }
+                                    ]
+                                }
+                            ],
+                            margin: [10, 0]
+                        }
+                    });
+
+
+                    // Styling the table: create style object
+                    var objLayout = {};
+                    // Horizontal line thickness
+                    objLayout['hLineWidth'] = function(i) { return .5; };
+                    // Vertikal line thickness
+                    objLayout['vLineWidth'] = function(i) { return .5; };
+                    // Horizontal line color
+                    objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                    // Vertical line color
+                    objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                    // Left padding of the cell
+                    objLayout['paddingLeft'] = function(i) { return 4; };
+                    // Right padding of the cell
+                    objLayout['paddingRight'] = function(i) { return 4; };
+                    // Inject the object in the document
+                    doc.content[1].layout = objLayout;
+
+
+                }
+            },
+            ,
+            {
+                extend:'print',
+                text:'<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button>',
+                pageSize: 'A4',
+                orientation: 'landscape'
+            }
+>>>>>>> e40b4c097f0819c99998c868a48143854e846cea
         ],
         "language": {
           "lengthMenu": "",
