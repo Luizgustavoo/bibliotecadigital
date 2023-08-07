@@ -3,6 +3,7 @@
     .text-red {
       color: #ff2b2b !important;
     }
+
     .text-blue {
       color: #00FFF2 !important;
     }
@@ -62,6 +63,23 @@
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>emprestimo/listagem" aria-expanded="false"><i class="mdi mdi-cart-outline"></i><span class="hide-menu">Empréstimo</span></a>
+        </li>
+
+
+
+
+
+        <li class="sidebar-item">
+          <a class="sidebar-link has-arrow text-blue" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu">Perguntas</span></a>
+          <ul aria-expanded="false" class="collapse first-level">
+
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>perguntas/listagem" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu text-blue">Perguntas</span></a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= DOMINIO ?>resposta" aria-expanded="false"><i class="mdi mdi-help text-blue"></i><span class="hide-menu text-blue">Respostas</span></a>
+            </li>
+          </ul>
         </li>
 
         <hr>

@@ -1,5 +1,5 @@
 <?php
-Class UsuarioModelBKP- extends Model{
+Class UsuarioModelBKP extends Model{
     public $_tabela = "usuario";
 
     private $idUsuario;

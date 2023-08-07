@@ -379,9 +379,6 @@ class LivroModel extends Model
                 ];
                 $this->set_transaction(($this->insert($dados_autorLivro, 'autorlivro')));
             }
-
-
-
             foreach ($this->getIdCategoria() as $cate) {
                 $dados_categoria = [
                     "idLivro" => ($this->getIdLivro()),

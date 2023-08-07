@@ -1,6 +1,6 @@
 <?php
 Validar::validarLogin();
-if (ValidarPagina::validarPaginaAtual('create_update_editora') <= 0) {
+if (ValidarPagina::validarPaginaAtual('create_update_perguntas') <= 0) {
     header("Location: " . DOMINIO . "home");
 }
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -26,31 +26,20 @@ date_default_timezone_set('America/Sao_Paulo');
             <div class="container-fluid">
                 <div class="row">
                     <div class="container-lg">
-                        <h2><?= $view_tipo_operacao == 'inserir' ? "Cadastro de" : "Alterar" ?><b> Editora</b></h2>
-                        <a href="<?= DOMINIO ?>editora/listagem" class="btn btn-info add-new float-right"><i class="fa fa-arrow-left"></i> Voltar</a>
-                        <h4 class="mt-3">Insira os dados da editora</h4>
-                        <form class="mt-4" action="<?= $view_tipo_operacao == 'inserir' ? DOMINIO . "editora/cadastro" : DOMINIO . "editora/alterar" ?>" enctype="multipart/form-data" method="POST" id="cadastroEditora">
-                            <div class="personal-image">
-                                <label class="label">
-                                    <input type="file" class="imagem" id="imagemEditora" name="imagemEditora" onchange="previewImagem()" />
-                                    <figure class="mt-3 personal-figure">
-                                        <img id="upload-img" src="https://img.icons8.com/plasticine/344/image.png" class="personal-avatar" alt="avatar">
-                                        <figcaption class="personal-figcaption">
-                                            <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
-                                        </figcaption>
-                                    </figure>
-                                </label>
+                        <h2><?= $view_tipo_operacao == 'inserir' ? "Cadastro de" : "Alterar" ?><b> Perguntas</b></h2>
+                        <a href="<?= DOMINIO ?>perguntas/listagem" class="btn btn-info add-new float-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                        <h4 class="mt-3">Insira as perguntas</h4>
+                        <form class="mt-3" action="<?= $view_tipo_operacao == 'inserir' ? DOMINIO . "perguntas/cadastro" : DOMINIO . "perguntas/alterar" ?>" enctype="multipart/form-data" method="POST" id="cadastroPerguntas">
+                            <div class="form-group">
+                                <input type="hidden" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['id'] : ""; ?>" class="form-control" id="id" name="id">
                             </div>
                             <div class="form-group">
-                                <input type="hidden" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idEditora'] : ""; ?>" class="form-control" id="idEditora" name="idEditora">
-                            </div>
-                            <div class="form-group">
-                                <label for="descricaoEditora">Tipo de Editora</label>
-                                <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['descricaoEditora'] : ""; ?>" class="form-control" id="descricaoEditora" name="descricaoEditora" placeholder="Coloque uma descrição...">
+                                <label for="pergunta">Perguntas</label>
+                                <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['pergunta'] : ""; ?>" class="form-control" id="pergunta" name="pergunta" placeholder="Descreva sua pergunta...">
                             </div>
                             <div class="btn-cadastrar">
                                 <button type="submit" class="btn btn-info"><?= $view_tipo_operacao == 'inserir' ? "Cadastrar" : "Alterar" ?></button>
-                                <a href="<?= DOMINIO ?>editora/listagem" class="btn ml-1 bg-light">Cancelar</a>
+                                <a href="<?= DOMINIO ?>home" class="btn ml-1 bg-light">Cancelar</a>
                             </div>
                         </form>
                     </div>
@@ -66,11 +55,10 @@ date_default_timezone_set('America/Sao_Paulo');
 
     <script>
         $(function() {
-            document.getElementById("descricaoEditora").focus();
-            $("#cadastroEditora").on('submit', function() {
+            document.getElementById("pergunta").focus();
+            $("#cadastroPerguntas").on('submit', function() {
                 var erros = "";
-                var file = document.getElementById("imagemEditora");
-                erros += $("#descricaoEditora").val().length <= 0 ? "Nome da editora inválido!<br/>" : "";
+                erros += $("#pergunta").val().length <= 0 ? "Nome da Perguntas inválido!<br/>" : "";
                 // erros += file.files.length === 0 ? "Imagem inválida!" : "";
                 if (erros.length > 0) {
                     $("#modal_retorno .modal-title").html("Erros encontrados!");
@@ -91,4 +79,5 @@ date_default_timezone_set('America/Sao_Paulo');
     </script>
 </body>
 <?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
+
 </html>

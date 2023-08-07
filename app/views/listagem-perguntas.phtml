@@ -1,12 +1,9 @@
 <?php
 Validar::validarLogin();
-if (ValidarPagina::validarPaginaAtual('listagem_categoria') <= 0) {
-  header("Location: " . DOMINIO . "home");
-}
+if(ValidarPagina::validarPaginaAtual('listagem_perguntas') <= 0){header ("Location: " . DOMINIO. "home");}
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html dir="ltr" lang="pt-br">
 
 <?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
@@ -14,7 +11,6 @@ date_default_timezone_set('America/Sao_Paulo');
 <body>
   <!-- ============================================================== -->
   <!-- Preloader - style you can find in spinners.css -->
-  <!-- ============================================================== -->
   <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
 
   <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
@@ -24,87 +20,79 @@ date_default_timezone_set('America/Sao_Paulo');
     <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
     <div class="page-wrapper">
       <div class="container-fluid">
-        <div class="row">
-          <div class="container-lg">
-            <div class="table-responsive">
-              <div class="table-wrapper">
-                <div class="table-title">
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <h2>Relatório<b style="color: red;"> Empréstimos Vencido</b></h2>
-                    </div>
+        <div class="row"">
+            <div class=" container-lg">
+          <div class="table-responsive">
+            <div class="table-wrapper">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <h2>Listagem <b>de Perguntas</b></h2>
+                  </div>
+                  <div class="col-sm-4">
+                    <a href="<?= DOMINIO ?>perguntas" class="mt-2 btn btn-success add-new"><i class="fa fa-plus"></i> Novo</a>
                   </div>
                 </div>
-                <table class="table v-middle table-bordered table-light responsive-table" id="listagemCategoria">
-                  <thead class="thead-dark">
-                    <tr class="text-center align-middle responsive-table">
-                      <th style="width: 12%;">Leitor</th>
-                      <th style="width: 42%;">Livro</th>
-                      <th style="width: 8%;">Empréstimo</th>
-                      <th style="width: 7%;">Devolução</th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if (isset($view_listagem) && count($view_listagem) > 0) {
-                      foreach ($view_listagem as $emprestimoVencido) {
-                    ?>
-                        <tr class="text-center v-middle">
-                          <td><?= $emprestimoVencido['nomeLeitor'] ?></td>
-                          <td><?php
-                              $array = explode(';', $emprestimoVencido['livros']);
-                              foreach ($array as $a) {
-                                echo $a . '<br>';
-                              }
-                              ?></td>
-                          <td><?= date('d/m/Y', strtotime($emprestimoVencido['dataEmprestimo'])) ?></td>
-                          <td><?php
-                              $data = date('d/m/Y', strtotime($emprestimoVencido['dataDevolucao']));
-                              echo $data;
-                              // if ($emprestimoVencido['dataDevolucao'] == date('Y-m-d')) {
-                              //   echo '<p style="color: orange;">' . $data . '</p>';
-                              // } else {
-                              //   echo '<p style="color: red;">' . $data . '</p>';
-                              // }
-                              ?></td>
-                        </tr>
-                    <?php
-                      }
-                    }
-                    ?>
-                  </tbody>
-                </table>
               </div>
+              <table class="table v-middle table-bordered table-light responsive-table" id="listagemTipoLeitor">
+                <thead class="thead-dark">
+                  <tr class="text-center align-middle">
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 20%;">Pergunta</th>
+
+                    <th style="width: 10%;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  if (isset($view_listagem) && count($view_listagem) > 0) {
+                    foreach ($view_listagem as $perguntas) {
+                  ?>
+                      <tr class="text-center v-middle">
+                        <td><?= $perguntas['id'] ?></td>
+                        <td><?= $perguntas['pergunta'] ?></td>
+                        <td>
+                          <a class="edit editar" href="<?= DOMINIO ?>tipoleitor/index/action/update/id/<?= $perguntas['idTipo'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                          <a class="delete remover" desc="<?= $perguntas['descricaoTipo'] ?>" id="<?= $perguntas['idTipo'] ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                      </tr>
+                  <?php
+                    }
+                  }
+                  ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  </div>
   <!-- ============================================================== -->
   <!-- SCRIPTS -->
-
   <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
 
   <script>
     $(document).ready(function() {
-      $('#listagemCategoria').DataTable({
+      var dat = new Date();
+      var data_dia = dat.getDate() + "/" + (dat.getMonth() + 1) + "/" + dat.getFullYear();
+      $('#listagemTipoLeitor').DataTable({
         'dom': '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-        "iDisplayLength": 10,
+        "iDisplayLength": 20,
         "ordering": false,
         "initComplete": function() {
-          $("#listagemCategoria").show();
+          $("#listagemTipoLeitor").show();
         },
         buttons: [
           'searchBuilder',
           {
             extend: 'excelHtml5',
             text: '<button class="btn btn-sm btn-link"><i  style="color: green" class="fa fa-file-excel-o"></i></button>',
-            title: 'Empréstimos Vencidos',
+            title: 'Tipo de Leitores - ' + data_dia,
             titleAttr: 'Exportar a Excel',
             exportOptions: {
-              columns: [0, 1, 2, 3],
+              columns: [1, 2],
               format: {
                 body: function(data, column, row) {
                   if (typeof data === 'string' || data instanceof String) {
@@ -119,10 +107,10 @@ date_default_timezone_set('America/Sao_Paulo');
             extend: 'pdfHtml5',
             pageSize: 'A4',
             titleAttr: 'Baixar PDF',
-            title: 'Empréstimos Vencidos',
+            title: 'Tipo de Leitores - ' + data_dia,
             text: '<button class="btn btn-sm btn-link red"><i style="color: red" class="fa fa-file-pdf-o"></i> ',
             exportOptions: {
-              columns: [0, 1, 2, 3],
+              columns: [1, 2],
               format: {
                 body: function(data, column, row) {
                   if (typeof data === 'string' || data instanceof String) {
@@ -195,11 +183,11 @@ date_default_timezone_set('America/Sao_Paulo');
           {
             extend: 'print',
             pageSize: 'A4',
-            title: 'Empréstimos Vencidos',
+            title: 'Tipo de Leitores - ' + data_dia,
             text: '<button class="btn btn-sm btn-link"><i style="color: gray" class="fa fa-print"></i></button> ',
             titleAttr: 'Imprimir',
             exportOptions: {
-              columns: [0, 1, 2, 3],
+              columns: [1, 2],
               format: {
                 body: function(data, column, row) {
                   if (typeof data === 'string' || data instanceof String) {
@@ -226,6 +214,56 @@ date_default_timezone_set('America/Sao_Paulo');
           },
         }
       });
+      $(".page-wrapper").on('click', '#listagemTipoLeitor tbody tr td a.remover', function() {
+        var id = $(this).attr('id');
+        var descricao = $(this).attr('desc');
+        var dados = {
+          'id': id
+        };
+        bootbox.confirm({
+          message: 'Confirma a exclusão do registro "' + descricao + '" ?',
+          callback: function(confirmacao) {
+
+            if (confirmacao) {
+
+              $.ajax({
+                url: '<?= DOMINIO ?>tipoleitor/excluir',
+                type: 'POST',
+                data: dados,
+                success: function(retorno) {
+                  bootbox.alert(retorno);
+                  bootbox.confirm({
+                    message: retorno,
+                    callback: function(confirma) {
+                      if (confirma) {
+                        location.reload();
+                      }
+                    },
+                    buttons: {
+                      confirm: {
+                        label: 'OK',
+                        className: 'btn-success'
+                      },
+                    }
+                  })
+                }
+              });
+            }
+          },
+          buttons: {
+            cancel: {
+              label: 'Cancelar',
+              className: 'btn-default'
+            },
+            confirm: {
+              label: 'EXCLUIR',
+              className: 'btn-danger'
+            }
+
+          }
+        });
+      });
+
     });
   </script>
 </body>

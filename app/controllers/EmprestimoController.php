@@ -46,6 +46,10 @@ class Emprestimo extends Controller
 
                 $dados['retorno'] = $emprestimo->inserir();
 
+                echo '<script>
+                window.open("'.DOMINIO.'emprestimo/printemprestimo/id/'.$_SESSION['emprestimo_print'].'","Impressão comprovante","height=200,width=200");
+                </script>';
+
             }
 
         }

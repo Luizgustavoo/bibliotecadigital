@@ -1,0 +1,109 @@
+<?php
+Validar::validarLogin();
+if (ValidarPagina::validarPaginaAtual('create_update_resposta') <= 0) {
+    header("Location: " . DOMINIO . "home");
+}
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+?>
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+
+<?php require_once ARQUIVOS . "_arquivos_gerais/head.php" ?>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <?php require_once ARQUIVOS . "_arquivos_gerais/preloader.php" ?>
+
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+        <?php require_once ARQUIVOS . "_arquivos_gerais/header.php" ?>
+
+        <?php require_once ARQUIVOS . "_arquivos_gerais/navbar.php" ?>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="container-lg">
+                        <h2><?= $view_tipo_operacao == 'inserir' ? "Cadastro de" : "Alterar" ?><b> Respostas</b></h2>
+
+                        <h4 class="mt-3">Insira as respostas</h4>
+                        <form class="mt-3" action="<?= $view_tipo_operacao == 'inserir' ? DOMINIO . "resposta/cadastro" : DOMINIO . "resposta/alterar" ?>" enctype="multipart/form-data" method="POST" id="cadastroResposta">
+                            <div class="form-group">
+                                <input type="hidden" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['id'] : ""; ?>" class="form-control" id="id" name="id">
+                            </div>
+                            <label for="id">Perguntas:</label>
+                            <select class="form-select" id="pergunta_id" name="pergunta_id" aria-label="Default select example">
+                                <?php
+                                if (isset($view_perguntas) && count($view_perguntas) > 0) {
+                                    foreach ($view_perguntas as $perguntas) {
+                                        $selected = isset($view_update[0]['id']) && $view_update[0]['id'] == $perguntas['id'] ? "selected" : "";
+                                        echo '<option value="' . $perguntas["id"] . '" ' . $selected . '>' . $perguntas["pergunta"] . '</option>';
+                                    }
+                                } else {
+                                    echo '<option value="">Nenhuma Pergunta Cadastrada</option>';
+                                }
+                                ?>
+                            </select>
+                            <div class="form-group">
+                                <label for="resposta">Respostas</label>
+                                <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['resposta'] : ""; ?>" class="form-control" id="resposta" name="resposta" placeholder="Descreva sua resposta...">
+                            </div>
+                            <label for="idCla">Clã:</label>
+                            <select class=" form-select" id="cla_id" name="cla_id" aria-label="Default select example">
+                                <?php
+                                if (isset($view_cla) && count($view_cla) > 0) {
+                                    foreach ($view_cla as $cla) {
+                                        $selected = $view_update[0]['idCla'] == $cla['idCla'] ? "selected" : "";
+                                        echo '<option value="' . $cla["idCla"] . '" ' . $selected . '>' . $cla["tituloCla"] . '</option>';
+                                    }
+                                } else {
+                                    echo '<option value = "">Nenhum Clã Cadastrado</option>';
+                                }
+                                ?>
+                            </select>
+                            <div class="btn-cadastrar">
+                                <button type="submit" class="btn btn-info"><?= $view_tipo_operacao == 'inserir' ? "Cadastrar" : "Alterar" ?></button>
+                                <a href="<?= DOMINIO ?>home" class="btn ml-1 bg-light">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- SCRIPTS -->
+    <?php require_once ARQUIVOS . "_arquivos_gerais/scripts.php" ?>
+    <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php"; ?>
+
+
+    <script>
+        $(function() {
+            document.getElementById("pergunta").focus();
+            $("#cadastroResposta").on('submit', function() {
+                var erros = "";
+                erros += $("#resposta").val().length <= 0 ? "Tamanho de resposta inválido!<br/>" : "";
+                // erros += file.files.length === 0 ? "Imagem inválida!" : "";
+                if (erros.length > 0) {
+                    $("#modal_retorno .modal-title").html("Erros encontrados!");
+                    $("#modal_retorno").addClass('modal-danger');
+                    $("#modal_retorno .modal-body p").html(erros).css({
+                        'color': 'black'
+                    });
+                    $("#modal_retorno").modal('show');
+
+
+                    return false;
+                } else {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+</body>
+<?php require_once ARQUIVOS . 'modais/modal_retorno.php'; ?>
+
+</html>
