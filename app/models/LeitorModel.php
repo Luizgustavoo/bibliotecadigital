@@ -15,7 +15,83 @@ class LeitorModel extends Model
     private $idTipo;
     private $avatarLeitor;
     private $tamanho_upload = 1024 * 1024 * 5; //5MB
+    private $periodo;
+    private $instituicao;
+    private $matricula;
+    private $dataNascimento;
 
+    /**
+     * @return mixed
+     */
+    public function getDataNascimento()
+    {
+        return $this->dataNascimento;
+    }
+
+    /**
+     * @param mixed $dataNascimento 
+     * @return self
+     */
+    public function setDataNascimento($dataNascimento): self
+    {
+        $this->dataNascimento = $dataNascimento;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatricula()
+    {
+        return $this->matricula;
+    }
+
+    /**
+     * @param mixed $matricula 
+     * @return self
+     */
+    public function setMatricula($matricula): self
+    {
+        $this->matricula = $matricula;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodo()
+    {
+        return $this->periodo;
+    }
+
+    /**
+     * @param mixed $periodo 
+     * @return self
+     */
+    public function setPeriodo($periodo): self
+    {
+        $this->periodo = $periodo;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInstituicao()
+    {
+        return $this->instituicao;
+    }
+
+    /**
+     * @param mixed $instituicao 
+     * @return self
+     */
+    public function setInstituicao($instituicao): self
+    {
+        $this->instituicao = $instituicao;
+        return $this;
+    }
     /**
      * Get the value of idTipo
      *
@@ -245,12 +321,14 @@ class LeitorModel extends Model
         return $this;
     }
 
+
     public function inserir()
     {
         $erros = "";
         $valida = $this->validarDados();
+        $retorno = "";
+
         if (strlen($valida) <= 0) {
-            //inserindo dados no cafe dos alunos
             if ($this->getAvatarLeitor()['size'] <= $this->tamanho_upload) {
 
                 $this->setIdLeitor($this->proximoID('leitor', 'idLeitor')[0]['max_id'] + 1);
@@ -259,13 +337,8 @@ class LeitorModel extends Model
                 $extensao = strrchr($nome, '.');
                 $extensao = strtolower($extensao);
                 if (strstr('.jpg;.jpeg;.gif;.png', $extensao)) {
-
-                    //$novoNome = md5(microtime())  . $extensao;
                     $novoNome = "foto_" . md5(time())  . $extensao;
-
                     $destino = './web-pages/assets/images/leitor/' . $novoNome;
-
-
 
                     if ($this->compressImage($arquivo_tmp, $destino, 50)) {
 
@@ -279,22 +352,28 @@ class LeitorModel extends Model
                             "senhaLeitor" => md5(md5($this->getSenhaLeitor())),
                             "avatarLeitor" => $novoNome,
                             "statusLeitor" => ($this->getStatusLeitor()),
+                            "periodo" => ($this->getPeriodo()),
+                            "instituicao" => ($this->getInstituicao()),
+                            "matricula" => ($this->getMatricula()),
+                            "data_nascimento" => ($this->getDataNascimento()),
                         ];
                         $this->set_transaction($this->insert($dados_leitor, 'leitor'));
-                    } else {
-                        $erros .= "Falha ao cadastrar o autor, comunique o administrador!<br>";
-                    }
-                    if (strlen($erros) <= 0) {
+
                         $retorno = $this->execTransaction();
                     } else {
-                        $retorno = $erros;
+                        $retorno = "Falah ao realizar upload da imagem!";
                     }
                 } else {
-                    $retorno = $valida;
+                    $retorno = "Formato de arquivo inválido!";
                 }
-                return $retorno;
+            } else {
+                $retorno = "Nenhuma imagem cadastrada. Selecione uma!";
             }
+        } else {
+            $retorno = $valida;
         }
+
+        return $retorno;
     }
 
     public function excluir()
@@ -312,7 +391,7 @@ class LeitorModel extends Model
     {
 
         //COLUNAS DA TABELA
-        $places = ['leitor.*',"(select count(*) from emprestimo where emprestimo.idLeitor = leitor.idLeitor and emprestimo.statusEmprestimo = 'aberto') as  emprestimoAberto"];
+        $places = ['leitor.*', "(select count(*) from emprestimo where emprestimo.idLeitor = leitor.idLeitor and emprestimo.statusEmprestimo = 'aberto') as  emprestimoAberto"];
 
         //inner join, outer join, todos as ligações que quiser fazer
         $innerjoin = null;
@@ -347,6 +426,7 @@ class LeitorModel extends Model
         $erros = "";
         $valida = $this->validarDados();
         if (strlen($valida) <= 0) {
+            die('validado');
             //inserindo dados no cafe dos alunos
             if ($this->getAvatarLeitor()['size'] <= $this->tamanho_upload) {
 
@@ -375,6 +455,10 @@ class LeitorModel extends Model
                             "senhaLeitor" => md5(md5($this->getSenhaLeitor())),
                             "avatarLeitor" => $novoNome,
                             "statusLeitor" => ($this->getStatusLeitor()),
+                            "periodo" => ($this->getPeriodo()),
+                            "instituicao" => ($this->getInstituicao()),
+                            "matricula" => ($this->getMatricula()),
+                            "data_nascimento" => ($this->getDataNascimento()),
                         ];
 
                         $where = "idLeitor = " . $this->getIdLeitor();
@@ -392,7 +476,6 @@ class LeitorModel extends Model
                 }
                 return $retorno;
             }
-            $retorno = $this->execTransaction();
         } else {
             $retorno = $valida;
         }
@@ -411,7 +494,7 @@ class LeitorModel extends Model
         if (strlen($this->getSexoLeitor()) <= 0) {
             $erros .= "Sexo do leitor inválido!<br>";
         }
-        if(!Validar::validaEmail($this->getEmailLeitor())){
+        if (!Validar::validaEmail($this->getEmailLeitor())) {
             $erros .= "Email do Leitor inválido!<br/>";
         }
         if (strlen($this->getNomeLeitor()) < 3) {
@@ -425,6 +508,18 @@ class LeitorModel extends Model
         }
         if (strlen($this->getAvatarLeitor()['tmp_name']) <= 0) {
             $erros .= "Foto inválida!<br>";
+        }
+        if (strlen($this->getPeriodo()) <= 0) {
+            $erros .= "Período do leitor inválido!<br>";
+        }
+        if (strlen($this->getInstituicao()) <= 0) {
+            $erros .= "Instituição do leitor inválido!<br>";
+        }
+        if (strlen($this->getMatricula()) <= 0 && $this->getIdTipo() == 1) {
+            $erros .= "Digite o número da matrícula do aluno!<br>";
+        }
+        if (strlen($this->getDataNascimento()) <= 0) {
+            $erros .= "Data de nascimento do leitor inválido!<br>";
         }
         return $erros;
     }

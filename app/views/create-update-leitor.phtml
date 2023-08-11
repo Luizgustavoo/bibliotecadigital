@@ -45,13 +45,16 @@ date_default_timezone_set('America/Sao_Paulo');
               <div class="form-group">
                 <input type="hidden" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['idLeitor'] : ""; ?>" class="form-control" id="idLeitor" name="idLeitor">
               </div>
+
+
+
               <div class="form-row">
-                <div class="col-8">
-                  <label for="nomeLeitor">Nome:</label>
-                  <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['nomeLeitor'] : ""; ?>" class="form-control" id="nomeLeitor" name="nomeLeitor" placeholder="Insira um nome...">
+                <div class="col-2">
+                  <label for="matricula">Nº da Matrícula:</label>
+                  <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['matricula'] : ""; ?>" class="form-control" id="matricula" name="matricula" placeholder="Insira a matrícula do aluno...">
                 </div>
-                <div class="col-4"">
-                <label for=" idTipo"> <br></label>
+                <div class="col-2">
+                  <label for="idTipo">Tipo Leitor:<br></label>
                   <select class=" form-select" id="idTipo" name="idTipo" aria-label="Default select example">
                     <?php
                     if (isset($view_tipoLeitor) && count($view_tipoLeitor) > 0) {
@@ -65,29 +68,58 @@ date_default_timezone_set('America/Sao_Paulo');
                   </select>
                 </div>
               </div>
-              <div class="mt-2 form-row">
-                <div class="col-8">
+
+
+
+              <div class="form-row">
+                <div class="col-6">
+                  <label for="nomeLeitor">Nome:</label>
+                  <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['nomeLeitor'] : ""; ?>" class="form-control" id="nomeLeitor" name="nomeLeitor" placeholder="Insira um nome...">
+                </div>
+                <div class="col-6">
                   <label for="emailLeitor">E-mail:</label>
                   <input type="email" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['emailLeitor'] : ""; ?>" class="form-control" id="emailLeitor" name="emailLeitor" placeholder="Insira um e-mail...">
                 </div>
-                <div class="col-4"">
-                <label for=" sexoLeitor"> <br></label>
+
+              </div>
+
+
+
+              <div class="mt-2 form-row">
+                <div class="col-3">
+                  <label for="data_nascimento">Data de Nascimento:</label>
+                  <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? date('d/m/Y', strtotime($view_update[0]['data_nascimento'])) : ''; ?>" class="form-control" id="data_nascimento" name="data_nascimento" onkeyup="mascara_data(this, this.value)" maxlength="10" placeholder="Coloque uma data...">
+                </div>
+                <div class="col-3">
+                  <label for="instituicao">Instituição:<br></label>
+                  <select class=" form-select" id="instituicao" name="instituicao" aria-label="Default select example">
+                    <option value="1" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["instituicao"] == "1" ?  "selected" : ""; ?>>Projeto Crescer I</option>
+                    <option value="2" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["instituicao"] == "2" ?  "selected" : ""; ?>>Projeto Crescer II</option>
+                  </select>
+                </div>
+                <div class="col-3">
+                  <label for="periodo">Período:<br></label>
+                  <select class=" form-select" id="periodo" name="periodo" aria-label="Default select example">
+                    <option value="matutino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["periodo"] == "matutino" ?  "selected" : ""; ?>>Matutino</option>
+                    <option value="vespertino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["periodo"] == "vespertino" ?  "selected" : ""; ?>>Vespertino</option>
+                  </select>
+                </div>
+                <div class="col-3">
+                  <label for=" sexoLeitor">Sexo:</label>
+                  <label for=" sexoLeitor"> <br></label>
                   <select class=" form-select" id="sexoLeitor" name="sexoLeitor" aria-label="Default select example">
                     <option value="masculino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["sexoLeitor"] == "masculino" ?  "selected" : ""; ?>>Masculino</option>
                     <option value="feminino" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["sexoLeitor"] == "feminino" ?  "selected" : ""; ?>>Feminino</option>
                   </select>
                 </div>
               </div>
-              <div class="mt-2 form-row">
-                <div class="col-8">
-                  <label for="loginLeitor">Login:</label>
-                  <input type="text" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['loginLeitor'] : ""; ?>" class="form-control" id="loginLeitor" name="loginLeitor" placeholder="Insira um login...">
-                </div>
-                <div class="col-4">
-                  <label for="senhaLeitor">Senha:</label>
-                  <input type="password" value="<?= isset($view_update) && count($view_update) == 1 ? $view_update[0]['senhaLeitor'] : ""; ?>" class="form-control" id="senhaLeitor" name="senhaLeitor" placeholder="Insira uma senha...">
-                </div>
-              </div>
+
+
+
+             
+
+
+
               <div class="mt-3 form-check-inline">
                 <label class="form-check-label">
                   <input type="radio" class="form-check-input" checked name="statusLeitor" value="ativo" <?= isset($view_update) && count($view_update) == 1 && $view_update[0]["statusLeitor"] == "ativo" ?  "checked" : ""; ?>>Ativo
@@ -112,7 +144,18 @@ date_default_timezone_set('America/Sao_Paulo');
   <?php require_once ARQUIVOS . "_arquivos_gerais/mensagem_header.php"; ?>
 
   <script>
-
+    function mascara_data(campo, valor) {
+      var mydata = '';
+      mydata = mydata + valor;
+      if (mydata.length == 2) {
+        mydata = mydata + '/';
+        campo.value = mydata;
+      }
+      if (mydata.length == 5) {
+        mydata = mydata + '/';
+        campo.value = mydata;
+      }
+    }
     $(function() {
       $("#cadastroLeitor").on('submit', function() {
         var erros = "";
@@ -120,8 +163,9 @@ date_default_timezone_set('America/Sao_Paulo');
         erros += $("#nomeLeitor").val().length <= 3 ? "Nome do leitor inválido!<br>\n" : "";
         erros += $("#idTipo").val().length <= 0 ? "Tipo de leitor inválido!<br>\n" : "";
         erros += $("#sexoLeitor").val().length <= 0 ? "Sexo do leitor inválido!<br>\n" : "";
-        erros += $("#loginLeitor").val().length <= 0 ? "Login do leitor inválido!<br>" : "";
-        erros += $("#senhaLeitor").val().length <= 7 ? "Senha do Leitor inválida, minímo 8 caracteres!<br/>" : "";
+        // erros += $("#loginLeitor").val().length <= 0 ? "Login do leitor inválido!<br>" : "";
+        erros += ($("#matricula").val().length <= 0) && ($("#idTipo").val() == 1) ? "Digite o número da matrícula do aluno!<br>" : "";
+        // erros += $("#senhaLeitor").val().length <= 7 ? "Senha do Leitor inválida, minímo 8 caracteres!<br/>" : "";
         erros += $("#emailLeitor").val().length <= 0 || ValidateEmail($("#emailLeitor").val()) == false ? "Email do leitor inválido!<br>\n" : "";
         erros += file.files.length === 0 ? "Imagem do leitor inválida!<br>" : "";
         if (erros.length > 0) {
